@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NPPE.Application.Repositories;
@@ -9,10 +10,12 @@ namespace NPPE.Web.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly IUserRepository _userRepository;
+        private readonly SignInManager<AppUser> _signInManager;
 
-        public RegisterModel(IUserRepository userRepository)
+        public RegisterModel(IUserRepository userRepository, SignInManager<AppUser> signInManager)
         {
             _userRepository = userRepository;
+            _signInManager = signInManager;
         }
 
         [BindProperty]
@@ -53,6 +56,13 @@ namespace NPPE.Web.Pages.Account
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
             }
+        }
+
+        public IActionResult OnPostGoogleSignup()
+        {
+            var redirectUrl = Url.Page("./ExternalLoginCallback", pageHandler: null, values: new { returnUrl = "/" });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            return new ChallengeResult("Google", properties);
         }
 
         public class InputModel

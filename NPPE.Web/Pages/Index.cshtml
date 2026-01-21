@@ -1,28 +1,280 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto text-center">
-        <h1 class="text-3xl font-bold text-gray-900">
-            @SharedLocalizer["WelcomeMessage"]
-        </h1>
-        <p class="mt-4 text-lg text-gray-600">
-            @if (User.Identity?.IsAuthenticated == true)
-            {
-                <span>Hello, @User.Identity.Name!</span>
-            }
-        </p>
-        <div class="mt-8">
-            <form method="post" asp-page="/Index" asp-page-handler="Logout" class="inline">
-                @Html.AntiForgeryToken()
-                <button type="submit"
-                        class="px-3 py-2 rounded-md text-sm font-medium text-red-600 hover:bg-red-50">
-                    Sign out
-                </button>
-            </form>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8 -mx-4 sm:-mx-6 lg:-mx-8 -my-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Welcome Header -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">
+                        @SharedLocalizer["WelcomeMessage"], @Model.FirstName!
+                    </h1>
+                    <p class="mt-2 text-gray-600">
+                        Here's an overview of your exam preparation progress.
+                    </p>
+                </div>
+                <div class="mt-4 sm:mt-0">
+                    @if (Model.IsAdmin)
+                    {
+                        <a asp-page="/Admin/Exams/Index"
+                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium rounded-xl shadow-lg hover:from-purple-700 hover:to-indigo-700 transition duration-200">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                            Manage Exams
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-page="/Student/Exams/Index"
+                           class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl shadow-lg hover:from-blue-700 hover:to-indigo-700 transition duration-200">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                            </svg>
+                            Start New Exam
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <!-- Exams Completed -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Exams Completed</p>
+                        <p class="text-2xl font-bold text-gray-900">@Model.ExamsCompleted</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Average Score -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="20" x2="12" y2="10"></line>
+                            <line x1="18" y1="20" x2="18" y2="4"></line>
+                            <line x1="6" y1="20" x2="6" y2="16"></line>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Average Score</p>
+                        <p class="text-2xl font-bold text-gray-900">@Model.AverageScore%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Exams -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-500">Available Exams</p>
+                        <p class="text-2xl font-bold text-gray-900">@Model.TotalExamsAvailable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Recent Activity -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-2xl shadow-xl p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div class="flex items-center">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <h3 class="text-lg font-semibold text-gray-900">Recent Exam Results</h3>
+                        </div>
+                        <a asp-page="/Student/History/Index" class="text-blue-600 hover:text-blue-700 text-sm font-medium">
+                            View All
+                        </a>
+                    </div>
+
+                    @if (Model.RecentAttempts.Any())
+                    {
+                        <div class="space-y-4">
+                            @foreach (var attempt in Model.RecentAttempts)
+                            {
+                                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-200">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-4 @(attempt.Score >= 70 ? "bg-green-100" : "bg-red-100")">
+                                            @if (attempt.Score >= 70)
+                                            {
+                                                <svg class="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                                </svg>
+                                            }
+                                            else
+                                            {
+                                                <svg class="h-5 w-5 text-red-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                                                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                                                </svg>
+                                            }
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-900">@attempt.ExamTitle</p>
+                                            <p class="text-sm text-gray-500">@attempt.CompletedAt.ToString("MMM dd, yyyy 'at' h:mm tt")</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-lg font-bold @(attempt.Score >= 70 ? "text-green-600" : "text-red-600")">
+                                            @attempt.Score%
+                                        </span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-12">
+                            <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <svg class="h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                </svg>
+                            </div>
+                            <h4 class="text-lg font-medium text-gray-900 mb-2">No exams completed yet</h4>
+                            <p class="text-gray-500 mb-4">Start your first exam to see your results here.</p>
+                            <a asp-page="/Student/Exams/Index"
+                               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-200">
+                                Browse Exams
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-xl p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-900">Quick Actions</h3>
+                    </div>
+
+                    <div class="space-y-3">
+                        <a asp-page="/Student/Exams/Index"
+                           class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-200 group">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-blue-200 transition duration-200">
+                                <svg class="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Take an Exam</p>
+                                <p class="text-sm text-gray-500">Start a practice exam</p>
+                            </div>
+                        </a>
+
+                        <a asp-page="/Student/History/Index"
+                           class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-200 group">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-green-200 transition duration-200">
+                                <svg class="h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">Exam History</p>
+                                <p class="text-sm text-gray-500">View past results</p>
+                            </div>
+                        </a>
+
+                        <a asp-page="/Account/Profile"
+                           class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-200 group">
+                            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-purple-200 transition duration-200">
+                                <svg class="h-5 w-5 text-purple-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="font-medium text-gray-900">My Profile</p>
+                                <p class="text-sm text-gray-500">Manage your account</p>
+                            </div>
+                        </a>
+
+                        @if (Model.IsAdmin)
+                        {
+                            <a asp-page="/Admin/Exams/Index"
+                               class="flex items-center p-4 bg-gray-50 rounded-xl hover:bg-blue-50 transition duration-200 group">
+                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center mr-3 group-hover:bg-orange-200 transition duration-200">
+                                    <svg class="h-5 w-5 text-orange-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">Admin Panel</p>
+                                    <p class="text-sm text-gray-500">Manage exams</p>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+
+                <!-- Progress Card -->
+                <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl shadow-xl p-6 mt-6 text-white">
+                    <h3 class="text-lg font-semibold mb-2">Keep Going!</h3>
+                    <p class="text-blue-100 text-sm mb-4">
+                        @if (Model.ExamsCompleted == 0)
+                        {
+                            <span>Start your first exam to begin your preparation journey.</span>
+                        }
+                        else if (Model.AverageScore >= 70)
+                        {
+                            <span>Great work! Your average score of @Model.AverageScore% shows excellent progress.</span>
+                        }
+                        else
+                        {
+                            <span>Keep practicing! Each exam helps you get closer to your goal.</span>
+                        }
+                    </p>
+                    <a asp-page="/Student/Exams/Index"
+                       class="inline-flex items-center px-4 py-2 bg-white text-blue-600 font-medium rounded-lg hover:bg-blue-50 transition duration-200">
+                        <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        Continue Learning
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -8,5 +8,5 @@ public class ExamAttempt : BaseEntity
     public int Score { get; set; }
     public int TotalQuestions { get; set; }
     public DateTime TakenAt { get; set; }
-    public ICollection<AttemptedAnswer> Answers { get; set; } = new List<AttemptedAnswer>();
+    public ICollection<AttemptedAnswer> Answers { get; set; } = [];
 }

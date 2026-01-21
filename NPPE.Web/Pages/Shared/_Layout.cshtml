@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -6,10 +6,28 @@
     <title>@ViewData["Title"] - NPPE Exam Prep</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Optional: Custom font or subtle tweaks */
         body {
             font-family: 'Inter', sans-serif;
+        }
+        .nav-gradient {
+            background: linear-gradient(135deg, #1e40af 0%, #4f46e5 100%);
+        }
+        .dropdown-enter {
+            animation: dropdownEnter 0.2s ease-out;
+        }
+        @@keyframes dropdownEnter {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
 
@@ -21,6 +39,8 @@
                 const languageMenu = document.getElementById('language-menu');
                 const profileButton = document.getElementById('profile-button');
                 const profileMenu = document.getElementById('profile-menu');
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
 
                 if (languageButton && !languageButton.contains(e.target) && languageMenu && !languageMenu.contains(e.target)) {
                     languageMenu.classList.add('hidden');
@@ -28,14 +48,18 @@
                 if (profileButton && !profileButton.contains(e.target) && profileMenu && !profileMenu.contains(e.target)) {
                     profileMenu.classList.add('hidden');
                 }
+                if (mobileMenuButton && !mobileMenuButton.contains(e.target) && mobileMenu && !mobileMenu.contains(e.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
             });
 
-             document.addEventListener('keydown', function (e) {
-                 if (e.key === 'Escape') {
-                     document.getElementById('language-menu')?.classList.add('hidden');
-                     document.getElementById('profile-menu')?.classList.add('hidden');
-                 }
-             });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    document.getElementById('language-menu')?.classList.add('hidden');
+                    document.getElementById('profile-menu')?.classList.add('hidden');
+                    document.getElementById('mobile-menu')?.classList.add('hidden');
+                }
+            });
 
             // Toggle language menu
             const langBtn = document.getElementById('language-button');
@@ -44,9 +68,7 @@
                     e.stopPropagation();
                     const menu = document.getElementById('language-menu');
                     menu.classList.toggle('hidden');
-                    // Close profile menu if open
-                    const profileMenu = document.getElementById('profile-menu');
-                    if (profileMenu) profileMenu.classList.add('hidden');
+                    document.getElementById('profile-menu')?.classList.add('hidden');
                 });
             }
 
@@ -57,134 +79,248 @@
                     e.stopPropagation();
                     const menu = document.getElementById('profile-menu');
                     menu.classList.toggle('hidden');
-                    // Close language menu if open
-                    const langMenu = document.getElementById('language-menu');
-                    if (langMenu) langMenu.classList.add('hidden');
+                    document.getElementById('language-menu')?.classList.add('hidden');
+                });
+            }
+
+            // Toggle mobile menu
+            const mobileBtn = document.getElementById('mobile-menu-button');
+            if (mobileBtn) {
+                mobileBtn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const menu = document.getElementById('mobile-menu');
+                    menu.classList.toggle('hidden');
                 });
             }
         });
     </script>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 min-h-screen flex flex-col">
     <!-- Navigation Bar -->
-    <nav class="bg-white shadow-sm">
+    <nav class="nav-gradient shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <!-- Left side: Logo + Navigation -->
-                <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-8">
                     <!-- Logo -->
-                    <a asp-page="/Index" class="text-xl font-bold text-blue-800 hover:text-blue-600">
-                        NPPE Prep
+                    <a asp-page="/Index" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md">
+                            <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                        </div>
+                        <span class="text-xl font-bold text-white">NPPE Prep</span>
                     </a>
 
-                    <!-- Navigation Links (left-aligned) -->
+                    <!-- Desktop Navigation Links -->
                     @if (User.Identity?.IsAuthenticated == true)
                     {
-                        if (User.IsInRole("Admin"))
-                        {
-                            <a asp-page="/Admin/Exams/Index"
-                               class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                Exams
+                        <div class="hidden md:flex items-center space-x-1">
+                            <a asp-page="/Index"
+                               class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                                Dashboard
                             </a>
-                        }
-                        else if (User.IsInRole("Student"))
-                        {
-                            <a asp-page="/Student/Exams/Index"
-                               class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                Take Exam
-                            </a>
-                            <a asp-page="/Student/History/Index"
-                               class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 hover:text-gray-900">
-                                Exams History
-                            </a>
-                        }
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <a asp-page="/Admin/Exams/Index"
+                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                                    Manage Exams
+                                </a>
+                            }
+                            else if (User.IsInRole("Student"))
+                            {
+                                <a asp-page="/Student/Exams/Index"
+                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                                    Take Exam
+                                </a>
+                                <a asp-page="/Student/History/Index"
+                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                                    History
+                                </a>
+                            }
+                        </div>
                     }
                 </div>
 
                 <!-- Right side: Profile + Language -->
-                <div class="flex items-center space-x-4">
+                <div class="flex items-center space-x-3">
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <!-- Language Switcher -->
-                        <div class="relative group">
-                            <button id="language-button" class="flex items-center text-sm text-gray-700 hover:text-gray-900 focus:outline-none">
-                                <!-- Globe Icon -->
-                                <svg width="25px" height="25px" viewBox="0 0 512 512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                                    <title>globe</title>
-                                    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                                        <g id="icon" fill="#000000" transform="translate(42.666667, 42.666667)">
-                                            <path d="M213.333333,3.55271368e-14 C331.15408,3.55271368e-14 426.666667,95.5125867 426.666667,213.333333 C426.666667,331.15408 331.15408,426.666667 213.333333,426.666667 C95.5125867,426.666667 3.55271368e-14,331.15408 3.55271368e-14,213.333333 C3.55271368e-14,95.5125867 95.5125867,3.55271368e-14 213.333333,3.55271368e-14 Z M266.172298,234.667478 L160.494368,234.667478 C160.751768,240.206011 161.106447,245.657866 161.550763,251.010752 L161.550763,251.010752 L162.704606,262.937617 C162.921272,264.895577 163.149845,266.838175 163.389916,268.764752 L163.389916,268.764752 L164.965056,280.126708 C168.947083,306.164829 175.022606,328.805283 182.070301,346.244557 L182.070301,346.244557 L185.146993,353.394833 C194.014405,372.721908 204.079077,384 213.333333,384 C222.587589,384 232.652262,372.721908 241.519674,353.394833 L241.519674,353.394833 L244.596366,346.244557 C251.644061,328.805283 257.719584,306.164829 261.70161,280.126708 L261.70161,280.126708 L263.276751,268.764752 C263.516822,266.838175 263.745395,264.895577 263.962061,262.937617 L263.962061,262.937617 L265.115904,251.010752 C265.56022,245.657866 265.914899,240.206011 266.172298,234.667478 Z M117.754967,234.66677 L43.9872251,234.667936 C51.6157469,295.840065 91.6183169,346.958142 146.308509,370.33574 C138.57713,353.987478 132.247881,334.685279 127.499175,313.242562 L127.499175,313.242562 L125.162369,301.846285 C122.240964,286.402937 120.101888,269.989331 118.804978,252.881408 L118.804978,252.881408 L117.991138,239.924593 C117.903797,238.178165 117.825053,236.425465 117.754967,234.66677 Z M382.679442,234.667936 L308.91169,234.667013 C308.841606,236.425627 308.762866,238.178245 308.675529,239.924593 L308.675529,239.924593 L307.861688,252.881408 C306.564779,269.989331 304.425703,286.402937 301.504298,301.846285 L301.504298,301.846285 L299.167492,313.242562 C294.418786,334.685279 288.089536,353.987478 280.356624,370.333484 C335.048468,346.95799 375.050931,295.839974 382.679442,234.667936 Z M146.309622,56.3340705 L144.461776,57.1333159 C90.7190775,80.8641078 51.5294756,131.517428 43.9871834,191.999065 L117.754927,192.000892 C117.825024,190.241863 117.90378,188.488831 117.991138,186.742074 L117.991138,186.742074 L118.804978,173.785259 C120.101888,156.677336 122.240964,140.26373 125.162369,124.820381 L125.162369,124.820381 L127.499175,113.424105 C132.247795,91.9817764 138.576901,72.6798877 146.309622,56.3340705 Z M213.333333,42.6666667 L213.055465,42.6700469 C203.877904,42.8930334 193.925731,54.138029 185.146993,73.2718336 L185.146993,73.2718336 L182.070301,80.4221102 C175.022606,97.8613834 168.947083,120.501838 164.965056,146.539958 L164.965056,146.539958 L163.389916,157.901915 C163.149845,159.828492 162.921272,161.771089 162.704606,163.72905 L162.704606,163.72905 L161.550763,175.655914 C161.106447,181.008801 160.751768,186.460656 160.494368,191.999189 L266.172298,191.999189 C265.914899,186.460656 265.56022,181.008801 265.115904,175.655914 L265.115904,175.655914 L263.962061,163.72905 C263.745395,161.771089 263.516822,159.828492 263.276751,157.901915 L263.276751,157.901915 L261.70161,146.539958 C257.719584,120.501838 251.644061,97.8613834 244.596366,80.4221102 L244.596366,80.4221102 L241.519674,73.2718336 C232.652262,53.9447582 222.587589,42.6666667 213.333333,42.6666667 L213.333333,42.6666667 Z M280.358401,56.3310303 L281.002522,57.7124012 C288.442537,73.7611795 294.551675,92.5814462 299.167492,113.424105 L299.167492,113.424105 L301.504298,124.820381 C304.425703,140.26373 306.564779,156.677336 307.861688,173.785259 L307.861688,173.785259 L308.675529,186.742074 C308.762886,188.488831 308.841643,190.241863 308.911739,192.000892 L382.679483,191.999065 C375.051077,130.826878 335.048568,79.7087191 280.358401,56.3310303 Z" id="Combined-Shape">
-
-                                            </path>
-                                        </g>
-                                    </g>
+                        <div class="relative hidden sm:block">
+                            <button id="language-button"
+                                    class="flex items-center space-x-1 px-3 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200 focus:outline-none">
+                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="2" y1="12" x2="22" y2="12"></line>
+                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                                 </svg>
                                 @{
                                     var currentCulture = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToUpper();
                                 }
-                                <span>@currentCulture</span>
+                                <span class="text-sm font-medium">@currentCulture</span>
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
                             </button>
-                            <!-- Dropdown: no gap, tight positioning -->
-                            <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md py-1 hidden group-hover:block z-10">
+                            <div id="language-menu" class="absolute right-0 mt-2 w-40 bg-white shadow-xl rounded-xl py-2 hidden dropdown-enter z-50 border border-gray-100">
                                 <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=en")"
-                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap">
-                                    English
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
+                                    <span class="mr-2">🇬🇧</span> English
                                 </a>
                                 <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=fr")"
-                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 whitespace-nowrap">
-                                    Français
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
+                                    <span class="mr-2">🇫🇷</span> Français
                                 </a>
                             </div>
                         </div>
 
                         <!-- Profile Dropdown -->
-
-                        <div class="relative group">
+                        <div class="relative">
                             <button id="profile-button"
-                                    class="flex items-center text-sm text-gray-700 hover:text-gray-900 focus:outline-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                    class="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/10 transition duration-200 focus:outline-none">
+                                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                                    <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </div>
+                                <span class="hidden sm:inline text-sm font-medium">@User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value</span>
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </button>
-                            <div id="profile-menu" class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md py-1 hidden z-10">
-                                <div class="px-4 py-2 text-sm text-gray-500 border-b">
-                                    @User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value
+                            <div id="profile-menu" class="absolute right-0 mt-2 w-56 bg-white shadow-xl rounded-xl py-2 hidden dropdown-enter z-50 border border-gray-100">
+                                <div class="px-4 py-3 border-b border-gray-100">
+                                    <p class="text-sm font-medium text-gray-900">@User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value</p>
+                                    <p class="text-xs text-gray-500">@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</p>
                                 </div>
                                 <a asp-page="/Account/Profile"
-                                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    Profile
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
+                                    <svg class="h-4 w-4 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                    My Profile
                                 </a>
-                                <form method="post" asp-page="/Index" asp-page-handler="Logout" class="inline">
-                                    @Html.AntiForgeryToken()
-                                    <button type="submit"
-                                            class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                        @SharedLocalizer["Logout"]
-                                    </button>
-                                </form>
+                                <a asp-page="/Account/ChangePassword"
+                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
+                                    <svg class="h-4 w-4 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                    Change Password
+                                </a>
+                                <div class="border-t border-gray-100 mt-2 pt-2">
+                                    <form method="post" asp-page="/Index" asp-page-handler="Logout">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition duration-200">
+                                            <svg class="h-4 w-4 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                                <polyline points="16 17 21 12 16 7"></polyline>
+                                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                                            </svg>
+                                            @SharedLocalizer["Logout"]
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- Mobile menu button -->
+                        <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition duration-200">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
                     }
                     else
                     {
                         <a asp-page="/Account/Login"
-                           class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100">
+                           class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
                             Login
+                        </a>
+                        <a asp-page="/Account/Register"
+                           class="px-4 py-2 bg-white text-indigo-600 rounded-lg text-sm font-semibold hover:bg-blue-50 transition duration-200 shadow-md">
+                            Sign Up
                         </a>
                     }
                 </div>
             </div>
         </div>
+
+        <!-- Mobile menu -->
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <div id="mobile-menu" class="hidden md:hidden bg-indigo-700 border-t border-white/10">
+                <div class="px-4 py-3 space-y-1">
+                    <a asp-page="/Index"
+                       class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                        Dashboard
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-page="/Admin/Exams/Index"
+                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                            Manage Exams
+                        </a>
+                    }
+                    else if (User.IsInRole("Student"))
+                    {
+                        <a asp-page="/Student/Exams/Index"
+                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                            Take Exam
+                        </a>
+                        <a asp-page="/Student/History/Index"
+                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                            History
+                        </a>
+                    }
+                    <div class="border-t border-white/10 pt-2 mt-2">
+                        <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=en")"
+                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                            🇬🇧 English
+                        </a>
+                        <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=fr")"
+                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
+                            🇫🇷 Français
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
     </nav>
 
     <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         @RenderBody()
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-t mt-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center text-sm text-gray-500">
-            &copy; 2026 NPPE Exam Prep. All rights reserved.
+    <footer class="bg-white border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div class="flex items-center space-x-2 mb-4 md:mb-0">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-lg font-semibold text-gray-900">NPPE Prep</span>
+                </div>
+                <div class="flex flex-wrap gap-6 text-sm text-gray-500">
+                    <a href="#" class="hover:text-blue-600 transition duration-200">About</a>
+                    <a href="#" class="hover:text-blue-600 transition duration-200">Privacy Policy</a>
+                    <a href="#" class="hover:text-blue-600 transition duration-200">Terms of Service</a>
+                    <a href="#" class="hover:text-blue-600 transition duration-200">Contact</a>
+                </div>
+            </div>
+            <div class="mt-6 pt-6 border-t border-gray-100 text-center text-sm text-gray-400">
+                &copy; @DateTime.Now.Year NPPE Exam Prep. All rights reserved.
+            </div>
         </div>
     </footer>
 

@@ -73,6 +73,13 @@ namespace NPPE.Web.Pages.Account
             return Page();
         }
 
+        public IActionResult OnPostGoogleLogin(string? returnUrl = null)
+        {
+            var redirectUrl = Url.Page("./ExternalLoginCallback", pageHandler: null, values: new { returnUrl });
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+            return new ChallengeResult("Google", properties);
+        }
+
         public class InputModel
         {
             [Required(ErrorMessage = "Email is required.")]

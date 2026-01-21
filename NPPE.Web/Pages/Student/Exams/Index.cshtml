@@ -1,34 +1,165 @@
-﻿@page
+@page
 @model NPPE.Web.Pages.Student.Exams.IndexModel
 @{
     ViewData["Title"] = "Available Exams";
 }
 
-<div class="max-w-4xl mx-auto">
-    <h1 class="text-2xl font-bold text-gray-900 mb-6">NPPE Practice Exams</h1>
-
-    @if (Model.Exams.Any())
-    {
-        <div class="space-y-4">
-            @foreach (var exam in Model.Exams)
-            {
-                <div class="border border-gray-200 rounded-lg p-5 hover:bg-gray-50">
-                    <h2 class="text-lg font-semibold text-gray-900">@exam.Title</h2>
-                    <p class="mt-1 text-gray-600">@exam.Description</p>
-                    <div class="mt-3">
-                        <a asp-page="Take" asp-route-id="@exam.Id"
-                           class="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-                            Start Exam
-                        </a>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8 -mx-4 sm:-mx-6 lg:-mx-8 -my-8">
+    <div class="max-w-5xl mx-auto">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-900">Practice Exams</h1>
+                    <p class="mt-2 text-gray-600">Choose an exam to test your knowledge and prepare for the NPPE</p>
+                </div>
+                <div class="mt-4 sm:mt-0">
+                    <div class="flex items-center space-x-2 text-sm text-gray-500">
+                        <svg class="h-5 w-5 text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        <span>@Model.Exams.Count exam(s) available</span>
                     </div>
                 </div>
-            }
+            </div>
         </div>
-    }
-    else
-    {
-        <div class="text-center py-12">
-            <p class="text-gray-600">No exams available at this time.</p>
+
+        @if (Model.Exams.Any())
+        {
+            <!-- Exams Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach (var exam in Model.Exams)
+                {
+                    <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                        <!-- Card Header -->
+                        <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-10 h-10 bg-white/20 rounded-lg flex items-center justify-center">
+                                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                            <polyline points="14 2 14 8 20 8"></polyline>
+                                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        </svg>
+                                    </div>
+                                    <span class="text-white/80 text-sm font-medium">Practice Exam</span>
+                                </div>
+                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    Active
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Card Body -->
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-2">@exam.Title</h2>
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">@exam.Description</p>
+
+                            <!-- Exam Info -->
+                            <div class="flex items-center space-x-4 mb-6 text-sm text-gray-500">
+                                <div class="flex items-center">
+                                    <svg class="h-4 w-4 mr-1 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                                    </svg>
+                                    <span>Added @exam.CreatedAt.ToString("MMM dd, yyyy")</span>
+                                </div>
+                            </div>
+
+                            <!-- Start Button -->
+                            <a asp-page="Take" asp-route-id="@exam.Id"
+                               class="w-full inline-flex items-center justify-center px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 transform hover:scale-[1.02]">
+                                <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                                </svg>
+                                Start Exam
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <!-- Tips Section -->
+            <div class="mt-8 bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-10 h-10 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-lg flex items-center justify-center mr-3">
+                        <svg class="h-5 w-5 text-yellow-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                    </div>
+                    <h3 class="text-lg font-semibold text-gray-900">Exam Tips</h3>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-600 font-bold text-sm">1</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-700 font-medium">Read Carefully</p>
+                            <p class="text-xs text-gray-500">Take your time to understand each question</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-600 font-bold text-sm">2</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-700 font-medium">Review Answers</p>
+                            <p class="text-xs text-gray-500">Double-check before submitting</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-600 font-bold text-sm">3</span>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-700 font-medium">Learn from Results</p>
+                            <p class="text-xs text-gray-500">Review explanations for incorrect answers</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <!-- Empty State -->
+            <div class="bg-white rounded-2xl shadow-xl p-12 text-center">
+                <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <svg class="h-10 w-10 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">No Exams Available</h3>
+                <p class="text-gray-500 mb-6 max-w-md mx-auto">
+                    There are no practice exams available at the moment. Please check back later or contact support for more information.
+                </p>
+                <a asp-page="/Index"
+                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-200">
+                    <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Dashboard
+                </a>
+            </div>
+        }
+
+        <!-- Back Link -->
+        <div class="mt-8">
+            <a asp-page="/Index" class="inline-flex items-center text-gray-600 hover:text-blue-600 transition duration-200">
+                <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Dashboard
+            </a>
         </div>
-    }
+    </div>
 </div>

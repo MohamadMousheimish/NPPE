@@ -1,49 +1,182 @@
-﻿@page
+@page
 @model NPPE.Web.Pages.Student.Exams.TakeModel
 @{
     ViewData["Title"] = "Take Exam";
+    var totalQuestions = Model.Exam?.Questions.Count ?? 0;
 }
 
-<div class="max-w-4xl mx-auto">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">@Model.Exam!.Title</h1>
-        <p class="text-gray-600">@Model.Exam.Description</p>
-    </div>
-
-    <form method="post" class="space-y-8">
-        <input asp-for="ExamId" type="hidden" />
-
-        @for (int qIndex = 0; qIndex < Model.Exam.Questions.Count; qIndex++)
-        {
-            var question = Model.Exam.Questions[qIndex];
-            <div class="border border-gray-200 rounded-lg p-5">
-                <h2 class="text-lg font-medium text-gray-900">
-                    Question @(qIndex + 1): @question.Text
-                </h2>
-                <div class="mt-4 space-y-3">
-                    @for (int oIndex = 0; oIndex < question.Options.Count; oIndex++)
-                    {
-                        var option = question.Options[oIndex];
-                        <div class="flex items-start">
-                            <input type="radio"
-                                   name="SelectedOptionIds[@qIndex]"
-                                   value="@option.Id"
-                                   id="q@(qIndex)_o@(oIndex)"
-                                   required />
-                            <label for="q@(qIndex)_o@(oIndex)" class="ml-2 text-gray-800">
-                                <span class="font-bold mr-1">@option.Label.</span> @option.Text
-                            </label>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4 sm:px-6 lg:px-8 -mx-4 sm:-mx-6 lg:-mx-8 -my-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Exam Header Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-6">
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-5">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                        <h1 class="text-2xl font-bold text-white">@Model.Exam!.Title</h1>
+                        <p class="text-blue-100 mt-1">@Model.Exam.Description</p>
+                    </div>
+                    <div class="mt-4 sm:mt-0 flex items-center space-x-4">
+                        <div class="bg-white/20 rounded-lg px-4 py-2 text-center">
+                            <p class="text-xs text-blue-100">Questions</p>
+                            <p class="text-xl font-bold text-white">@totalQuestions</p>
                         </div>
-                    }
+                    </div>
                 </div>
             </div>
-        }
 
-        <div class="pt-4">
-            <button type="submit"
-                    class="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700">
-                Submit Exam
-            </button>
+            <!-- Progress Indicator -->
+            <div class="px-6 py-3 bg-gray-50 border-b border-gray-100">
+                <div class="flex items-center justify-between text-sm">
+                    <span class="text-gray-600">Answer all questions before submitting</span>
+                    <span class="text-blue-600 font-medium" id="progress-text">0 / @totalQuestions answered</span>
+                </div>
+                <div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+                    <div id="progress-bar" class="bg-gradient-to-r from-blue-500 to-indigo-500 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
         </div>
-    </form>
+
+        <form method="post" class="space-y-6" id="exam-form">
+            <input asp-for="ExamId" type="hidden" />
+
+            <div asp-validation-summary="All" class="text-red-600 text-sm mb-4 bg-red-50 p-3 rounded-lg"></div>
+
+            @for (int qIndex = 0; qIndex < Model.Exam.Questions.Count; qIndex++)
+            {
+                var question = Model.Exam.Questions[qIndex];
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden question-card" data-question="@qIndex">
+                    <!-- Question Header -->
+                    <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                                <span class="text-white font-bold">@(qIndex + 1)</span>
+                            </div>
+                            <span class="text-sm text-gray-500">Question @(qIndex + 1) of @totalQuestions</span>
+                        </div>
+                        <span class="question-status text-sm text-gray-400" id="status-@qIndex">
+                            <svg class="h-5 w-5 inline" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                            </svg>
+                            Not answered
+                        </span>
+                    </div>
+
+                    <!-- Question Body -->
+                    <div class="p-6">
+                        <h2 class="text-lg font-semibold text-gray-900 mb-4">
+                            @question.Text
+                        </h2>
+
+                        <div class="space-y-3">
+                            @for (int oIndex = 0; oIndex < question.Options.Count; oIndex++)
+                            {
+                                var option = question.Options[oIndex];
+                                <label for="q@(qIndex)_o@(oIndex)"
+                                       class="option-label flex items-start p-4 border-2 border-gray-200 rounded-xl cursor-pointer hover:border-blue-300 hover:bg-blue-50 transition-all duration-200">
+                                    <input type="radio"
+                                           name="SelectedOptionIds[@qIndex]"
+                                           value="@option.Id"
+                                           id="q@(qIndex)_o@(oIndex)"
+                                           class="option-input mt-1 h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500"
+                                           data-question="@qIndex"
+                                           required />
+                                    <span class="ml-3 flex-1">
+                                        <span class="inline-flex items-center justify-center w-7 h-7 bg-gray-100 rounded-lg text-sm font-bold text-gray-600 mr-2">
+                                            @option.Label
+                                        </span>
+                                        <span class="text-gray-800">@option.Text</span>
+                                    </span>
+                                </label>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <!-- Submit Section -->
+            <div class="bg-white rounded-2xl shadow-xl p-6">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div class="mb-4 sm:mb-0">
+                        <h3 class="text-lg font-semibold text-gray-900">Ready to submit?</h3>
+                        <p class="text-sm text-gray-500">Make sure you've reviewed all your answers.</p>
+                    </div>
+                    <div class="flex space-x-3">
+                        <a asp-page="Index"
+                           class="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition duration-200">
+                            Cancel
+                        </a>
+                        <button type="submit"
+                                class="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-semibold rounded-xl shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-200 transform hover:scale-[1.02]">
+                            <svg class="h-5 w-5 inline mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                            Submit Exam
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <!-- Back Link -->
+        <div class="mt-6">
+            <a asp-page="Index" class="inline-flex items-center text-gray-600 hover:text-blue-600 transition duration-200">
+                <svg class="h-4 w-4 mr-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Exams
+            </a>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const totalQuestions = @totalQuestions;
+            const optionInputs = document.querySelectorAll('.option-input');
+            const progressBar = document.getElementById('progress-bar');
+            const progressText = document.getElementById('progress-text');
+
+            function updateProgress() {
+                const answered = new Set();
+                optionInputs.forEach(input => {
+                    if (input.checked) {
+                        answered.add(input.dataset.question);
+                    }
+                });
+
+                const count = answered.size;
+                const percentage = (count / totalQuestions) * 100;
+
+                progressBar.style.width = percentage + '%';
+                progressText.textContent = count + ' / ' + totalQuestions + ' answered';
+
+                // Update individual question status
+                for (let i = 0; i < totalQuestions; i++) {
+                    const status = document.getElementById('status-' + i);
+                    if (answered.has(i.toString())) {
+                        status.innerHTML = '<svg class="h-5 w-5 inline text-green-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg> Answered';
+                        status.classList.remove('text-gray-400');
+                        status.classList.add('text-green-600');
+                    }
+                }
+            }
+
+            optionInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    // Update label styling
+                    const questionCard = this.closest('.question-card');
+                    questionCard.querySelectorAll('.option-label').forEach(label => {
+                        label.classList.remove('border-blue-500', 'bg-blue-50');
+                        label.classList.add('border-gray-200');
+                    });
+                    this.closest('.option-label').classList.remove('border-gray-200');
+                    this.closest('.option-label').classList.add('border-blue-500', 'bg-blue-50');
+
+                    updateProgress();
+                });
+            });
+        });
+    </script>
+}
