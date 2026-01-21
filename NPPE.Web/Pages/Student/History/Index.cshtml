@@ -1,0 +1,50 @@
+﻿@page
+@model NPPE.Web.Pages.Student.History.IndexModel
+@{
+    ViewData["Title"] = "Exam History";
+}
+
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Your Exam History</h1>
+        <p class="text-gray-600">Review your past attempts and track your progress.</p>
+    </div>
+
+    @if (Model.Attempts.Any())
+    {
+        <div class="bg-white shadow overflow-hidden sm:rounded-md">
+            <ul class="divide-y divide-gray-200">
+                @foreach (var attempt in Model.Attempts)
+                {
+                    <li>
+                        <a asp-page="Details" asp-route-id="@attempt.Id" class="block hover:bg-gray-50">
+                            <div class="px-4 py-4 sm:px-6">
+                                <div class="flex items-center justify-between">
+                                    <div class="text-sm font-medium text-blue-600">@attempt.ExamTitle</div>
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
+                                        @(attempt.Percentage >= 70 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")">
+                                        @attempt.Percentage%
+                                    </span>
+                                </div>
+                                <div class="mt-2 sm:flex sm:justify-between">
+                                    <div class="sm:hidden text-sm text-gray-500">@attempt.TakenAt.ToString("MMM dd, yyyy")</div>
+                                    <div class="hidden sm:block text-sm text-gray-500">
+                                        Score: @attempt.Score / @attempt.TotalQuestions • @attempt.TakenAt.ToString("MMM dd, yyyy")
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+    else
+    {
+        <div class="text-center py-12">
+            <p class="text-gray-600">You haven't taken any exams yet.</p>
+            <a asp-page="/Student/Exams/Index"
+               class="mt-4 inline-block text-blue-600 hover:underline">Take your first exam</a>
+        </div>
+    }
+</div>

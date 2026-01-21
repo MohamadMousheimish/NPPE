@@ -1,0 +1,58 @@
+﻿@page
+@model NPPE.Web.Pages.Admin.Exams.Questions.CreateModel
+@{
+    ViewData["Title"] = "Add Question";
+}
+
+<div class="max-w-4xl mx-auto">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Add Question to: @Model.ExamTitle</h1>
+
+    <form method="post" class="space-y-6">
+        <input asp-for="Input.ExamId" type="hidden" />
+
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Question</label>
+            <textarea asp-for="Input.Text" rows="3"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+            <span asp-validation-for="Input.Text" class="text-red-600 text-sm"></span>
+        </div>
+
+        <!-- Feedback Messages -->
+        <div class="grid grid-cols-1 gap-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Feedback if Correct</label>
+                <textarea asp-for="Input.ExplanationForCorrect" rows="2"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                <span asp-validation-for="Input.ExplanationForCorrect" class="text-red-600 text-sm"></span>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Feedback if Incorrect</label>
+                <textarea asp-for="Input.ExplanationForIncorrect" rows="2"
+                          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"></textarea>
+                <span asp-validation-for="Input.ExplanationForIncorrect" class="text-red-600 text-sm"></span>
+            </div>
+        </div>
+
+        <!-- Dynamic Options -->
+        <div class="mb-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-3">Answer Options</h3>
+            <p class="text-sm text-gray-600 mb-4">Add possible answers. Exactly one must be marked as correct.</p>
+            <partial name="Shared/_OptionsEditor" />
+        </div>
+
+        <div class="pt-4 flex space-x-3">
+            <button type="submit"
+                    class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
+                Add Question
+            </button>
+            <a asp-page="/Admin/Exams/Details" asp-route-id="@Model.Input.ExamId"
+               class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">
+                Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

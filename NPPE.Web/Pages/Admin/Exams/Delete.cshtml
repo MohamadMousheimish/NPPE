@@ -1,0 +1,25 @@
+﻿@page
+@model NPPE.Web.Pages.Admin.Exams.DeleteModel
+@{
+    ViewData["Title"] = "Delete Exam";
+}
+
+<div class="max-w-2xl mx-auto">
+    <h1 class="text-2xl font-bold text-gray-900 mb-4">Delete Exam</h1>
+    <p class="text-gray-700 mb-6">
+        Are you sure you want to delete the exam <strong>@Model.ExamTitle</strong>?
+        This will hide it from students (soft delete).
+    </p>
+
+    <form method="post" class="inline">
+        <input asp-for="Id" type="hidden" />
+        <button type="submit"
+                class="mr-3 px-4 py-2 bg-red-600 text-white text-sm font-medium rounded-md hover:bg-red-700">
+            Yes, Delete
+        </button>
+        <a asp-page="Index"
+           class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">
+            Cancel
+        </a>
+    </form>
+</div>

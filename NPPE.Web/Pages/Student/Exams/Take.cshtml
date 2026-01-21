@@ -1,0 +1,49 @@
+﻿@page
+@model NPPE.Web.Pages.Student.Exams.TakeModel
+@{
+    ViewData["Title"] = "Take Exam";
+}
+
+<div class="max-w-4xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">@Model.Exam!.Title</h1>
+        <p class="text-gray-600">@Model.Exam.Description</p>
+    </div>
+
+    <form method="post" class="space-y-8">
+        <input asp-for="ExamId" type="hidden" />
+
+        @for (int qIndex = 0; qIndex < Model.Exam.Questions.Count; qIndex++)
+        {
+            var question = Model.Exam.Questions[qIndex];
+            <div class="border border-gray-200 rounded-lg p-5">
+                <h2 class="text-lg font-medium text-gray-900">
+                    Question @(qIndex + 1): @question.Text
+                </h2>
+                <div class="mt-4 space-y-3">
+                    @for (int oIndex = 0; oIndex < question.Options.Count; oIndex++)
+                    {
+                        var option = question.Options[oIndex];
+                        <div class="flex items-start">
+                            <input type="radio"
+                                   name="SelectedOptionIds[@qIndex]"
+                                   value="@option.Id"
+                                   id="q@(qIndex)_o@(oIndex)"
+                                   required />
+                            <label for="q@(qIndex)_o@(oIndex)" class="ml-2 text-gray-800">
+                                <span class="font-bold mr-1">@option.Label.</span> @option.Text
+                            </label>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        <div class="pt-4">
+            <button type="submit"
+                    class="px-6 py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700">
+                Submit Exam
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,28 @@
+﻿@page
+@model NPPE.Web.Pages.Account.ProfileModel
+@{
+    ViewData["Title"] = "Profile";
+}
+
+<div class="max-w-2xl mx-auto p-6">
+    <h1 class="text-2xl font-bold text-gray-900 mb-6">Your Profile</h1>
+    <div class="bg-white shadow rounded-lg p-6">
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Full Name</label>
+                <p class="mt-1">@Model.FullName</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Email</label>
+                <p class="mt-1">@Model.Email</p>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Role</label>
+                <p class="mt-1">@Model.Role</p>
+            </div>
+        </div>
+        <div class="mt-6">
+            <a asp-page="/Index" class="text-blue-600 hover:underline">← Back to Dashboard</a>
+        </div>
+    </div>
+</div>

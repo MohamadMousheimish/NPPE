@@ -1,0 +1,60 @@
+﻿<div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    @for (int i = 0; i < 4; i++)
+    {
+        var label = (char)('A' + i);
+        var option = i < Model.Input.Options.Count ? Model.Input.Options[i] : new NPPE.Web.Pages.Admin.Exams.Questions.CreateModel.OptionInput();
+
+        <div class="border p-4 rounded-md">
+            <div class="flex items-center mb-2">
+                <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-blue-100 text-blue-800 font-bold mr-2">
+                    @label
+                </span>
+                <input type="checkbox"
+                       name="Input.Options[@i].IsCorrect"
+                       value="true"
+                @(option.IsCorrect ? "checked" : "")
+                       onchange="handleCorrectChange(this)" />
+                <input type="hidden" name="Input.Options[@i].IsCorrect" value="false" />
+                <label class="ml-2 text-sm text-gray-700">Correct Answer</label>
+            </div>
+            <input type="hidden" name="Input.Options[@i].Id" value="@(option.Id?.ToString() ?? "")" />
+            <textarea name="Input.Options[@i].Text"
+                      placeholder="Option @label"
+                      rows="2"
+                      class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm">@option.Text</textarea>
+
+            <!-- Manual validation message -->
+            @{
+                var errorMessage = ViewData.ModelState.TryGetValue($"Input.Options[{i}].Text", out var entry) && entry.Errors.Count > 0
+                ? entry.Errors[0].ErrorMessage
+                : null;
+            }
+            @if (!string.IsNullOrEmpty(errorMessage))
+            {
+                <span class="text-red-600 text-sm">@errorMessage</span>
+            }
+        </div>
+    }
+</div>
+
+<script>
+    function handleCorrectChange(checkbox) {
+        if (checkbox.checked) {
+            document.querySelectorAll('input[name$=".IsCorrect"][value="true"]').forEach(cb => {
+                if (cb !== checkbox) cb.checked = false;
+            });
+        } else {
+            const checkedCount = document.querySelectorAll('input[name$=".IsCorrect"][value="true"]:checked').length;
+            if (checkedCount === 0) {
+                checkbox.checked = true;
+            }
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const checkboxes = document.querySelectorAll('input[name$=".IsCorrect"][value="true"]');
+        if (checkboxes.length > 0 && !Array.from(checkboxes).some(cb => cb.checked)) {
+            checkboxes[0].checked = true;
+        }
+    });
+</script>

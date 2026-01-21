@@ -1,0 +1,76 @@
+﻿@page
+@model NPPE.Web.Pages.Account.LoginModel
+@{
+    ViewData["Title"] = "Sign in to NPPE Prep";
+    Layout = "_Layout";
+}
+
+<div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+        <div>
+            <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Sign in to your account
+            </h1>
+            <p class="mt-2 text-center text-sm text-gray-600">
+                Prepare for the National Professional Practice Exam
+            </p>
+        </div>
+
+        <form class="mt-8 space-y-6" method="post">
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <div asp-validation-summary="All" class="text-red-600 text-sm mb-4"></div>
+
+            <div class="rounded-md shadow-sm -space-y-px">
+                <div>
+                    <label for="Email" class="sr-only">Email address</label>
+                    <input asp-for="Input.Email"
+                           class="appearance-none rounded-t-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
+                           placeholder="Email address" />
+                    <span asp-validation-for="Input.Email" class="text-red-600 text-xs"></span>
+                </div>
+                <div>
+                    <label for="Password" class="sr-only">Password</label>
+                    <input asp-for="Input.Password" type="password"
+                           class="appearance-none rounded-b-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm mt-1"
+                           placeholder="Password" />
+                    <span asp-validation-for="Input.Password" class="text-red-600 text-xs"></span>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input asp-for="Input.RememberMe" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" />
+                    <label asp-for="Input.RememberMe" class="ml-2 block text-sm text-gray-700">
+                        Remember me
+                    </label>
+                </div>
+                <div class="text-sm">
+                    <a asp-page="/Account/ForgotPassword" class="font-medium text-blue-600 hover:text-blue-500">
+                        Forgot your password?
+                    </a>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                        class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Sign in
+                </button>
+            </div>
+        </form>
+
+        <div class="text-center">
+            <p class="text-sm text-gray-600">
+                Don't have an account?
+                <a asp-page="/Account/Register" class="font-medium text-blue-600 hover:text-blue-500">
+                    Create one now
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

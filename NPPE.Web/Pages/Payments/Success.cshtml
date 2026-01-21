@@ -1,0 +1,27 @@
+﻿@page
+@model NPPE.Web.Pages.Payments.SuccessModel
+@{
+    ViewData["Title"] = "Payment Successful";
+}
+
+<div class="max-w-2xl mx-auto p-6 text-center">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 mx-auto text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <h1 class="mt-4 text-2xl font-bold text-gray-900">Payment Successful!</h1>
+    <p class="mt-2 text-gray-600">You now have full access to all exams.</p>
+    <div class="mt-6">
+        @if (!string.IsNullOrEmpty(Model.ReturnUrl))
+        {
+            <a href="@Model.ReturnUrl" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Continue to Exam
+            </a>
+        }
+        else
+        {
+            <a asp-page="/Student/Exams/Index" class="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Go to Exams
+            </a>
+        }
+    </div>
+</div>

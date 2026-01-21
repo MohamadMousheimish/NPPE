@@ -1,0 +1,66 @@
+﻿@page
+@model NPPE.Web.Pages.Admin.Exams.IndexModel
+@{
+    ViewData["Title"] = "Manage Exams";
+}
+
+<div class="mb-6">
+    <h1 class="text-2xl font-bold text-gray-900">Exam Library</h1>
+    <p class="text-gray-600">Create and manage NPPE practice exams.</p>
+</div>
+
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-lg font-medium text-gray-800">All Exams</h2>
+    <a asp-page="/Admin/Exams/Create"
+       class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
+        + New Exam
+    </a>
+</div>
+
+@if (Model.Exams.Any())
+{
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+            @foreach (var exam in Model.Exams)
+            {
+                <li>
+                    <div class="px-4 py-4 sm:px-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <p class="text-sm font-medium text-blue-600 truncate">
+                                    @exam.Title
+                                </p>
+                                @if (!exam.IsActive)
+                                {
+                                    <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                        Inactive
+                                    </span>
+                                }
+                            </div>
+                            <div class="flex space-x-2">
+                                <a asp-page="Details" asp-route-id="@exam.Id"
+                                   class="text-sm text-gray-500 hover:text-gray-900">View</a>
+                                <a asp-page="Edit" asp-route-id="@exam.Id"
+                                   class="text-sm text-blue-600 hover:text-blue-900">Edit</a>
+                                <a asp-page="Delete" asp-route-id="@exam.Id"
+                                   class="text-sm text-red-600 hover:text-red-900">Delete</a>
+                            </div>
+                        </div>
+                        <div class="mt-2 sm:flex sm:justify-between">
+                            <div class="sm:hidden text-sm text-gray-500">@exam.CreatedAt.ToShortDateString()</div>
+                            <div class="hidden sm:block text-sm text-gray-500">@exam.Description</div>
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
+}
+else
+{
+    <div class="bg-white shadow rounded-lg p-6 text-center">
+        <p class="text-gray-500">No exams created yet.</p>
+        <a asp-page="/Admin/Exams/Create"
+           class="mt-4 inline-block text-blue-600 hover:underline">Create your first exam</a>
+    </div>
+}

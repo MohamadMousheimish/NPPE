@@ -1,0 +1,76 @@
+﻿@page
+@model NPPE.Web.Pages.Admin.Exams.DetailsModel
+@{
+    ViewData["Title"] = "Exam Details";
+}
+
+@if (Model.Exam != null)
+{
+    <div class="max-w-3xl mx-auto">
+        <h1 class="text-2xl font-bold text-gray-900 mb-4">@Model.Exam.Title</h1>
+        <p class="text-gray-700 mb-6">@Model.Exam.Description</p>
+
+        <div class="mb-6">
+            <span class="inline-block px-2 py-1 text-xs font-semibold rounded-full
+                @(Model.Exam.IsActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")">
+                @(Model.Exam.IsActive ? "Active" : "Inactive")
+            </span>
+            <span class="ml-2 text-sm text-gray-500">Created: @Model.Exam.CreatedAt.ToString("MMM dd, yyyy")</span>
+        </div>
+
+        <div class="flex space-x-3">
+            <a asp-page="/Admin/Exams/Questions/Create" asp-route-examId="@Model.Exam.Id"
+               class="px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-md hover:bg-green-700">
+                + Add Question
+            </a>
+            <a asp-page="Edit" asp-route-id="@Model.Exam.Id"
+               class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
+                Edit Exam
+            </a>
+            <a asp-page="Index"
+               class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">
+                Back to List
+            </a>
+        </div>
+    </div>
+    @if (Model.Questions.Any())
+    {
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Questions (@Model.Questions.Count)</h2>
+            <div class="space-y-4">
+                @foreach (var q in Model.Questions)
+                {
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex justify-between">
+                            <p class="text-gray-800">@q.Text</p>
+                            <div class="flex space-x-2">
+                                <a asp-page="/Admin/Exams/Questions/Edit" asp-route-id="@q.Id"
+                                   class="text-sm text-blue-600 hover:text-blue-800">Edit</a>
+                                <a asp-page="/Admin/Exams/Questions/Delete" asp-route-id="@q.Id" asp-route-examId="@Model.Exam?.Id"
+                                   class="text-sm text-red-600 hover:text-red-800">Delete</a>
+                            </div>
+                        </div>
+                        <div class="mt-2 text-sm text-gray-600">
+                            Options: @string.Join(", ", q.Options.Select(o => $"{o.Label}{(o.IsCorrect ? " ✓" : "")}"))
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="mt-8 text-center py-6 bg-gray-50 rounded-lg">
+            <p class="text-gray-600">No questions added yet.</p>
+            <a asp-page="/Admin/Exams/Questions/Create" asp-route-examId="@Model.Exam?.Id"
+               class="mt-2 inline-block text-blue-600 hover:underline">+ Add your first question</a>
+        </div>
+    }
+}
+else
+{
+    <div class="max-w-3xl mx-auto text-center py-12">
+        <p class="text-gray-600">Exam not found.</p>
+        <a asp-page="Index" class="mt-4 text-blue-600 hover:underline">← Back to Exams</a>
+    </div>
+}
