@@ -35,9 +35,10 @@ public class CreateCheckoutSessionCommandHandler : IRequestHandler<CreateCheckou
         var payment = new Payment
         {
             UserId = request.UserId,
-            Amount = 29m, // CAD $29
+            Amount = PricingPlans.OneTimePrice,
             Currency = Currencies.Canadian,
             Status = PaymentStatus.Pending,
+            PaymentType = PaymentType.OneTime,
         };
         await _paymentRepository.AddAsync(payment);
 
@@ -53,11 +54,11 @@ public class CreateCheckoutSessionCommandHandler : IRequestHandler<CreateCheckou
                     PriceData = new SessionLineItemPriceDataOptions
                     {
                         Currency = Currencies.Canadian,
-                        UnitAmount = 2900, // $29.00 → in cents
+                        UnitAmount = PricingPlans.OneTimePriceCents,
                         ProductData = new SessionLineItemPriceDataProductDataOptions
                         {
-                            Name = "NPPE Exam Prep Full Access",
-                            Description = "One-time payment for unlimited exam attempts"
+                            Name = PricingPlans.OneTimeProductName,
+                            Description = PricingPlans.OneTimeProductDescription
                         }
                     },
                     Quantity = 1

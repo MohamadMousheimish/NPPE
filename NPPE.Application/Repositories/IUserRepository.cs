@@ -7,4 +7,6 @@ public interface IUserRepository
     Task<AppUser?> GetUserByEmailAsync(string email);
     Task CreateAsync(AppUser user, string password);
     Task UpdateAsync(AppUser user);
+    Task<AppUser?> GetByStripeCustomerIdAsync(string stripeCustomerId);
+    Task<AppUser?> GetByStripeSubscriptionIdAsync(string stripeSubscriptionId);
 }

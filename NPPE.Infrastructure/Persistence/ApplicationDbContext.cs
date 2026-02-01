@@ -26,6 +26,8 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             entity.Property(u => u.LastName).HasMaxLength(100);
             entity.Property(u => u.IsPremium);
             entity.Property(u => u.StripeCustomerId)?.HasMaxLength(255);
+            entity.Property(u => u.StripeSubscriptionId).HasMaxLength(255);
+            entity.Property(u => u.SubscriptionEndDate);
         });
 
         // Configure Exam
@@ -62,6 +64,9 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             entity.Property(p => p.StripeSessionId).IsRequired().HasMaxLength(255);
             entity.Property(p => p.Currency).IsRequired().HasMaxLength(3);
             entity.Property(p => p.Status).IsRequired().HasMaxLength(50);
+            entity.Property(p => p.PaymentType).IsRequired();
+            entity.Property(p => p.StripeSubscriptionId).HasMaxLength(255);
+            entity.Property(p => p.SubscriptionStatus);
         });
     }
 }

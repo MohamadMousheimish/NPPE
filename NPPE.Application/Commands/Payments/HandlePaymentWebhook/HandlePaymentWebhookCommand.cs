@@ -1,4 +1,4 @@
-﻿using MediatR;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using NPPE.Application.Repositories;
@@ -20,17 +20,22 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     private readonly IPaymentRepository _paymentRepository;
     private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
+    private readonly IUserRepository _userRepository;
 
-    public HandlePaymentWebhookCommandHandler(IPaymentRepository paymentRepository, UserManager<AppUser> userManager, IConfiguration configuration)
+    public HandlePaymentWebhookCommandHandler(
+        IPaymentRepository paymentRepository,
+        UserManager<AppUser> userManager,
+        IConfiguration configuration,
+        IUserRepository userRepository)
     {
         _paymentRepository = paymentRepository;
         _userManager = userManager;
         _configuration = configuration;
+        _userRepository = userRepository;
     }
 
     public async Task<Unit> Handle(HandlePaymentWebhookCommand request, CancellationToken ct)
     {
-        // Validate webhook signature
         var json = request.JsonBody;
         var stripeSignatureHeader = request.StripeSignatureHeader;
         var secret = _configuration["Stripe:WebhookSecret"];
@@ -39,39 +44,138 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         {
             var stripeEvent = EventUtility.ConstructEvent(json, stripeSignatureHeader, secret);
 
-            if (stripeEvent.Type == "checkout.session.completed")
+            switch (stripeEvent.Type)
             {
-                var session = stripeEvent.Data.Object as Session;
-                if (session?.PaymentStatus == "paid")
-                {
-                    // Find payment by session ID
-                    var payment = await _paymentRepository.GetBySessionIdAsync(session.Id);
-                    if (payment != null && payment.Status == PaymentStatus.Pending)
-                    {
-                        // Mark payment as succeeded
-                        payment.Status = PaymentStatus.Succeeded;
-                        payment.PaidAt = DateTime.UtcNow;
-                        await _paymentRepository.UpdateAsync(payment);
-
-                        // Mark user as premium
-                        var userId = session.Metadata?["user_id"] ?? payment.UserId;
-                        var user = await _userManager.FindByIdAsync(userId);
-                        if (user != null)
-                        {
-                            user.IsPremium = true;
-                            await _userManager.UpdateAsync(user);
-                        }
-                    }
-                }
+                case "checkout.session.completed":
+                    await HandleCheckoutSessionCompleted(stripeEvent);
+                    break;
+                case "customer.subscription.updated":
+                    await HandleSubscriptionUpdated(stripeEvent);
+                    break;
+                case "customer.subscription.deleted":
+                    await HandleSubscriptionDeleted(stripeEvent);
+                    break;
+                case "invoice.payment_failed":
+                    await HandleInvoicePaymentFailed(stripeEvent);
+                    break;
             }
         }
         catch (Exception ex)
         {
-            // Log error (in production, use ILogger)
             Console.WriteLine($"Webhook error: {ex.Message}");
             throw;
         }
 
         return Unit.Value;
+    }
+
+    private async Task HandleCheckoutSessionCompleted(Event stripeEvent)
+    {
+        var session = stripeEvent.Data.Object as Session;
+        if (session == null) return;
+
+        // For subscription mode, PaymentStatus may be "unpaid" initially
+        // but the subscription is still created
+        var isPaid = session.PaymentStatus == "paid";
+        var isSubscription = session.Mode == "subscription";
+
+        if (!isPaid && !isSubscription) return;
+
+        var payment = await _paymentRepository.GetBySessionIdAsync(session.Id);
+        if (payment == null || payment.Status != PaymentStatus.Pending) return;
+
+        // Mark payment as succeeded
+        payment.Status = PaymentStatus.Succeeded;
+        payment.PaidAt = DateTime.UtcNow;
+
+        // Get user
+        var userId = session.Metadata?["user_id"] ?? payment.UserId;
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user == null) return;
+
+        if (isSubscription && session.SubscriptionId != null)
+        {
+            // Subscription payment: store subscription ID
+            payment.StripeSubscriptionId = session.SubscriptionId;
+            payment.SubscriptionStatus = SubscriptionStatus.Active;
+
+            user.StripeSubscriptionId = session.SubscriptionId;
+            user.StripeCustomerId ??= session.CustomerId;
+        }
+
+        user.IsPremium = true;
+        await _paymentRepository.UpdateAsync(payment);
+        await _userManager.UpdateAsync(user);
+    }
+
+    private async Task HandleSubscriptionUpdated(Event stripeEvent)
+    {
+        var subscription = stripeEvent.Data.Object as Subscription;
+        if (subscription == null) return;
+
+        var user = await _userRepository.GetByStripeCustomerIdAsync(subscription.CustomerId);
+        if (user == null) return;
+
+        if (subscription.CancelAtPeriodEnd)
+        {
+            user.SubscriptionEndDate = subscription.Items?.Data?.FirstOrDefault()?.CurrentPeriodEnd;
+            await _userManager.UpdateAsync(user);
+        }
+
+        // Update payment record
+        var payment = await _paymentRepository.GetBySubscriptionIdAsync(subscription.Id);
+        if (payment != null)
+        {
+            payment.SubscriptionStatus = subscription.Status switch
+            {
+                "active" => SubscriptionStatus.Active,
+                "past_due" => SubscriptionStatus.PastDue,
+                "canceled" => SubscriptionStatus.Canceled,
+                _ => payment.SubscriptionStatus
+            };
+            await _paymentRepository.UpdateAsync(payment);
+        }
+    }
+
+    private async Task HandleSubscriptionDeleted(Event stripeEvent)
+    {
+        var subscription = stripeEvent.Data.Object as Subscription;
+        if (subscription == null) return;
+
+        var user = await _userRepository.GetByStripeSubscriptionIdAsync(subscription.Id);
+        if (user == null) return;
+
+        // Only revoke premium if user has no successful one-time payment
+        var hasOneTimePayment = await _paymentRepository.HasSucceededOneTimePaymentAsync(user.Id);
+        if (!hasOneTimePayment)
+        {
+            user.IsPremium = false;
+        }
+
+        user.StripeSubscriptionId = null;
+        user.SubscriptionEndDate = null;
+        await _userManager.UpdateAsync(user);
+
+        // Update payment record
+        var payment = await _paymentRepository.GetBySubscriptionIdAsync(subscription.Id);
+        if (payment != null)
+        {
+            payment.SubscriptionStatus = SubscriptionStatus.Expired;
+            await _paymentRepository.UpdateAsync(payment);
+        }
+    }
+
+    private async Task HandleInvoicePaymentFailed(Event stripeEvent)
+    {
+        var invoice = stripeEvent.Data.Object as Invoice;
+        var subscriptionId = invoice?.Parent?.SubscriptionDetails?.SubscriptionId;
+        if (subscriptionId == null) return;
+
+        var payment = await _paymentRepository.GetBySubscriptionIdAsync(subscriptionId);
+        if (payment != null)
+        {
+            payment.SubscriptionStatus = SubscriptionStatus.PastDue;
+            await _paymentRepository.UpdateAsync(payment);
+        }
     }
 }

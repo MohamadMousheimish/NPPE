@@ -25,4 +25,20 @@ public class PaymentRepository : GenericRepository<Payment>, IPaymentRepository
             .OrderByDescending(p => p.CreatedAt)
             .ToListAsync();
     }
+
+    public async Task<Payment?> GetBySubscriptionIdAsync(string subscriptionId)
+    {
+        return await _context.Payments
+            .Where(p => p.StripeSubscriptionId == subscriptionId)
+            .OrderByDescending(p => p.CreatedAt)
+            .FirstOrDefaultAsync();
+    }
+
+    public async Task<bool> HasSucceededOneTimePaymentAsync(string userId)
+    {
+        return await _context.Payments
+            .AnyAsync(p => p.UserId == userId
+                && p.PaymentType == Domain.Enums.PaymentType.OneTime
+                && p.Status == Domain.Enums.PaymentStatus.Succeeded);
+    }
 }

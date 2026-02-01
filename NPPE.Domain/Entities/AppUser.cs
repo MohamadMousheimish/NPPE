@@ -9,4 +9,6 @@ public class AppUser : IdentityUser
 
     public bool IsPremium { get; set; } = false;
     public string? StripeCustomerId { get; set; }
+    public string? StripeSubscriptionId { get; set; }
+    public DateTime? SubscriptionEndDate { get; set; }
 }

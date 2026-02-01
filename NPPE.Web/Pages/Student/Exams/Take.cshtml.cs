@@ -34,7 +34,7 @@ namespace NPPE.Web.Pages.Student.Exams
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null || !user.IsPremium)
             {
-                return RedirectToPage("/Payments/Checkout", new { returnUrl = $"/Student/Exams/Take?id={id}" });
+                return RedirectToPage("/Payments/Pricing", new { returnUrl = $"/Student/Exams/Take?id={id}" });
             }
 
             var exam = await _mediator.Send(new GetExamWithQuestionsQuery(id));

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
 
@@ -38,5 +39,17 @@ public class UserRepository : IUserRepository
         {
             throw new InvalidOperationException(string.Join(", ", result.Errors.Select(e => e.Description)));
         }
+    }
+
+    public async Task<AppUser?> GetByStripeCustomerIdAsync(string stripeCustomerId)
+    {
+        return await _userManager.Users
+            .FirstOrDefaultAsync(u => u.StripeCustomerId == stripeCustomerId);
+    }
+
+    public async Task<AppUser?> GetByStripeSubscriptionIdAsync(string stripeSubscriptionId)
+    {
+        return await _userManager.Users
+            .FirstOrDefaultAsync(u => u.StripeSubscriptionId == stripeSubscriptionId);
     }
 }

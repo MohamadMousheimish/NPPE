@@ -11,4 +11,8 @@ public class Payment : BaseEntity
     public string Currency { get; set; } = Currencies.Canadian;
     public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
     public DateTime PaidAt { get; set; }
+
+    public PaymentType PaymentType { get; set; } = PaymentType.OneTime;
+    public string? StripeSubscriptionId { get; set; }
+    public SubscriptionStatus? SubscriptionStatus { get; set; }
 }
