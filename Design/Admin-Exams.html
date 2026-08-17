@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Manage exams · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="exams" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">Admin · Library</span><h1>Manage <em>exams</em></h1><p class="sub">Create, edit, and organise the modules students practise with.</p></div>
+        <a class="btn btn--primary" href="Admin-ExamCreate.html">New exam <span class="arrow">&rarr;</span></a>
+    </div>
+
+    <div class="adm-list" data-reveal>
+        <div class="adm-row">
+            <span class="q-num">01</span>
+            <div><div class="code">MOD 01</div><h3>Professional Practice &amp; Ethics</h3></div>
+            <span class="grow"></span>
+            <span class="anno">20 items</span>
+            <span class="state-tag on">Active</span>
+            <div class="acts"><a class="pill" href="Admin-ExamDetails.html">Open</a><a class="pill" href="Admin-ExamEdit.html">Edit</a><a class="pill danger" href="Admin-ExamDelete.html">Delete</a></div>
+        </div>
+        <div class="adm-row">
+            <span class="q-num">02</span>
+            <div><div class="code">MOD 02</div><h3>Law for Professional Practice</h3></div>
+            <span class="grow"></span>
+            <span class="anno">20 items</span>
+            <span class="state-tag on">Active</span>
+            <div class="acts"><a class="pill" href="Admin-ExamDetails.html">Open</a><a class="pill" href="Admin-ExamEdit.html">Edit</a><a class="pill danger" href="Admin-ExamDelete.html">Delete</a></div>
+        </div>
+        <div class="adm-row">
+            <span class="q-num">03</span>
+            <div><div class="code">MOD 03</div><h3>Regulation &amp; Discipline</h3></div>
+            <span class="grow"></span>
+            <span class="anno">20 items</span>
+            <span class="state-tag on">Active</span>
+            <div class="acts"><a class="pill" href="Admin-ExamDetails.html">Open</a><a class="pill" href="Admin-ExamEdit.html">Edit</a><a class="pill danger" href="Admin-ExamDelete.html">Delete</a></div>
+        </div>
+        <div class="adm-row">
+            <span class="q-num">04</span>
+            <div><div class="code">MOD 04</div><h3>Environmental Law &amp; Sustainability</h3></div>
+            <span class="grow"></span>
+            <span class="anno">14 items</span>
+            <span class="state-tag off">Draft</span>
+            <div class="acts"><a class="pill" href="Admin-ExamDetails.html">Open</a><a class="pill" href="Admin-ExamEdit.html">Edit</a><a class="pill danger" href="Admin-ExamDelete.html">Delete</a></div>
+        </div>
+    </div>
+
+    <a class="backlink" href="Dashboard.html">&larr; Back to dashboard</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Dashboard · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+
+<div data-appbar data-active="dashboard" data-name="Ada Lovelace" data-email="ada@firm.ca"></div>
+
+<main class="page">
+
+    <!-- welcome -->
+    <section class="welcome" data-reveal>
+        <div>
+            <span class="eyebrow eyebrow--signal">Dashboard · Tue 17 Jun 2026</span>
+            <h1>Welcome back, <em>Ada</em>.</h1>
+            <p class="sub">You're 12 of 20 modules in — three left to hit the halfway mark on your best streak.</p>
+        </div>
+        <a class="btn btn--primary btn--lg" href="Exams.html">Start new exam <span class="arrow">&rarr;</span></a>
+    </section>
+
+    <!-- readouts -->
+    <section class="readouts" data-animate>
+        <div class="readout" data-reveal>
+            <div class="k">Modules done
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+            </div>
+            <div class="val"><span data-count="12">0</span><small>/20</small></div>
+            <div class="foot">3 completed this week</div>
+        </div>
+
+        <div class="readout" data-reveal data-reveal-delay="70">
+            <svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="78"/></svg>
+            <div class="k">Avg score</div>
+            <div class="val"><span data-count="78">0</span>%</div>
+            <div class="foot">+4 pts vs last month</div>
+        </div>
+
+        <div class="readout" data-reveal data-reveal-delay="140">
+            <svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="75"/></svg>
+            <div class="k">Pass rate</div>
+            <div class="val"><span data-count="75">0</span>%</div>
+            <div class="foot">9 of 12 passed</div>
+        </div>
+
+        <div class="readout" data-reveal data-reveal-delay="210">
+            <div class="k">Items answered
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3 8-8"/><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h9"/></svg>
+            </div>
+            <div class="val"><span data-count="240">0</span></div>
+            <div class="foot">across 12 attempts</div>
+        </div>
+    </section>
+
+    <!-- log + rail -->
+    <div class="grid-2">
+        <div>
+            <div class="sec-head" data-reveal>
+                <div><span class="eyebrow eyebrow--signal">Register</span><h2>Recent attempts</h2></div>
+                <a class="link" href="History.html">View all &rarr;</a>
+            </div>
+            <div class="log" data-reveal>
+                <a class="log__row" href="History-Details.html">
+                    <span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span>
+                    <span class="log__title"><b>Professional Ethics</b><span>MOD 12 · 20 ITEMS</span></span>
+                    <span class="log__date">17 JUN</span>
+                    <span class="log__score">17/20<span>85%</span></span>
+                </a>
+                <a class="log__row" href="History-Details.html">
+                    <span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span>
+                    <span class="log__title"><b>Law for Professional Practice</b><span>MOD 11 · 20 ITEMS</span></span>
+                    <span class="log__date">15 JUN</span>
+                    <span class="log__score">15/20<span>75%</span></span>
+                </a>
+                <a class="log__row" href="History-Details.html">
+                    <span class="log__tick fail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+                    <span class="log__title"><b>Regulation &amp; Discipline</b><span>MOD 10 · 20 ITEMS</span></span>
+                    <span class="log__date">12 JUN</span>
+                    <span class="log__score">11/20<span>55%</span></span>
+                </a>
+                <a class="log__row" href="History-Details.html">
+                    <span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span>
+                    <span class="log__title"><b>Professional Liability</b><span>MOD 09 · 20 ITEMS</span></span>
+                    <span class="log__date">09 JUN</span>
+                    <span class="log__score">18/20<span>90%</span></span>
+                </a>
+                <a class="log__row" href="History-Details.html">
+                    <span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span>
+                    <span class="log__title"><b>Ethical Codes &amp; Conduct</b><span>MOD 08 · 20 ITEMS</span></span>
+                    <span class="log__date">06 JUN</span>
+                    <span class="log__score">16/20<span>80%</span></span>
+                </a>
+            </div>
+        </div>
+
+        <aside class="rail">
+            <div class="resume frame" data-animate data-reveal>
+                <span class="eyebrow">Continue where you left off</span>
+                <h3>Module 13 · Environmental Law</h3>
+                <p>You paused 8 questions in. Pick it back up while it's fresh.</p>
+                <div class="bar"><i data-bar="40"></i></div>
+                <div class="barlbl">8 / 20 QUESTIONS</div>
+                <a class="btn btn--primary btn--block" href="Take.html">Resume module <span class="arrow">&rarr;</span></a>
+            </div>
+
+            <a class="action" href="Exams.html" data-reveal data-reveal-delay="80">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>
+                <span class="tx"><b>Take an exam</b><span>20 modules available</span></span>
+                <span class="arrow">&rarr;</span>
+            </a>
+            <a class="action" href="History.html" data-reveal data-reveal-delay="140">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="8"/></svg></span>
+                <span class="tx"><b>Review history</b><span>12 past attempts</span></span>
+                <span class="arrow">&rarr;</span>
+            </a>
+            <a class="action" href="Billing.html" data-reveal data-reveal-delay="200">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span>
+                <span class="tx"><b>Manage billing</b><span>Full access · active</span></span>
+                <span class="arrow">&rarr;</span>
+            </a>
+        </aside>
+    </div>
+
+    <!-- module map -->
+    <div class="sec-head" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">Coverage</span><h2>Module map</h2></div>
+        <a class="link" href="Exams.html">Browse modules &rarr;</a>
+    </div>
+    <div class="spine">
+        <div class="spine__meta">
+            <div><span class="eyebrow">Completed</span><div class="n"><span data-count="12">0</span><small>/20 modules</small></div></div>
+            <div style="text-align:right"><span class="eyebrow">Remaining</span><div class="n"><span data-count="8">0</span><small>modules</small></div></div>
+        </div>
+        <div class="spine__track">
+            <span class="spine__seg done"></span><span class="spine__seg done"></span><span class="spine__seg done"></span>
+            <span class="spine__seg done"></span><span class="spine__seg done"></span><span class="spine__seg done"></span>
+            <span class="spine__seg done"></span><span class="spine__seg done"></span><span class="spine__seg done"></span>
+            <span class="spine__seg done"></span><span class="spine__seg done"></span><span class="spine__seg done"></span>
+            <span class="spine__seg"></span><span class="spine__seg"></span><span class="spine__seg"></span>
+            <span class="spine__seg"></span><span class="spine__seg"></span><span class="spine__seg"></span>
+            <span class="spine__seg"></span><span class="spine__seg"></span>
+        </div>
+    </div>
+
+</main>
+
+<div data-appfoot data-year="2026"></div>
+
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

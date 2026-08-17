@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Payment history · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-active="billing"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">Transactions</span><h1>Payment <em>history</em></h1><p class="sub">Every charge on your account.</p></div>
+    </div>
+
+    <div class="tbl-wrap" data-reveal>
+        <table class="tbl">
+            <thead><tr><th>Date</th><th>Type</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+                <tr><td class="mono">17 Jun 2026</td><td><span class="tag tag--signal">Subscription</span></td><td class="mono">CA$9.99</td><td><span class="status-badge active">Succeeded</span></td></tr>
+                <tr><td class="mono">17 May 2026</td><td><span class="tag tag--signal">Subscription</span></td><td class="mono">CA$9.99</td><td><span class="status-badge active">Succeeded</span></td></tr>
+                <tr><td class="mono">17 Apr 2026</td><td><span class="tag tag--signal">Subscription</span></td><td class="mono">CA$9.99</td><td><span class="status-badge active">Succeeded</span></td></tr>
+                <tr><td class="mono">17 Mar 2026</td><td><span class="tag tag--signal">Subscription</span></td><td class="mono">CA$9.99</td><td><span class="status-badge active">Succeeded</span></td></tr>
+                <tr><td class="mono">14 Jan 2026</td><td><span class="tag">One-time</span></td><td class="mono">CA$29.00</td><td><span class="status-badge active">Succeeded</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="backlink" href="Billing.html">&larr; Back to billing</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

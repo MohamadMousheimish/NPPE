@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam details · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="exams" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div>
+            <span class="eyebrow eyebrow--signal">MOD 01 · <span class="state-tag on">Active</span></span>
+            <h1>Professional Practice &amp; Ethics</h1>
+            <p class="sub">Codes of ethics, duty to the public, conflicts of interest, and professional conduct fundamentals.</p>
+        </div>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap">
+            <a class="btn btn--primary" href="Admin-QuestionCreate.html">Add question <span class="arrow">&rarr;</span></a>
+            <a class="btn btn--ghost" href="Admin-ExamEdit.html">Edit exam</a>
+        </div>
+    </div>
+
+    <div class="sec-head" data-reveal><div><span class="eyebrow eyebrow--signal">Questions</span><h2>3 items</h2></div></div>
+
+    <div style="display:grid; gap:1rem">
+        <div class="q-card" data-reveal>
+            <div class="q-card__head"><span class="q-num">01</span><span class="of">Question 1</span><div class="acts" style="margin-left:auto; display:flex; gap:0.4rem"><a class="pill" href="Admin-QuestionEdit.html">Edit</a><a class="pill danger" href="Admin-QuestionDelete.html">Delete</a></div></div>
+            <div class="q-card__body">
+                <p class="q-text" style="font-size:1rem">An engineer discovers a design flaw posing a public-safety risk. What is the engineer's first obligation?</p>
+                <div style="display:grid; gap:0.4rem">
+                    <div class="ans"><span class="al">A</span> Notify the employer's legal department first.</div>
+                    <div class="ans correct"><span class="al">B</span> Safeguard the public and notify the appropriate authority. <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.66rem; color:var(--pass)">CORRECT</span></div>
+                    <div class="ans"><span class="al">C</span> Wait for independent confirmation.</div>
+                    <div class="ans"><span class="al">D</span> Document privately and take no action.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="q-card" data-reveal>
+            <div class="q-card__head"><span class="q-num">02</span><span class="of">Question 2</span><div class="acts" style="margin-left:auto; display:flex; gap:0.4rem"><a class="pill" href="Admin-QuestionEdit.html">Edit</a><a class="pill danger" href="Admin-QuestionDelete.html">Delete</a></div></div>
+            <div class="q-card__body">
+                <p class="q-text" style="font-size:1rem">The primary purpose of professional regulation is to:</p>
+                <div style="display:grid; gap:0.4rem">
+                    <div class="ans"><span class="al">A</span> Maximize members' earnings.</div>
+                    <div class="ans correct"><span class="al">B</span> Protect the public interest. <span style="margin-left:auto; font-family:var(--font-mono); font-size:0.66rem; color:var(--pass)">CORRECT</span></div>
+                    <div class="ans"><span class="al">C</span> Limit the number of engineers.</div>
+                    <div class="ans"><span class="al">D</span> Promote firms to government.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a class="backlink" href="Admin-Exams.html">&larr; Back to library</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Professional Practice &amp; Ethics · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-active="exams"></div>
+
+<!-- instrument head -->
+<div class="take-head">
+    <div class="take-head__in">
+        <div class="meta">
+            <span class="eyebrow">MOD 01 · In progress</span>
+            <h1>Professional Practice &amp; Ethics</h1>
+        </div>
+        <div class="take-gauge">
+            <div class="big"><span id="answered">0</span>/<span id="total">5</span></div>
+            <div class="lbl">ANSWERED</div>
+        </div>
+    </div>
+    <div class="take-progress"><i id="bar"></i></div>
+</div>
+
+<form class="take-body" id="exam" onsubmit="return false">
+
+    <div class="q-card">
+        <div class="q-card__head">
+            <span class="q-num">01</span><span class="of">Question 1 of 5</span>
+            <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Not answered</span>
+        </div>
+        <div class="q-card__body">
+            <p class="q-text">An engineer discovers a design flaw in a completed project that poses a potential public-safety risk. What is the engineer's <em>first</em> obligation?</p>
+            <label class="opt"><input type="radio" name="q1" /><span class="lab">A</span><span class="txt">Notify their employer's legal department before anyone else.</span></label>
+            <label class="opt"><input type="radio" name="q1" /><span class="lab">B</span><span class="txt">Take steps to safeguard the public, including notifying the appropriate authority.</span></label>
+            <label class="opt"><input type="radio" name="q1" /><span class="lab">C</span><span class="txt">Wait until the flaw is independently confirmed by a second engineer.</span></label>
+            <label class="opt"><input type="radio" name="q1" /><span class="lab">D</span><span class="txt">Document the flaw privately and take no further action.</span></label>
+        </div>
+    </div>
+
+    <div class="q-card">
+        <div class="q-card__head">
+            <span class="q-num">02</span><span class="of">Question 2 of 5</span>
+            <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Not answered</span>
+        </div>
+        <div class="q-card__body">
+            <p class="q-text">Under most Canadian engineering acts, the primary purpose of professional regulation is to:</p>
+            <label class="opt"><input type="radio" name="q2" /><span class="lab">A</span><span class="txt">Maximize the earnings of licensed members.</span></label>
+            <label class="opt"><input type="radio" name="q2" /><span class="lab">B</span><span class="txt">Protect the public interest.</span></label>
+            <label class="opt"><input type="radio" name="q2" /><span class="lab">C</span><span class="txt">Limit the number of practising engineers.</span></label>
+            <label class="opt"><input type="radio" name="q2" /><span class="lab">D</span><span class="txt">Promote engineering firms to the government.</span></label>
+        </div>
+    </div>
+
+    <div class="q-card">
+        <div class="q-card__head">
+            <span class="q-num">03</span><span class="of">Question 3 of 5</span>
+            <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Not answered</span>
+        </div>
+        <div class="q-card__body">
+            <p class="q-text">An engineer is asked to seal drawings prepared entirely by an unlicensed colleague. The engineer did not supervise the work. The engineer should:</p>
+            <label class="opt"><input type="radio" name="q3" /><span class="lab">A</span><span class="txt">Seal the drawings to help the colleague meet a deadline.</span></label>
+            <label class="opt"><input type="radio" name="q3" /><span class="lab">B</span><span class="txt">Seal them only after a quick visual review.</span></label>
+            <label class="opt"><input type="radio" name="q3" /><span class="lab">C</span><span class="txt">Decline — an engineer may only seal work they prepared or directly supervised.</span></label>
+            <label class="opt"><input type="radio" name="q3" /><span class="lab">D</span><span class="txt">Seal them and note the colleague as co-author.</span></label>
+        </div>
+    </div>
+
+    <div class="q-card">
+        <div class="q-card__head">
+            <span class="q-num">04</span><span class="of">Question 4 of 5</span>
+            <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Not answered</span>
+        </div>
+        <div class="q-card__body">
+            <p class="q-text">A "conflict of interest" most accurately describes a situation where:</p>
+            <label class="opt"><input type="radio" name="q4" /><span class="lab">A</span><span class="txt">An engineer disagrees with a client's design preference.</span></label>
+            <label class="opt"><input type="radio" name="q4" /><span class="lab">B</span><span class="txt">An engineer's personal interest could improperly influence their professional judgment.</span></label>
+            <label class="opt"><input type="radio" name="q4" /><span class="lab">C</span><span class="txt">Two engineers are assigned to the same project.</span></label>
+            <label class="opt"><input type="radio" name="q4" /><span class="lab">D</span><span class="txt">A project runs over its original budget.</span></label>
+        </div>
+    </div>
+
+    <div class="q-card">
+        <div class="q-card__head">
+            <span class="q-num">05</span><span class="of">Question 5 of 5</span>
+            <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Not answered</span>
+        </div>
+        <div class="q-card__body">
+            <p class="q-text">When an engineer's professional opinion is overruled on a matter affecting public safety, the most appropriate action is to:</p>
+            <label class="opt"><input type="radio" name="q5" /><span class="lab">A</span><span class="txt">Accept the decision silently to preserve the working relationship.</span></label>
+            <label class="opt"><input type="radio" name="q5" /><span class="lab">B</span><span class="txt">Resign immediately without notice.</span></label>
+            <label class="opt"><input type="radio" name="q5" /><span class="lab">C</span><span class="txt">Document the concern in writing and escalate through the appropriate channels.</span></label>
+            <label class="opt"><input type="radio" name="q5" /><span class="lab">D</span><span class="txt">Publicly criticize the decision on social media.</span></label>
+        </div>
+    </div>
+
+    <div class="take-submit">
+        <div>
+            <b>Ready to submit?</b>
+            <p>Make sure every question is answered — you can review before final submit.</p>
+        </div>
+        <a class="btn btn--primary btn--lg" href="Results.html">Submit exam <span class="arrow">&rarr;</span></a>
+    </div>
+
+    <a class="backlink" href="Exams.html">&larr; Leave without submitting</a>
+</form>
+
+<div data-appfoot data-year="2026"></div>
+
+<script src="assets/app.js"></script>
+<script>
+(function () {
+    var form = document.getElementById("exam");
+    var cards = [].slice.call(form.querySelectorAll(".q-card"));
+    var total = cards.length;
+    document.getElementById("total").textContent = total;
+    var answeredEl = document.getElementById("answered");
+    var bar = document.getElementById("bar");
+
+    form.addEventListener("change", function (e) {
+        if (e.target.type !== "radio") return;
+        var card = e.target.closest(".q-card");
+        var status = card.querySelector(".q-status");
+        status.classList.add("done");
+        status.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg> Answered';
+
+        var done = cards.filter(function (c) { return c.querySelector("input:checked"); }).length;
+        answeredEl.textContent = done;
+        bar.style.width = (done / total * 100) + "%";
+    });
+})();
+</script>
+</body>
+</html>

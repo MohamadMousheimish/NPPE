@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Design Index · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<style>
+    .head { background: var(--ink); color: var(--paper); position: relative; overflow: hidden; }
+    .head .grid { position: absolute; inset: 0;
+        -webkit-mask-image: radial-gradient(100% 100% at 20% 0%, #000 30%, transparent 80%); mask-image: radial-gradient(100% 100% at 20% 0%, #000 30%, transparent 80%); }
+    .head__in { position: relative; z-index: 1; width: min(100% - 3rem, 1100px); margin-inline: auto; padding: 3.5rem 0; }
+    .head h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.2rem, 5vw, 3.4rem); letter-spacing: -0.02em; color: var(--paper); margin: 0.8rem 0 0.4rem; }
+    .head h1 em { font-style: normal; color: var(--signal); }
+    .head p { color: #9AA1AD; max-width: 52ch; }
+    .wrap { width: min(100% - 3rem, 1100px); margin: 2.5rem auto 4rem; }
+    .grp { margin-bottom: 2.6rem; }
+    .grp > .eyebrow { margin-bottom: 1rem; display: block; }
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 0.8rem; }
+    .lk { display: flex; align-items: center; gap: 0.8rem; padding: 0.9rem 1rem; background: var(--card);
+        border: 1.5px solid var(--line); border-radius: var(--radius); transition: all 0.16s var(--ease); }
+    .lk:hover { border-color: var(--ink); transform: translateY(-2px); box-shadow: 0 16px 30px -24px rgba(23,25,31,.5); }
+    .lk .n { font-family: var(--font-mono); font-size: 0.68rem; color: var(--signal); width: 24px; flex-shrink: 0; }
+    .lk b { font-weight: 600; font-size: 0.92rem; display: block; }
+    .lk span { font-family: var(--font-mono); font-size: 0.66rem; color: var(--slate-2); }
+    .lk .go { margin-left: auto; color: var(--slate-2); }
+</style>
+</head>
+<body>
+<header class="head">
+    <div class="grid grid-bg--dark"></div>
+    <div class="head__in">
+        <span class="eyebrow eyebrow--signal">NPPE Prep · The Instrument · Design mockups</span>
+        <h1>All <em>screens</em>.</h1>
+        <p>Static prototypes of the full redesign. Open any screen — the shared design system, motion, and ambient study-motifs run live in the browser.</p>
+    </div>
+</header>
+
+<main class="wrap">
+    <section class="grp">
+        <span class="eyebrow eyebrow--signal">Auth &amp; account access</span>
+        <div class="cards">
+            <a class="lk" href="Login.html"><span class="n">01</span><span><b>Login</b><span>Login.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Register.html"><span class="n">02</span><span><b>Register</b><span>Register.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="ForgotPassword.html"><span class="n">03</span><span><b>Forgot password</b><span>ForgotPassword.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="ForgotPasswordConfirmation.html"><span class="n">04</span><span><b>Reset link sent</b><span>…Confirmation.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="ResetPassword.html"><span class="n">05</span><span><b>Set new password</b><span>ResetPassword.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="ResetPasswordConfirmation.html"><span class="n">06</span><span><b>Password updated</b><span>…Confirmation.html</span></span><span class="go">&rarr;</span></a>
+        </div>
+    </section>
+
+    <section class="grp">
+        <span class="eyebrow eyebrow--signal">Student app</span>
+        <div class="cards">
+            <a class="lk" href="Dashboard.html"><span class="n">07</span><span><b>Dashboard</b><span>Dashboard.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Exams.html"><span class="n">08</span><span><b>Practice exams</b><span>Exams.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Take.html"><span class="n">09</span><span><b>Take exam</b><span>Take.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Results.html"><span class="n">10</span><span><b>Results</b><span>Results.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="History.html"><span class="n">11</span><span><b>History</b><span>History.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="History-Details.html"><span class="n">12</span><span><b>Attempt review</b><span>History-Details.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Profile.html"><span class="n">13</span><span><b>Profile</b><span>Profile.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="ChangePassword.html"><span class="n">14</span><span><b>Change password</b><span>ChangePassword.html</span></span><span class="go">&rarr;</span></a>
+        </div>
+    </section>
+
+    <section class="grp">
+        <span class="eyebrow eyebrow--signal">Payments</span>
+        <div class="cards">
+            <a class="lk" href="Pricing.html"><span class="n">15</span><span><b>Pricing</b><span>Pricing.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Checkout.html"><span class="n">16</span><span><b>Checkout</b><span>Checkout.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Success.html"><span class="n">17</span><span><b>Payment success</b><span>Success.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Cancel.html"><span class="n">18</span><span><b>Payment cancelled</b><span>Cancel.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Billing.html"><span class="n">19</span><span><b>Billing</b><span>Billing.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="PaymentHistory.html"><span class="n">20</span><span><b>Payment history</b><span>PaymentHistory.html</span></span><span class="go">&rarr;</span></a>
+        </div>
+    </section>
+
+    <section class="grp">
+        <span class="eyebrow eyebrow--signal">Admin</span>
+        <div class="cards">
+            <a class="lk" href="Admin-Exams.html"><span class="n">21</span><span><b>Exam library</b><span>Admin-Exams.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-ExamCreate.html"><span class="n">22</span><span><b>Create exam</b><span>Admin-ExamCreate.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-ExamEdit.html"><span class="n">23</span><span><b>Edit exam</b><span>Admin-ExamEdit.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-ExamDetails.html"><span class="n">24</span><span><b>Exam details</b><span>Admin-ExamDetails.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-ExamDelete.html"><span class="n">25</span><span><b>Delete exam</b><span>Admin-ExamDelete.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-QuestionCreate.html"><span class="n">26</span><span><b>Add question</b><span>Admin-QuestionCreate.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-QuestionEdit.html"><span class="n">27</span><span><b>Edit question</b><span>Admin-QuestionEdit.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Admin-QuestionDelete.html"><span class="n">28</span><span><b>Delete question</b><span>Admin-QuestionDelete.html</span></span><span class="go">&rarr;</span></a>
+        </div>
+    </section>
+
+    <section class="grp">
+        <span class="eyebrow eyebrow--signal">Utility</span>
+        <div class="cards">
+            <a class="lk" href="Error.html"><span class="n">29</span><span><b>Error</b><span>Error.html</span></span><span class="go">&rarr;</span></a>
+            <a class="lk" href="Privacy.html"><span class="n">30</span><span><b>Privacy</b><span>Privacy.html</span></span><span class="go">&rarr;</span></a>
+        </div>
+    </section>
+</main>
+</body>
+</html>

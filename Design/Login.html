@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sign in · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/auth.css" />
+</head>
+<body>
+<main class="auth">
+
+    <!-- ============ TITLE-BLOCK PANEL ============ -->
+    <section class="brand panel--dark reg">
+        <span class="reg-mark tl"></span><span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span><span class="reg-mark br"></span>
+        <div class="brand__grid grid-bg--dark"></div>
+
+        <svg class="gauge" viewBox="0 0 128 128" aria-hidden="true">
+            <circle cx="64" cy="64" r="60" stroke="var(--line-dark)" stroke-width="1"></circle>
+            <circle cx="64" cy="64" r="52" stroke="var(--line-dark)" stroke-width="6" stroke-dasharray="1 7.6"></circle>
+            <circle class="arc" cx="64" cy="64" r="44"></circle>
+            <line x1="64" y1="18" x2="64" y2="26" stroke="var(--slate-2)" stroke-width="1"></line>
+            <line x1="64" y1="102" x2="64" y2="110" stroke="var(--slate-2)" stroke-width="1"></line>
+            <text class="lbl" x="64" y="63">NPPE</text>
+            <text class="sub" x="64" y="76">CALIBRATED</text>
+        </svg>
+
+        <div class="wordmark">
+            <span class="mark">N</span>
+            <div class="stack"><b>NPPE&nbsp;Prep</b><span>Exam Preparation</span></div>
+        </div>
+
+        <div class="hero">
+            <span class="eyebrow eyebrow--signal">Professional Practice Exam</span>
+            <h1>Calibrated prep for your <em>P.Eng.</em></h1>
+            <p>Timed practice modules, worked explanations, and progress you can actually measure — built for engineers-in-training.</p>
+        </div>
+
+        <div class="titleblock">
+            <div class="row">
+                <div class="cell"><span class="k">Drawing</span><span class="v">NPPE-PREP</span></div>
+                <div class="cell"><span class="k">Rev</span><span class="v">2.4</span></div>
+                <div class="cell"><span class="k">Sheet</span><span class="v">01 / 12</span></div>
+            </div>
+            <div class="row">
+                <div class="cell"><span class="k">Modules</span><span class="v">20</span></div>
+                <div class="cell"><span class="k">Items</span><span class="v">1,000+</span></div>
+                <div class="cell"><span class="k">Status</span><span class="v"><span class="live-dot"></span>LIVE</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FORM ============ -->
+    <section class="formside" data-study-field data-study-count="22">
+        <div class="formcard frame seq">
+            <span class="eyebrow eyebrow--signal" style="--i:0">Access · Sign in</span>
+            <h2 style="--i:1">Sign in to continue</h2>
+            <p class="sub" style="--i:2">Pick up your prep where you left off.</p>
+
+            <form style="--i:3" onsubmit="return false">
+                <label class="field">
+                    <span class="field__label">Email <span class="idx">01</span></span>
+                    <span class="field__wrap">
+                        <input class="field__input" type="email" placeholder="you@firm.ca" autocomplete="email" />
+                    </span>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Password <span class="idx">02</span></span>
+                    <span class="field__wrap">
+                        <input class="field__input" type="password" placeholder="••••••••" autocomplete="current-password" />
+                    </span>
+                </label>
+
+                <div class="row-between">
+                    <label class="check"><input type="checkbox" /><span class="box"></span> Keep me signed in</label>
+                    <a class="link" href="ForgotPassword.html">Reset password</a>
+                </div>
+
+                <button class="btn btn--primary btn--block btn--lg" type="submit">
+                    Sign in <span class="arrow">&rarr;</span>
+                </button>
+            </form>
+
+            <div class="divider mydivider" style="--i:4">Or</div>
+
+            <button class="btn btn--ghost btn--block provider gbtn" style="--i:5">
+                <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v7.8h12.5c-.3 2.1-1.6 5.2-4.6 7.3l7.1 5.5c4.3-3.9 6.8-9.7 6.8-16.5z"/><path fill="#FBBC05" d="M10.5 28.3c-.5-1.4-.8-2.9-.8-4.3s.3-3 .7-4.3l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.5l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.6l-7.1-5.5c-2 1.4-4.6 2.3-8.1 2.3-6.3 0-11.6-3.7-13.5-9.1l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
+                Continue with Google
+            </button>
+
+            <p class="foot" style="--i:6">New here? <a href="Register.html">Create an account</a></p>
+        </div>
+    </section>
+</main>
+<script src="assets/study-field.js"></script>
+<script src="assets/motion.js"></script>
+</body>
+</html>

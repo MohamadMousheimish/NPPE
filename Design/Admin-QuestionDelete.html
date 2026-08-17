@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Delete question · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="exams" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">MOD 01 · Confirm</span><h1>Delete <em>question</em></h1></div>
+    </div>
+
+    <div class="confirm-card" data-reveal>
+        <div class="warn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+        <h2 style="font-size:1.3rem; margin-bottom:0.5rem">Remove this question?</h2>
+        <p class="muted">This question will be removed from the module. Past attempts that referenced it keep their recorded answers.</p>
+        <div class="preview-box"><span class="anno">QUESTION 01</span><br />An engineer discovers a design flaw posing a public-safety risk. What is the engineer's first obligation?</div>
+        <div class="form-actions">
+            <a class="btn btn--danger" href="Admin-ExamDetails.html">Yes, delete</a>
+            <a class="btn btn--ghost" href="Admin-ExamDetails.html">Cancel</a>
+        </div>
+    </div>
+
+    <a class="backlink" href="Admin-ExamDetails.html">&larr; Back to exam</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

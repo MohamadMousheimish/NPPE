@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>New exam · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="exams" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">Admin · New exam</span><h1>Create an <em>exam</em></h1><p class="sub">Add a module, then attach its questions from the details view.</p></div>
+    </div>
+
+    <div class="form-card" data-reveal>
+        <form onsubmit="return false">
+            <label class="field">
+                <span class="field__label">Title <span class="idx">01</span></span>
+                <span class="field__wrap"><input class="field__input" type="text" placeholder="e.g. Professional Practice & Ethics" /></span>
+            </label>
+            <label class="field">
+                <span class="field__label">Description <span class="idx">02</span></span>
+                <span class="field__wrap"><textarea class="field__input" placeholder="A short summary of what this module covers."></textarea></span>
+            </label>
+            <label class="check" style="margin-top:0.4rem"><input type="checkbox" checked /><span class="box"></span> Active — visible to students</label>
+
+            <div class="form-actions">
+                <button class="btn btn--primary" type="submit">Create exam <span class="arrow">&rarr;</span></button>
+                <a class="btn btn--ghost" href="Admin-Exams.html">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <a class="backlink" href="Admin-Exams.html">&larr; Back to library</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

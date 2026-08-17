@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Create account · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/auth.css" />
+</head>
+<body>
+<main class="auth">
+
+    <!-- ============ TITLE-BLOCK PANEL ============ -->
+    <section class="brand panel--dark reg">
+        <span class="reg-mark tl"></span><span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span><span class="reg-mark br"></span>
+        <div class="brand__grid grid-bg--dark"></div>
+
+        <svg class="gauge" viewBox="0 0 128 128" aria-hidden="true">
+            <circle cx="64" cy="64" r="60" stroke="var(--line-dark)" stroke-width="1"></circle>
+            <circle cx="64" cy="64" r="52" stroke="var(--line-dark)" stroke-width="6" stroke-dasharray="1 7.6"></circle>
+            <circle class="arc" cx="64" cy="64" r="44"></circle>
+            <line x1="64" y1="18" x2="64" y2="26" stroke="var(--slate-2)" stroke-width="1"></line>
+            <line x1="64" y1="102" x2="64" y2="110" stroke="var(--slate-2)" stroke-width="1"></line>
+            <text class="lbl" x="64" y="63">NPPE</text>
+            <text class="sub" x="64" y="76">ENROLL</text>
+        </svg>
+
+        <div class="wordmark">
+            <span class="mark">N</span>
+            <div class="stack"><b>NPPE&nbsp;Prep</b><span>Exam Preparation</span></div>
+        </div>
+
+        <div class="hero">
+            <span class="eyebrow eyebrow--signal">Enrollment · New candidate</span>
+            <h1>Open your <em>NPPE file.</em></h1>
+            <p>One account tracks every practice module, score, and worked answer on your road to the P.Eng.</p>
+        </div>
+
+        <div class="titleblock">
+            <div class="row">
+                <div class="cell"><span class="k">Record</span><span class="v">CANDIDATE</span></div>
+                <div class="cell"><span class="k">Stage</span><span class="v">01 / 04</span></div>
+                <div class="cell"><span class="k">Status</span><span class="v"><span class="live-dot"></span>DRAFT</span></div>
+            </div>
+            <div class="row">
+                <div class="cell"><span class="k">Setup</span><span class="v">~1 MIN</span></div>
+                <div class="cell"><span class="k">Card</span><span class="v">NOT REQ.</span></div>
+                <div class="cell"><span class="k">Access</span><span class="v">INSTANT</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ FORM ============ -->
+    <section class="formside" data-study-field data-study-count="22">
+        <div class="formcard frame seq">
+            <span class="eyebrow eyebrow--signal" style="--i:0">Enrollment · Create account</span>
+            <h2 style="--i:1">Create your account</h2>
+            <p class="sub" style="--i:2">Start prepping in about a minute. No card required.</p>
+
+            <form style="--i:3" onsubmit="return false">
+                <div class="row-2">
+                    <label class="field">
+                        <span class="field__label">First name <span class="idx">01</span></span>
+                        <span class="field__wrap"><input class="field__input" type="text" placeholder="Ada" autocomplete="given-name" /></span>
+                    </label>
+                    <label class="field">
+                        <span class="field__label">Last name <span class="idx">02</span></span>
+                        <span class="field__wrap"><input class="field__input" type="text" placeholder="Lovelace" autocomplete="family-name" /></span>
+                    </label>
+                </div>
+
+                <label class="field">
+                    <span class="field__label">Email <span class="idx">03</span></span>
+                    <span class="field__wrap"><input class="field__input" type="email" placeholder="you@firm.ca" autocomplete="email" /></span>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Password <span class="idx">04</span></span>
+                    <span class="field__wrap"><input class="field__input" type="password" placeholder="••••••••" autocomplete="new-password" /></span>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Confirm password <span class="idx">05</span></span>
+                    <span class="field__wrap"><input class="field__input" type="password" placeholder="••••••••" autocomplete="new-password" /></span>
+                </label>
+
+                <div class="note">
+                    <span class="anno"><strong>Password spec</strong></span>
+                    <ul>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> At least 8 characters</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> One uppercase letter</li>
+                    </ul>
+                </div>
+
+                <button class="btn btn--primary btn--block btn--lg" type="submit">
+                    Create account <span class="arrow">&rarr;</span>
+                </button>
+            </form>
+
+            <div class="divider mydivider" style="--i:4">Or</div>
+
+            <button class="btn btn--ghost btn--block provider gbtn" style="--i:5">
+                <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v7.8h12.5c-.3 2.1-1.6 5.2-4.6 7.3l7.1 5.5c4.3-3.9 6.8-9.7 6.8-16.5z"/><path fill="#FBBC05" d="M10.5 28.3c-.5-1.4-.8-2.9-.8-4.3s.3-3 .7-4.3l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.5l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.6l-7.1-5.5c-2 1.4-4.6 2.3-8.1 2.3-6.3 0-11.6-3.7-13.5-9.1l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
+                Continue with Google
+            </button>
+
+            <p class="foot" style="--i:6">Already enrolled? <a href="Login.html">Sign in</a></p>
+        </div>
+    </section>
+</main>
+<script src="assets/study-field.js"></script>
+<script src="assets/motion.js"></script>
+</body>
+</html>

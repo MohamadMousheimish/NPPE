@@ -1,0 +1,337 @@
+/* ============================================================================
+   NPPE PREP — "THE INSTRUMENT" DESIGN SYSTEM
+   A precision-instrument visual language for professional-practice exam prep.
+   Palette: Graphite & Signal · Type: Space Grotesk / IBM Plex Sans / IBM Plex Mono
+   ========================================================================== */
+
+:root {
+    /* ---- Color: Graphite & Signal ---- */
+    --paper:        #EBEDF0;   /* cool technical vellum — light surfaces      */
+    --paper-2:      #E3E6EA;   /* recessed paper                              */
+    --card:         #F6F7F9;   /* raised card on paper                        */
+    --ink:          #17191F;   /* graphite near-black — text & dark panels    */
+    --ink-2:        #20232B;   /* dark panel elevation                        */
+    --slate:        #4A515E;   /* secondary text                             */
+    --slate-2:      #7A828F;   /* tertiary / meta text                        */
+    --line:         #C9CCD1;   /* hairlines / grid on light                   */
+    --line-dark:    #2E323C;   /* hairlines / grid on dark                    */
+
+    --signal:       #F0522A;   /* the single accent — survey/signal orange    */
+    --signal-ink:   #D23F1B;   /* accent pressed                              */
+    --signal-wash:  rgba(240, 82, 42, 0.08);
+
+    --pass:         #2E7D5B;   /* exam-correct only (functional)              */
+    --pass-wash:    rgba(46, 125, 91, 0.10);
+    --fail:         #B23A2E;   /* exam-incorrect only (functional)            */
+    --fail-wash:    rgba(178, 58, 46, 0.10);
+
+    /* ---- Type ---- */
+    --font-display: "Space Grotesk", system-ui, sans-serif;
+    --font-body:    "IBM Plex Sans", system-ui, sans-serif;
+    --font-mono:    "IBM Plex Mono", ui-monospace, monospace;
+
+    /* ---- Metrics ---- */
+    --radius:   3px;
+    --gap:      clamp(1rem, 2vw, 1.5rem);
+    --ease:     cubic-bezier(0.2, 0.7, 0.2, 1);
+    --ease-mech: cubic-bezier(0.85, 0, 0.15, 1);   /* mechanical / plotter    */
+    --shadow:   0 1px 0 var(--line), 0 18px 40px -24px rgba(23, 25, 31, 0.35);
+}
+
+/* ---- Reset ---- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; cursor: pointer; background: none; border: none; }
+input, textarea, select { font: inherit; color: inherit; }
+::selection { background: var(--signal); color: #fff; }
+
+/* ---- Technical grid background (graph paper) ---- */
+.grid-bg {
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 28px 28px;
+    background-position: -1px -1px;
+    opacity: 1;
+}
+.grid-bg--faint {
+    background-image:
+        linear-gradient(rgba(201,204,209,0.45) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,204,209,0.45) 1px, transparent 1px);
+    background-size: 28px 28px;
+}
+.grid-bg--dark {
+    background-image:
+        linear-gradient(var(--line-dark) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+/* ============================================================================
+   TYPOGRAPHY
+   ========================================================================== */
+.eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--slate-2);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+}
+.eyebrow--signal { color: var(--signal); }
+.eyebrow::before {
+    content: "";
+    width: 1.6em; height: 1px;
+    background: currentColor;
+    opacity: 0.6;
+}
+.eyebrow.no-rule::before { display: none; }
+
+.display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.02;
+    color: var(--ink);
+}
+.display-xl { font-size: clamp(2.6rem, 6vw, 4.6rem); }
+.display-lg { font-size: clamp(2rem, 4.5vw, 3.2rem); }
+.display-md { font-size: clamp(1.5rem, 3vw, 2.1rem); }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing: -0.015em; line-height: 1.1; }
+
+.lead { font-size: 1.075rem; color: var(--slate); max-width: 46ch; }
+.muted { color: var(--slate-2); }
+
+.mono { font-family: var(--font-mono); }
+.anno {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    letter-spacing: 0.04em;
+    color: var(--slate-2);
+}
+.anno strong { color: var(--ink); font-weight: 500; }
+
+/* ============================================================================
+   FRAME — corner registration brackets (the signature)
+   ========================================================================== */
+.frame { position: relative; }
+.frame::before, .frame::after {
+    content: "";
+    position: absolute;
+    width: 15px; height: 15px;
+    border: 1.5px solid var(--signal);
+    pointer-events: none;
+    z-index: 2;
+}
+.frame::before { top: -1px;    left: -1px;  border-right: 0; border-bottom: 0; }
+.frame::after  { bottom: -1px; right: -1px; border-left: 0;  border-top: 0;   }
+.frame--ink::before, .frame--ink::after { border-color: var(--ink); }
+
+/* Full four-corner registration marks (decorative wrapper) */
+.reg { position: relative; }
+.reg > .reg-mark {
+    position: absolute; width: 14px; height: 14px; z-index: 3; pointer-events: none;
+    border: 1.5px solid var(--signal);
+}
+.reg-mark.tl { top: 10px;    left: 10px;    border-right: 0; border-bottom: 0; }
+.reg-mark.tr { top: 10px;    right: 10px;   border-left: 0;  border-bottom: 0; }
+.reg-mark.bl { bottom: 10px; left: 10px;    border-right: 0; border-top: 0;    }
+.reg-mark.br { bottom: 10px; right: 10px;   border-left: 0;  border-top: 0;    }
+
+/* ============================================================================
+   BUTTONS
+   ========================================================================== */
+.btn {
+    --btn-fg: var(--ink);
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.7em;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--btn-fg);
+    padding: 0.95rem 1.4rem;
+    border: 1.5px solid var(--ink);
+    border-radius: var(--radius);
+    background: transparent;
+    position: relative;
+    transition: background 0.25s var(--ease), color 0.25s var(--ease),
+                border-color 0.25s var(--ease), transform 0.15s var(--ease);
+    will-change: transform;
+}
+.btn .arrow { transition: transform 0.28s var(--ease-mech); }
+.btn:hover .arrow { transform: translateX(4px); }
+.btn:active { transform: translateY(1px); }
+.btn:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+.btn--primary {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: #fff;
+}
+.btn--primary:hover { background: var(--signal-ink); border-color: var(--signal-ink); }
+
+.btn--dark {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+}
+.btn--dark:hover { background: #000; }
+
+.btn--ghost { border-color: var(--line); color: var(--slate); }
+.btn--ghost:hover { border-color: var(--ink); color: var(--ink); background: rgba(23,25,31,0.03); }
+
+.btn--danger { border-color: var(--fail); color: var(--fail); }
+.btn--danger:hover { background: var(--fail); color: #fff; }
+
+.btn--block { display: flex; width: 100%; }
+.btn--lg { padding: 1.1rem 1.6rem; font-size: 0.86rem; }
+
+/* ============================================================================
+   FIELDS
+   ========================================================================== */
+.field { display: block; margin-bottom: 1.15rem; }
+.field__label {
+    display: flex; align-items: center; justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--slate); margin-bottom: 0.5rem;
+}
+.field__label .idx { color: var(--signal); }
+.field__wrap { position: relative; }
+.field__input {
+    width: 100%;
+    padding: 0.85rem 0.95rem;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    color: var(--ink);
+    transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), background 0.2s var(--ease);
+}
+.field__input::placeholder { color: var(--slate-2); }
+.field__input:focus {
+    outline: none;
+    border-color: var(--ink);
+    background: #fff;
+    box-shadow: inset 0 0 0 1px var(--ink);
+}
+/* focus registration tick */
+.field__wrap::after {
+    content: "";
+    position: absolute; top: -1px; right: -1px;
+    width: 12px; height: 12px;
+    border-top: 1.5px solid var(--signal);
+    border-right: 1.5px solid var(--signal);
+    opacity: 0; transform: translate(-3px, 3px);
+    transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+    pointer-events: none;
+}
+.field__wrap:focus-within::after { opacity: 1; transform: translate(0, 0); }
+
+textarea.field__input { resize: vertical; min-height: 6.5rem; line-height: 1.5; }
+
+/* checkbox — technical square */
+.check { display: inline-flex; align-items: center; gap: 0.6rem; cursor: pointer; user-select: none;
+    font-size: 0.9rem; color: var(--slate); }
+.check input { position: absolute; opacity: 0; width: 0; height: 0; }
+.check .box {
+    width: 18px; height: 18px; border: 1.5px solid var(--line); border-radius: 2px;
+    background: var(--card); display: grid; place-items: center;
+    transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
+}
+.check .box::after { content: ""; width: 9px; height: 9px; background: var(--signal); transform: scale(0);
+    transition: transform 0.15s var(--ease-mech); }
+.check input:checked + .box { border-color: var(--signal); }
+.check input:checked + .box::after { transform: scale(1); }
+.check input:focus-visible + .box { outline: 2px solid var(--signal); outline-offset: 2px; }
+
+/* ============================================================================
+   PANELS / CARDS / DIVIDERS
+   ========================================================================== */
+.panel { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); }
+.panel--dark { background: var(--ink); color: var(--paper); border-color: var(--line-dark); }
+
+.divider { display: flex; align-items: center; gap: 1rem; color: var(--slate-2);
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; }
+.divider::before, .divider::after { content: ""; height: 1px; background: var(--line); flex: 1; }
+
+.tag {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0.28rem 0.55rem; border: 1px solid currentColor; border-radius: 2px; display: inline-block;
+}
+.tag--pass { color: var(--pass); background: var(--pass-wash); border-color: transparent; }
+.tag--fail { color: var(--fail); background: var(--fail-wash); border-color: transparent; }
+.tag--signal { color: var(--signal); background: var(--signal-wash); border-color: transparent; }
+
+/* Google / provider button glyph */
+.provider { display: inline-flex; align-items: center; justify-content: center; gap: 0.7rem; }
+
+/* ============================================================================
+   MOTION
+   ========================================================================== */
+@keyframes fadeUp   { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes drawX    { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes drawY    { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes bracketIn{ from { opacity: 0; transform: translate(6px, 6px); } to { opacity: 1; transform: none; } }
+@keyframes ringDraw { from { stroke-dashoffset: var(--dash, 760); } to { stroke-dashoffset: 0; } }
+@keyframes blink    { 0%,100% { opacity: 1; } 50% { opacity: 0.15; } }
+
+/* page-load sequence: parent .seq, children stagger via --i */
+.seq > * { opacity: 0; animation: fadeUp 0.7s var(--ease) forwards; animation-delay: calc(var(--i, 0) * 90ms + 120ms); }
+
+/* scroll reveal (JS adds .is-in) */
+[data-reveal] { opacity: 0; transform: translateY(22px); transition: opacity 0.7s var(--ease), transform 0.7s var(--ease); }
+[data-reveal].is-in { opacity: 1; transform: none; }
+[data-reveal][data-reveal="x"] { transform: translateX(-22px); }
+[data-reveal].is-in { transform: none; }
+
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); display: inline-block;
+    animation: blink 1.8s steps(1) infinite; }
+
+/* ---- Ambient study-motif field (auth screens) ----
+   Thin technical line-icons (books, exam sheets, notes, drafting tools)
+   drifting slowly behind a form. Kept faint so it never competes with content. */
+.study-bg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.study-bg .motif {
+    position: absolute;
+    color: var(--slate-2);
+    opacity: var(--op, 0.16);
+    animation: floatDrift var(--dur, 28s) ease-in-out var(--delay, 0s) infinite;
+    will-change: transform;
+}
+.study-bg .motif--signal { color: var(--signal); opacity: var(--op, 0.14); }
+.study-bg .motif svg { width: 100%; height: 100%; display: block; }
+@keyframes floatDrift {
+    0%   { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+    50%  { transform: translate(var(--dx, 10px), var(--dy, -16px)) rotate(calc(var(--rot, 0deg) + var(--spin, 3deg))); }
+    100% { transform: translate(0, 0) rotate(var(--rot, 0deg)); }
+}
+
+/* ---- utilities ---- */
+.container { width: min(100% - 2.5rem, 1160px); margin-inline: auto; }
+.stack { display: flex; flex-direction: column; }
+.center { display: grid; place-items: center; }
+.hairline { height: 1px; background: var(--line); border: 0; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.001ms !important; animation-delay: 0ms !important;
+        transition-duration: 0.001ms !important; }
+    .seq > *, [data-reveal] { opacity: 1 !important; transform: none !important; }
+}

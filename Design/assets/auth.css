@@ -1,0 +1,94 @@
+/* NPPE Prep — shared layout for auth screens (login, register, password flows).
+   Pairs with design-system.css + study-field.js. */
+
+.auth { min-height: 100vh; display: grid; grid-template-columns: 1.05fr 0.95fr; }
+@media (max-width: 900px) { .auth { grid-template-columns: 1fr; } }
+
+/* ---- LEFT: title-block panel ---- */
+.brand {
+    position: relative;
+    padding: clamp(2rem, 4vw, 3.5rem);
+    display: flex; flex-direction: column; justify-content: space-between; gap: 2.5rem;
+    overflow: hidden;
+}
+@media (max-width: 900px) { .brand { min-height: 44vh; } }
+.brand__grid {
+    position: absolute; inset: 0; z-index: 0;
+    -webkit-mask-image: radial-gradient(120% 90% at 30% 20%, #000 40%, transparent 85%);
+            mask-image: radial-gradient(120% 90% at 30% 20%, #000 40%, transparent 85%);
+}
+.brand > *:not(.brand__grid):not(.gauge):not(.reg-mark) { position: relative; z-index: 1; }
+
+.wordmark { display: flex; align-items: center; gap: 0.8rem; }
+.wordmark .mark { width: 34px; height: 34px; border: 1.5px solid var(--signal); display: grid; place-items: center;
+    color: var(--signal); font-family: var(--font-mono); font-weight: 600; font-size: 0.9rem; }
+.wordmark b { font-family: var(--font-display); font-weight: 600; font-size: 1.1rem; letter-spacing: -0.01em; }
+.wordmark span { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.2em; color: var(--slate-2);
+    text-transform: uppercase; }
+
+.hero { max-width: 32ch; }
+.hero .eyebrow { margin-bottom: 1.4rem; }
+.hero h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.1rem, 3.6vw, 3.1rem);
+    line-height: 1.03; letter-spacing: -0.02em; color: var(--paper); }
+.hero h1 em { font-style: normal; color: var(--signal); }
+.hero p { margin-top: 1.25rem; color: #9AA1AD; font-size: 1.02rem; max-width: 42ch; }
+
+.gauge { position: absolute; top: clamp(2rem,4vw,3.5rem); right: clamp(2rem,4vw,3.5rem);
+    width: 128px; height: 128px; opacity: 0.95; z-index: 2; }
+.gauge circle, .gauge line { fill: none; }
+.gauge .arc { stroke: var(--signal); stroke-width: 3; stroke-linecap: butt;
+    --dash: 302; stroke-dasharray: 302 402; stroke-dashoffset: 302;
+    transform: rotate(135deg); transform-origin: 64px 64px;
+    animation: ringDraw 1.4s var(--ease-mech) 0.3s forwards; }
+.gauge .lbl { font-family: var(--font-mono); fill: var(--paper); font-size: 13px; font-weight: 500;
+    letter-spacing: 1px; text-anchor: middle; }
+.gauge .sub { font-family: var(--font-mono); fill: var(--slate-2); font-size: 7px; letter-spacing: 2px; text-anchor: middle; }
+
+/* drafting title block */
+.titleblock { border: 1.5px solid var(--line-dark); font-family: var(--font-mono); max-width: 460px; }
+.titleblock .row { display: grid; grid-template-columns: 1.4fr 1fr 1fr; }
+.titleblock .row + .row { border-top: 1px solid var(--line-dark); }
+.titleblock .cell { padding: 0.6rem 0.8rem; border-left: 1px solid var(--line-dark); }
+.titleblock .cell:first-child { border-left: 0; }
+.titleblock .k { display: block; font-size: 0.58rem; letter-spacing: 0.16em; color: var(--slate-2);
+    text-transform: uppercase; margin-bottom: 0.2rem; }
+.titleblock .v { font-size: 0.82rem; color: var(--paper); }
+.titleblock .v .live-dot { margin-right: 0.4rem; vertical-align: middle; }
+
+/* ---- RIGHT: form ---- */
+.formside { position: relative; overflow: hidden; display: grid; place-items: center;
+    padding: clamp(1.5rem, 4vw, 3rem); background: var(--paper); }
+.formcard { position: relative; z-index: 1; width: min(100%, 410px); background: var(--card);
+    border: 1.5px solid var(--line); border-radius: var(--radius); padding: clamp(1.6rem, 3vw, 2.4rem);
+    box-shadow: 0 24px 60px -34px rgba(23, 25, 31, 0.45); }
+.formcard h2 { font-size: 1.7rem; margin: 0.6rem 0 0.4rem; }
+.formcard .sub { color: var(--slate-2); font-size: 0.95rem; margin-bottom: 1.8rem; }
+.motif svg { stroke-linecap: round; stroke-linejoin: round; }
+
+.icon-badge { width: 46px; height: 46px; border: 1.5px solid var(--signal); border-radius: var(--radius);
+    display: grid; place-items: center; color: var(--signal); margin-bottom: 1rem; }
+.icon-badge svg { width: 22px; height: 22px; }
+.icon-badge--lg { width: 64px; height: 64px; margin-bottom: 1.3rem; }
+.icon-badge--lg svg { width: 30px; height: 30px; }
+.icon-badge--pass { border-color: var(--pass); color: var(--pass); }
+.formcard.tc { text-align: center; }
+.formcard.tc .icon-badge { margin-inline: auto; }
+.formcard.tc .sub { margin-bottom: 1.4rem; }
+
+.row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+.row-between { display: flex; align-items: center; justify-content: space-between; margin: -0.2rem 0 1.4rem; }
+.link { font-family: var(--font-mono); font-size: 0.76rem; letter-spacing: 0.06em; color: var(--signal); }
+.link:hover { color: var(--signal-ink); text-decoration: underline; text-underline-offset: 3px; }
+.mydivider { margin: 1.6rem 0; }
+.foot { text-align: center; margin-top: 1.7rem; font-size: 0.9rem; color: var(--slate-2); }
+.foot a { color: var(--ink); font-weight: 500; border-bottom: 1.5px solid var(--signal); padding-bottom: 1px; }
+.gbtn { margin-top: 1.1rem; }
+.gbtn svg { width: 17px; height: 17px; }
+
+/* requirements / info note */
+.note { border: 1px solid var(--line); border-left: 2px solid var(--signal); background: var(--signal-wash);
+    padding: 0.8rem 1rem; border-radius: var(--radius); margin: 1.2rem 0; }
+.note .anno { color: var(--slate); }
+.note ul { list-style: none; padding: 0; margin: 0.4rem 0 0; display: grid; gap: 0.35rem; }
+.note li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--slate); }
+.note li svg { width: 14px; height: 14px; color: var(--signal); flex-shrink: 0; }

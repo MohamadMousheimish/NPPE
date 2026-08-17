@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>History · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-active="history"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div>
+            <span class="eyebrow eyebrow--signal">Attempt register</span>
+            <h1>Your <em>history</em></h1>
+            <p class="sub">Every attempt you've logged, newest first. Open any one to review the questions and explanations again.</p>
+        </div>
+        <span class="count-chip">12 attempts · 78% avg</span>
+    </div>
+
+    <section class="readouts" data-animate style="margin-bottom:2rem">
+        <div class="readout" data-reveal><div class="k">Attempts</div><div class="val"><span data-count="12">0</span></div><div class="foot">across 6 modules</div></div>
+        <div class="readout" data-reveal data-reveal-delay="70"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="78"/></svg><div class="k">Avg score</div><div class="val"><span data-count="78">0</span>%</div><div class="foot">last 12 attempts</div></div>
+        <div class="readout" data-reveal data-reveal-delay="140"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="75"/></svg><div class="k">Pass rate</div><div class="val"><span data-count="75">0</span>%</div><div class="foot">9 of 12 passed</div></div>
+        <div class="readout" data-reveal data-reveal-delay="210"><div class="k">Best score</div><div class="val"><span data-count="90">0</span>%</div><div class="foot">Professional Liability</div></div>
+    </section>
+
+    <div class="log" data-reveal>
+        <a class="log__row" href="History-Details.html"><span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span><span class="log__title"><b>Professional Practice &amp; Ethics</b><span>MOD 01 · 20 ITEMS</span></span><span class="log__date">17 JUN 2026</span><span class="log__score">17/20<span>85%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span><span class="log__title"><b>Law for Professional Practice</b><span>MOD 02 · 20 ITEMS</span></span><span class="log__date">15 JUN 2026</span><span class="log__score">15/20<span>75%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick fail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="log__title"><b>Regulation &amp; Discipline</b><span>MOD 03 · 20 ITEMS</span></span><span class="log__date">12 JUN 2026</span><span class="log__score">11/20<span>55%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span><span class="log__title"><b>Professional Liability</b><span>MOD 04 · 20 ITEMS</span></span><span class="log__date">09 JUN 2026</span><span class="log__score">18/20<span>90%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span><span class="log__title"><b>Ethical Codes &amp; Conduct</b><span>MOD 05 · 20 ITEMS</span></span><span class="log__date">06 JUN 2026</span><span class="log__score">16/20<span>80%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick fail"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></span><span class="log__title"><b>Contracts &amp; Agreements</b><span>MOD 06 · 20 ITEMS</span></span><span class="log__date">03 JUN 2026</span><span class="log__score">12/20<span>60%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span><span class="log__title"><b>Professional Practice &amp; Ethics</b><span>MOD 01 · 20 ITEMS</span></span><span class="log__date">29 MAY 2026</span><span class="log__score">14/20<span>70%</span></span></a>
+        <a class="log__row" href="History-Details.html"><span class="log__tick pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span><span class="log__title"><b>Law for Professional Practice</b><span>MOD 02 · 20 ITEMS</span></span><span class="log__date">25 MAY 2026</span><span class="log__score">15/20<span>75%</span></span></a>
+    </div>
+
+    <a class="backlink" href="Dashboard.html">&larr; Back to dashboard</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

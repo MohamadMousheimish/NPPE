@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pricing · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-active="billing"></div>
+
+<main class="page">
+    <div class="phead" data-reveal style="justify-content:center; text-align:center; flex-direction:column; align-items:center">
+        <div><span class="eyebrow eyebrow--signal">Unlock full access</span><h1>Choose your <em>plan</em></h1><p class="sub" style="margin-inline:auto">One price, everything included — all 20 modules, unlimited attempts, and every worked explanation.</p></div>
+    </div>
+
+    <div class="plans">
+        <div class="plan" data-reveal>
+            <span class="eyebrow">One-time</span>
+            <div class="price"><span class="cur">CA$</span>29<small></small></div>
+            <p class="plan-sub">Pay once. Access forever.</p>
+            <ul class="feat-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> Unlimited exam attempts</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> All 20 practice modules</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> Worked explanations on every item</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> No subscription, no renewals</li>
+            </ul>
+            <a class="btn btn--ghost btn--block" href="Checkout.html">Pay CA$29 once <span class="arrow">&rarr;</span></a>
+        </div>
+
+        <div class="plan feat" data-reveal data-reveal-delay="80">
+            <span class="badge">Most flexible</span>
+            <span class="eyebrow eyebrow--signal">Monthly</span>
+            <div class="price"><span class="cur">CA$</span>9.99<small>/mo</small></div>
+            <p class="plan-sub">Cancel anytime, keep access to period end.</p>
+            <ul class="feat-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> Unlimited exam attempts</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> All 20 practice modules</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> Worked explanations on every item</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> Cancel in one click, anytime</li>
+            </ul>
+            <a class="btn btn--primary btn--block" href="Checkout.html">Subscribe for CA$9.99/mo <span class="arrow">&rarr;</span></a>
+        </div>
+    </div>
+
+    <p class="anno" style="text-align:center; margin-top:1.6rem">Secure checkout by Stripe · Cancel or refund per our terms</p>
+    <div style="text-align:center"><a class="backlink" href="Exams.html">&larr; Back to exams</a></div>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

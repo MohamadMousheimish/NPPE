@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Delete exam · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="exams" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">Admin · Confirm</span><h1>Delete <em>exam</em></h1></div>
+    </div>
+
+    <div class="confirm-card" data-reveal>
+        <div class="warn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
+        <h2 style="font-size:1.3rem; margin-bottom:0.5rem">Deactivate this exam?</h2>
+        <p class="muted">You're about to deactivate <strong style="color:var(--ink)">Professional Practice &amp; Ethics</strong>. It will be hidden from students, but existing attempt history is kept intact — this is a soft delete and can be reversed.</p>
+        <div class="form-actions">
+            <a class="btn btn--danger" href="Admin-Exams.html">Yes, deactivate</a>
+            <a class="btn btn--ghost" href="Admin-ExamDetails.html">Cancel</a>
+        </div>
+    </div>
+
+    <a class="backlink" href="Admin-Exams.html">&larr; Back to library</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

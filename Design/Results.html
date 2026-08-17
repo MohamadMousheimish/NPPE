@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Results · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-active="exams"></div>
+
+<main class="page">
+    <span class="eyebrow eyebrow--signal" data-reveal>MOD 01 · Result · 17 Jun 2026</span>
+
+    <section class="result-hero pass" data-animate data-reveal style="margin-top:1rem">
+        <div class="result-ring pass">
+            <svg viewBox="0 0 148 148">
+                <circle class="track" cx="74" cy="74" r="66"></circle>
+                <circle class="fill" cx="74" cy="74" r="66" data-pct="85" data-circ="414.7"></circle>
+            </svg>
+            <div class="ctr"><div class="pct">85%</div><div class="lb">Score</div></div>
+        </div>
+        <div class="result-verdict pass">
+            <span class="eyebrow eyebrow--signal">Passed · above the 65% line</span>
+            <h1>Nicely done, <em>Ada</em>.</h1>
+            <p>Professional Practice &amp; Ethics — you cleared it comfortably. Review the three you missed below to lock it in.</p>
+            <div class="result-stats">
+                <div class="st"><div class="v" style="color:var(--pass)">17</div><div class="k">Correct</div></div>
+                <div class="st"><div class="v" style="color:var(--fail)">3</div><div class="k">Incorrect</div></div>
+                <div class="st"><div class="v">20</div><div class="k">Total items</div></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="sec-head" data-reveal>
+        <div><span class="eyebrow eyebrow--signal">Answer review</span><h2>See what you missed</h2></div>
+        <span class="count-chip">3 to review</span>
+    </div>
+
+    <div class="review-item ok" data-reveal>
+        <div class="review-item__head">
+            <span class="rtick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg></span>
+            <div><div class="qn">QUESTION 01</div><h3>An engineer discovers a design flaw posing a public-safety risk. First obligation?</h3></div>
+        </div>
+        <div class="ans mine-ok"><span class="al">B</span> Your answer — Take steps to safeguard the public, including notifying the appropriate authority.</div>
+        <div class="explain"><b>Correct.</b> An engineer's paramount duty is to public welfare. That duty comes before contractual or employer obligations, so safeguarding the public is always the first step.</div>
+    </div>
+
+    <div class="review-item no" data-reveal>
+        <div class="review-item__head">
+            <span class="rtick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+            <div><div class="qn">QUESTION 12</div><h3>Which limitation period applies to a claim in professional negligence?</h3></div>
+        </div>
+        <div class="ans mine-no"><span class="al">A</span> Your answer — A fixed two years from the date the work was completed.</div>
+        <div class="ans correct"><span class="al">C</span> Correct answer — Generally two years from when the claim was, or ought to have been, discovered.</div>
+        <div class="explain"><b>Review.</b> Limitation periods typically run from discoverability, not simply from completion of the work — the "discoverability principle." The distinction is a common NPPE trap.</div>
+    </div>
+
+    <div class="review-item no" data-reveal data-reveal-delay="60">
+        <div class="review-item__head">
+            <span class="rtick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg></span>
+            <div><div class="qn">QUESTION 18</div><h3>An engineer may accept a gift from a supplier when:</h3></div>
+        </div>
+        <div class="ans mine-no"><span class="al">D</span> Your answer — Any time, provided the work is unaffected.</div>
+        <div class="ans correct"><span class="al">B</span> Correct answer — Only when it is nominal and could not reasonably be seen to influence judgment.</div>
+        <div class="explain"><b>Review.</b> The test is not just actual influence but the <em>appearance</em> of influence. Nominal, transparent courtesies are acceptable; anything that could reasonably be seen to sway judgment is not.</div>
+    </div>
+
+    <div class="take-submit" data-reveal style="margin-top:1.6rem">
+        <div><b>What's next?</b><p>Retake this module to push the score higher, or move on to the next one.</p></div>
+        <div style="display:flex; gap:0.7rem">
+            <a class="btn btn--ghost" href="Exams.html">All modules</a>
+            <a class="btn btn--primary" href="Take.html">Retake <span class="arrow">&rarr;</span></a>
+        </div>
+    </div>
+
+    <a class="backlink" href="History.html">&larr; View full history</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
