@@ -1,17 +1,23 @@
 @page
 @model NPPE.Web.Pages.Account.ExternalLoginCallbackModel
 @{
-    ViewData["Title"] = "External Login";
-    Layout = "_Layout";
+    ViewData["Title"] = "Signing you in";
+    Layout = "_AuthLayout";
 }
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full">
-        <div class="bg-white rounded-2xl shadow-xl p-8">
-            <div class="text-center">
-                <h1 class="text-2xl font-bold text-gray-900 mb-4">Processing Login</h1>
-                <p class="text-gray-500">Please wait while we complete your login...</p>
-            </div>
-        </div>
+<main class="panel--dark grid-bg--dark" style="min-height:100vh; display:grid; place-items:center; text-align:center; padding:2rem;">
+    <div>
+        <svg viewBox="0 0 128 128" style="width:96px; height:96px; margin:0 auto 1.6rem;" aria-hidden="true">
+            <circle cx="64" cy="64" r="52" fill="none" stroke="var(--line-dark)" stroke-width="6"></circle>
+            <circle cx="64" cy="64" r="52" fill="none" stroke="var(--signal)" stroke-width="6" stroke-linecap="round"
+                    stroke-dasharray="80 300" style="transform-origin:64px 64px; animation:spin 1s linear infinite;"></circle>
+        </svg>
+        <span class="eyebrow eyebrow--signal" style="justify-content:center;">Google · Verifying</span>
+        <h1 style="font-family:var(--font-display); color:var(--paper); font-size:1.6rem; margin:0.7rem 0 0.4rem;">Signing you in…</h1>
+        <p style="color:#9AA1AD;">Hold tight while we finish connecting your account.</p>
     </div>
-</div>
+</main>
+
+@section Head {
+    <style>@@keyframes spin { to { transform: rotate(360deg); } }</style>
+}

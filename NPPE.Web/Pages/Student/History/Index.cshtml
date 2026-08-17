@@ -1,50 +1,63 @@
-﻿@page
+@page
 @model NPPE.Web.Pages.Student.History.IndexModel
 @{
-    ViewData["Title"] = "Exam History";
+    ViewData["Title"] = "History";
+    ViewData["ActiveNav"] = "history";
+    var count = Model.Attempts.Count;
+    var avg = count > 0 ? (int)Math.Round(Model.Attempts.Average(x => x.Percentage)) : 0;
+    var passRate = count > 0 ? (int)Math.Round(Model.Attempts.Count(x => x.Percentage >= 65) * 100.0 / count) : 0;
+    var best = count > 0 ? (int)Math.Round(Model.Attempts.Max(x => x.Percentage)) : 0;
 }
 
-<div class="max-w-4xl mx-auto">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Your Exam History</h1>
-        <p class="text-gray-600">Review your past attempts and track your progress.</p>
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">Attempt register</span>
+        <h1>Your <em>history</em></h1>
+        <p class="sub">Every attempt you've logged, newest first. Open any one to review the questions and explanations again.</p>
     </div>
-
-    @if (Model.Attempts.Any())
-    {
-        <div class="bg-white shadow overflow-hidden sm:rounded-md">
-            <ul class="divide-y divide-gray-200">
-                @foreach (var attempt in Model.Attempts)
-                {
-                    <li>
-                        <a asp-page="Details" asp-route-id="@attempt.Id" class="block hover:bg-gray-50">
-                            <div class="px-4 py-4 sm:px-6">
-                                <div class="flex items-center justify-between">
-                                    <div class="text-sm font-medium text-blue-600">@attempt.ExamTitle</div>
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium
-                                        @(attempt.Percentage >= 70 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800")">
-                                        @attempt.Percentage%
-                                    </span>
-                                </div>
-                                <div class="mt-2 sm:flex sm:justify-between">
-                                    <div class="sm:hidden text-sm text-gray-500">@attempt.TakenAt.ToString("MMM dd, yyyy")</div>
-                                    <div class="hidden sm:block text-sm text-gray-500">
-                                        Score: @attempt.Score / @attempt.TotalQuestions • @attempt.TakenAt.ToString("MMM dd, yyyy")
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                }
-            </ul>
-        </div>
-    }
-    else
-    {
-        <div class="text-center py-12">
-            <p class="text-gray-600">You haven't taken any exams yet.</p>
-            <a asp-page="/Student/Exams/Index"
-               class="mt-4 inline-block text-blue-600 hover:underline">Take your first exam</a>
-        </div>
-    }
+    <span class="count-chip">@count attempt@(count == 1 ? "" : "s") · @avg% avg</span>
 </div>
+
+@if (count > 0)
+{
+    <section class="readouts" data-animate style="margin-bottom:2rem">
+        <div class="readout" data-reveal><div class="k">Attempts</div><div class="val"><span data-count="@count">0</span></div><div class="foot">logged</div></div>
+        <div class="readout" data-reveal data-reveal-delay="70"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="@avg"/></svg><div class="k">Avg score</div><div class="val"><span data-count="@avg">0</span>%</div><div class="foot">across all attempts</div></div>
+        <div class="readout" data-reveal data-reveal-delay="140"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="@passRate"/></svg><div class="k">Pass rate</div><div class="val"><span data-count="@passRate">0</span>%</div><div class="foot">65% to pass</div></div>
+        <div class="readout" data-reveal data-reveal-delay="210"><div class="k">Best score</div><div class="val"><span data-count="@best">0</span>%</div><div class="foot">personal best</div></div>
+    </section>
+
+    <div class="log" data-reveal>
+        @foreach (var att in Model.Attempts)
+        {
+            var pct = (int)Math.Round(att.Percentage);
+            var pass = att.Percentage >= 65;
+            <a class="log__row" asp-page="Details" asp-route-id="@att.Id">
+                <span class="log__tick @(pass ? "pass" : "fail")">
+                    @if (pass)
+                    {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg>
+                    }
+                    else
+                    {
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                    }
+                </span>
+                <span class="log__title"><b>@att.ExamTitle</b><span>@att.TakenAt.ToString("dd MMM yyyy")</span></span>
+                <span class="log__date">@att.TakenAt.ToString("HH:mm")</span>
+                <span class="log__score">@att.Score/@att.TotalQuestions<span>@pct%</span></span>
+            </a>
+        }
+    </div>
+}
+else
+{
+    <div class="empty" data-reveal>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="8"/></svg></div>
+        <h3>No attempts yet</h3>
+        <p>Take your first module and your results will show up here.</p>
+        <a class="btn btn--primary" asp-page="/Student/Exams/Index">Browse exams <span class="arrow">&rarr;</span></a>
+    </div>
+}
+
+<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>

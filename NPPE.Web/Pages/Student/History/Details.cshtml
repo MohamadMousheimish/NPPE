@@ -1,66 +1,69 @@
-﻿@page
+@page
 @model NPPE.Web.Pages.Student.History.DetailsModel
 @{
-    ViewData["Title"] = "Exam Review";
+    ViewData["Title"] = "Exam review";
+    ViewData["ActiveNav"] = "history";
+    var a = Model.Attempt!;
+    var pct = a.TotalQuestions > 0 ? (int)Math.Round(a.Score * 100.0 / a.TotalQuestions) : 0;
+    var pass = pct >= 65;
+    var incorrect = a.TotalQuestions - a.Score;
 }
 
-<!-- Reuse the exact same UI as Results -->
-<div class="max-w-4xl mx-auto">
-    <div class="text-center mb-8">
-        <h1 class="text-2xl font-bold text-gray-900">Exam Review</h1>
-        <p class="mt-2 text-lg">
-            <span class="font-semibold">@Model.Attempt!.Score</span> out of <span class="font-semibold">@Model.Attempt.TotalQuestions</span>
-        </p>
-        <div class="mt-2 inline-block px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
-            @(Math.Round((double)Model.Attempt.Score / Model.Attempt.TotalQuestions * 100))% Correct
+<span class="eyebrow eyebrow--signal" data-reveal>@a.ExamTitle · Attempt</span>
+
+<section class="result-hero @(pass ? "pass" : "fail")" data-animate data-reveal style="margin-top:1rem">
+    <div class="result-ring @(pass ? "pass" : "fail")">
+        <svg viewBox="0 0 148 148">
+            <circle class="track" cx="74" cy="74" r="66"></circle>
+            <circle class="fill" cx="74" cy="74" r="66" data-pct="@pct" data-circ="414.7"></circle>
+        </svg>
+        <div class="ctr"><div class="pct">@pct%</div><div class="lb">Score</div></div>
+    </div>
+    <div class="result-verdict @(pass ? "pass" : "fail")">
+        <span class="eyebrow @(pass ? "eyebrow--signal" : "")">@(pass ? "Passed" : "Below the 65% line")</span>
+        <h1>@a.Score <em>/ @a.TotalQuestions correct</em></h1>
+        <p>A full record of this attempt — your answer, the correct answer, and the reasoning for every question.</p>
+        <div class="result-stats">
+            <div class="st"><div class="v" style="color:var(--pass)">@a.Score</div><div class="k">Correct</div></div>
+            <div class="st"><div class="v" style="color:var(--fail)">@incorrect</div><div class="k">Incorrect</div></div>
+            <div class="st"><div class="v">@pct%</div><div class="k">Pass line 65%</div></div>
         </div>
     </div>
+</section>
 
-    <div class="space-y-6">
-        @for (int i = 0; i < Model.Attempt.Questions.Count; i++)
+<div class="sec-head" data-reveal>
+    <div><span class="eyebrow eyebrow--signal">Full review</span><h2>Every question</h2></div>
+</div>
+
+@foreach (var q in a.Questions)
+{
+    <div class="review-item @(q.IsCorrect ? "ok" : "no")" data-reveal>
+        <div class="review-item__head">
+            <span class="rtick">
+                @if (q.IsCorrect)
+                {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg>
+                }
+                else
+                {
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                }
+            </span>
+            <div><h3>@q.QuestionText</h3></div>
+        </div>
+        <div class="ans @(q.IsCorrect ? "mine-ok" : "mine-no")"><span class="al">@q.SelectedLabel</span> Your answer — @q.SelectedText</div>
+        @if (!q.IsCorrect)
         {
-            var q = Model.Attempt.Questions[i];
-            <div class="border border-gray-200 rounded-lg p-5">
-                <div class="flex items-start">
-                    <span class="inline-flex items-center justify-center h-6 w-6 rounded-full bg-gray-800 text-white font-bold mr-3 flex-shrink-0">
-                        @(i + 1)
-                    </span>
-                    <div>
-                        <p class="text-gray-900">@q.QuestionText</p>
-
-                        <div class="mt-3 pl-2 border-l-4 @(q.IsCorrect ? "border-green-500" : "border-red-500")">
-                            <p class="text-sm">
-                                <span class="font-medium">Your answer:</span>
-                                <span class="@(q.IsCorrect ? "text-green-700" : "text-red-700")">
-                                    @q.SelectedLabel. @q.SelectedText
-                                </span>
-                            </p>
-                            @if (!q.IsCorrect)
-                            {
-                                <p class="text-sm mt-1">
-                                    <span class="font-medium">Correct answer:</span>
-                                    <span class="text-green-700">@q.CorrectLabel. @q.CorrectText</span>
-                                </p>
-                            }
-                        </div>
-
-                        <div class="mt-3 text-sm @(q.IsCorrect ? "text-green-700" : "text-red-700")">
-                            @Html.Raw(q.FeedbackMessage.Replace("\n", "<br />"))
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="ans correct"><span class="al">@q.CorrectLabel</span> Correct answer — @q.CorrectText</div>
         }
+        <div class="explain" style="white-space:pre-line">@q.FeedbackMessage</div>
     </div>
+}
 
-    <div class="mt-8 flex justify-center space-x-4">
-        <a asp-page="/Student/History/Index"
-           class="px-4 py-2 bg-gray-200 text-gray-800 text-sm font-medium rounded-md hover:bg-gray-300">
-            Back to History
-        </a>
-        <a asp-page="/Student/Exams/Take" asp-route-id="@Model.ExamId"
-           class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-700">
-            Retake Exam
-        </a>
+<div class="take-submit" data-reveal style="margin-top:1.6rem">
+    <div><b>Try for a higher score?</b><p>Retake this module or head back to your full history.</p></div>
+    <div style="display:flex; gap:0.7rem">
+        <a class="btn btn--ghost" asp-page="Index">Back to history</a>
+        <a class="btn btn--primary" asp-page="/Student/Exams/Take" asp-route-id="@a.ExamId">Retake <span class="arrow">&rarr;</span></a>
     </div>
 </div>

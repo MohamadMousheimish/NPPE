@@ -1,156 +1,115 @@
 @page
 @model NPPE.Web.Pages.Account.RegisterModel
 @{
-    ViewData["Title"] = "Create an Account";
-    Layout = "_Layout";
+    ViewData["Title"] = "Create account";
+    Layout = "_AuthLayout";
 }
 
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-md w-full">
-        <!-- Register Card -->
-        <div class="bg-white rounded-2xl shadow-xl p-8">
-            <!-- Section Title -->
-            <div class="text-center mb-8">
-                <h1 class="text-3xl font-bold text-gray-900">
-                    Create Your Account
-                </h1>
-                <p class="mt-2 text-gray-500">
-                    Join NPPE Exam Prep and start preparing today
-                </p>
+<main class="auth">
+    <section class="brand panel--dark reg">
+        <span class="reg-mark tl"></span><span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span><span class="reg-mark br"></span>
+        <div class="brand__grid grid-bg--dark"></div>
+
+        <svg class="gauge" viewBox="0 0 128 128" aria-hidden="true">
+            <circle cx="64" cy="64" r="60" stroke="var(--line-dark)" stroke-width="1"></circle>
+            <circle cx="64" cy="64" r="52" stroke="var(--line-dark)" stroke-width="6" stroke-dasharray="1 7.6"></circle>
+            <circle class="arc" cx="64" cy="64" r="44"></circle>
+            <line x1="64" y1="18" x2="64" y2="26" stroke="var(--slate-2)" stroke-width="1"></line>
+            <line x1="64" y1="102" x2="64" y2="110" stroke="var(--slate-2)" stroke-width="1"></line>
+            <text class="lbl" x="64" y="63">NPPE</text>
+            <text class="sub" x="64" y="76">ENROLL</text>
+        </svg>
+
+        <div class="wordmark">
+            <span class="mark">N</span>
+            <div class="stack"><b>NPPE&nbsp;Prep</b><span>Exam Preparation</span></div>
+        </div>
+
+        <div class="hero">
+            <span class="eyebrow eyebrow--signal">Enrollment · New candidate</span>
+            <h1>Open your <em>NPPE file.</em></h1>
+            <p>One account tracks every practice module, score, and worked answer on your road to the P.Eng.</p>
+        </div>
+
+        <div class="titleblock">
+            <div class="row">
+                <div class="cell"><span class="k">Record</span><span class="v">CANDIDATE</span></div>
+                <div class="cell"><span class="k">Stage</span><span class="v">01 / 04</span></div>
+                <div class="cell"><span class="k">Status</span><span class="v"><span class="live-dot"></span>DRAFT</span></div>
             </div>
+            <div class="row">
+                <div class="cell"><span class="k">Setup</span><span class="v">~1 MIN</span></div>
+                <div class="cell"><span class="k">Card</span><span class="v">NOT REQ.</span></div>
+                <div class="cell"><span class="k">Access</span><span class="v">INSTANT</span></div>
+            </div>
+        </div>
+    </section>
 
-            <form method="post" class="space-y-4">
-                <div asp-validation-summary="All" class="text-red-600 text-sm mb-4 bg-red-50 p-3 rounded-lg"></div>
+    <section class="formside" data-study-field data-study-count="22">
+        <div class="formcard frame seq">
+            <span class="eyebrow eyebrow--signal" style="--i:0">Enrollment · Create account</span>
+            <h2 style="--i:1">Create your account</h2>
+            <p class="sub" style="--i:2">Start prepping in about a minute. No card required.</p>
 
-                <!-- Name Fields Row -->
-                <div class="grid grid-cols-2 gap-4">
-                    <!-- First Name Input with Icon -->
-                    <div>
-                        <label for="FirstName" class="sr-only">First Name</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                            </span>
-                            <input asp-for="Input.FirstName"
-                                   class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                   placeholder="First Name" />
-                        </div>
-                        <span asp-validation-for="Input.FirstName" class="text-red-500 text-xs mt-1 block"></span>
-                    </div>
+            <form method="post" style="--i:3">
+                <div asp-validation-summary="All"></div>
 
-                    <!-- Last Name Input with Icon -->
-                    <div>
-                        <label for="LastName" class="sr-only">Last Name</label>
-                        <div class="relative">
-                            <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                            </span>
-                            <input asp-for="Input.LastName"
-                                   class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                                   placeholder="Last Name" />
-                        </div>
-                        <span asp-validation-for="Input.LastName" class="text-red-500 text-xs mt-1 block"></span>
-                    </div>
+                <div class="row-2">
+                    <label class="field">
+                        <span class="field__label">First name <span class="idx">01</span></span>
+                        <span class="field__wrap"><input asp-for="Input.FirstName" class="field__input" placeholder="Ada" autocomplete="given-name" /></span>
+                        <span asp-validation-for="Input.FirstName" class="field-validation-error"></span>
+                    </label>
+                    <label class="field">
+                        <span class="field__label">Last name <span class="idx">02</span></span>
+                        <span class="field__wrap"><input asp-for="Input.LastName" class="field__input" placeholder="Lovelace" autocomplete="family-name" /></span>
+                        <span asp-validation-for="Input.LastName" class="field-validation-error"></span>
+                    </label>
                 </div>
 
-                <!-- Email Input with Icon -->
-                <div>
-                    <label for="Email" class="sr-only">Email address</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
-                            </svg>
-                        </span>
-                        <input asp-for="Input.Email"
-                               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                               placeholder="Email address" />
-                    </div>
-                    <span asp-validation-for="Input.Email" class="text-red-500 text-xs mt-1 block"></span>
+                <label class="field">
+                    <span class="field__label">Email <span class="idx">03</span></span>
+                    <span class="field__wrap"><input asp-for="Input.Email" class="field__input" placeholder="you@firm.ca" autocomplete="email" /></span>
+                    <span asp-validation-for="Input.Email" class="field-validation-error"></span>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Password <span class="idx">04</span></span>
+                    <span class="field__wrap"><input asp-for="Input.Password" type="password" class="field__input" placeholder="••••••••" autocomplete="new-password" /></span>
+                    <span asp-validation-for="Input.Password" class="field-validation-error"></span>
+                </label>
+
+                <label class="field">
+                    <span class="field__label">Confirm password <span class="idx">05</span></span>
+                    <span class="field__wrap"><input asp-for="Input.ConfirmPassword" type="password" class="field__input" placeholder="••••••••" autocomplete="new-password" /></span>
+                    <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
+                </label>
+
+                <div class="note">
+                    <span class="anno"><strong>Password spec</strong></span>
+                    <ul>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> At least 8 characters</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> One uppercase letter</li>
+                    </ul>
                 </div>
 
-                <!-- Password Input with Icon -->
-                <div>
-                    <label for="Password" class="sr-only">Password</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                            </svg>
-                        </span>
-                        <input asp-for="Input.Password" type="password"
-                               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                               placeholder="Password" />
-                    </div>
-                    <span asp-validation-for="Input.Password" class="text-red-500 text-xs mt-1 block"></span>
-                </div>
-
-                <!-- Confirm Password Input with Icon -->
-                <div>
-                    <label for="ConfirmPassword" class="sr-only">Confirm Password</label>
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                            </svg>
-                        </span>
-                        <input asp-for="Input.ConfirmPassword" type="password"
-                               class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                               placeholder="Confirm Password" />
-                    </div>
-                    <span asp-validation-for="Input.ConfirmPassword" class="text-red-500 text-xs mt-1 block"></span>
-                </div>
-
-                <!-- Create Account Button -->
-                <button type="submit"
-                        class="w-full py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-xl shadow-lg hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-200 transform hover:scale-[1.02]">
-                    Create Account
+                <button class="btn btn--primary btn--block btn--lg" type="submit">
+                    Create account <span class="arrow">&rarr;</span>
                 </button>
 
-                <!-- OR Divider -->
-                <div class="relative my-6">
-                    <div class="absolute inset-0 flex items-center">
-                        <div class="w-full border-t border-gray-300"></div>
-                    </div>
-                    <div class="relative flex justify-center text-sm">
-                        <span class="px-4 bg-white text-gray-500 font-medium">OR</span>
-                    </div>
-                </div>
+                <div class="divider mydivider">Or</div>
 
-                <!-- Google Sign Up Button -->
-                <button type="submit" asp-page-handler="GoogleSignup"
-                        class="w-full py-3 px-4 bg-white border border-gray-300 text-gray-700 font-medium rounded-xl shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-200 transition duration-200 flex items-center justify-center gap-3">
-                    <svg class="h-5 w-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
-                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-                    </svg>
-                    Sign Up with Google
+                <button class="btn btn--ghost btn--block provider gbtn" type="submit" asp-page-handler="GoogleSignup">
+                    <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v7.8h12.5c-.3 2.1-1.6 5.2-4.6 7.3l7.1 5.5c4.3-3.9 6.8-9.7 6.8-16.5z"/><path fill="#FBBC05" d="M10.5 28.3c-.5-1.4-.8-2.9-.8-4.3s.3-3 .7-4.3l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.5l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.6l-7.1-5.5c-2 1.4-4.6 2.3-8.1 2.3-6.3 0-11.6-3.7-13.5-9.1l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
+                    Continue with Google
                 </button>
             </form>
 
-            <!-- Sign In Link -->
-            <div class="mt-8 text-center">
-                <p class="text-gray-600">
-                    Already have an account?
-                    <a asp-page="/Account/Login" class="font-semibold text-blue-600 hover:text-blue-500 hover:underline">
-                        Sign in
-                    </a>
-                </p>
-            </div>
+            <p class="foot">Already enrolled? <a asp-page="/Account/Login">Sign in</a></p>
         </div>
-    </div>
-</div>
+    </section>
+</main>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

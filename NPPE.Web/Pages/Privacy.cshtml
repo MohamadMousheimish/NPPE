@@ -1,8 +1,33 @@
-﻿@page
+@page
 @model PrivacyModel
 @{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Privacy";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<style>
+    .prose { max-width: 68ch; }
+    .prose h2 { font-size: 1.2rem; margin: 2rem 0 0.6rem; }
+    .prose p { color: var(--slate); margin-bottom: 0.8rem; }
+</style>
+
+<div class="phead" data-reveal>
+    <div><span class="eyebrow eyebrow--signal">Legal</span><h1>Privacy <em>policy</em></h1><p class="sub">How NPPE Prep handles your data.</p></div>
+</div>
+
+<div class="prose" data-reveal>
+    <p>This page explains what data NPPE Prep collects, why, and how you control it.</p>
+
+    <h2>What we collect</h2>
+    <p>Your account details (name, email), your exam attempts and scores, and payment records processed securely through Stripe. We never store your card details on our servers.</p>
+
+    <h2>How we use it</h2>
+    <p>To run your account, show your progress and history, process payments, and improve the practice material. We do not sell your data.</p>
+
+    <h2>Your controls</h2>
+    <p>You can view and update your profile at any time, or request deletion of your account. Reach us through the contact link in the footer.</p>
+
+    <h2>Cookies</h2>
+    <p>We use only the cookies needed to keep you signed in and remember your language preference.</p>
+</div>
+
+<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>

@@ -2,127 +2,72 @@
 @model NPPE.Web.Pages.Payments.BillingModel
 @{
     ViewData["Title"] = "Billing";
+    ViewData["ActiveNav"] = "billing";
+    var s = Model.SubscriptionStatus;
 }
 
-<div class="max-w-2xl mx-auto">
-    <div class="mb-6">
-        <h1 class="text-2xl font-bold text-gray-900">Billing & Subscription</h1>
-        <p class="text-gray-600">Manage your plan and payment details.</p>
-    </div>
-
-    @if (!string.IsNullOrEmpty(Model.Message))
-    {
-        <div class="mb-6 p-4 rounded-lg bg-blue-50 border border-blue-200">
-            <p class="text-sm text-blue-800">@Model.Message</p>
-        </div>
-    }
-
-    <div class="bg-white shadow rounded-2xl overflow-hidden">
-        @if (Model.SubscriptionStatus == null || !Model.SubscriptionStatus.IsPremium)
-        {
-            <!-- No Active Plan -->
-            <div class="p-8 text-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                </svg>
-                <h2 class="mt-4 text-lg font-semibold text-gray-900">No Active Plan</h2>
-                <p class="mt-2 text-gray-600">Subscribe to get unlimited access to all exams.</p>
-                <a asp-page="/Payments/Pricing"
-                   class="mt-6 inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition duration-200">
-                    View Plans
-                </a>
-            </div>
-        }
-        else if (Model.SubscriptionStatus.HasSubscription)
-        {
-            <!-- Active Subscription -->
-            <div class="px-6 py-5 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-900">Monthly Subscription</h2>
-                        <p class="text-sm text-gray-500">$9.99 CAD / month</p>
-                    </div>
-                    @if (Model.SubscriptionStatus.IsCancelPending)
-                    {
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
-                            Cancelling
-                        </span>
-                    }
-                    else
-                    {
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                            Active
-                        </span>
-                    }
-                </div>
-            </div>
-
-            <div class="px-6 py-5">
-                @if (Model.SubscriptionStatus.IsCancelPending && Model.SubscriptionStatus.SubscriptionEndDate.HasValue)
-                {
-                    <div class="p-4 rounded-lg bg-orange-50 border border-orange-200 mb-4">
-                        <p class="text-sm text-orange-800">
-                            Your subscription has been cancelled. You will retain access until
-                            <strong>@Model.SubscriptionStatus.SubscriptionEndDate.Value.ToString("MMMM dd, yyyy")</strong>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form method="post" asp-page-handler="Cancel" id="cancel-form">
-                        <button type="button" onclick="confirmCancel()"
-                                class="px-4 py-2 border border-red-300 text-red-600 text-sm font-medium rounded-lg hover:bg-red-50 transition duration-200">
-                            Cancel Subscription
-                        </button>
-                    </form>
-                }
-            </div>
-        }
-        else
-        {
-            <!-- One-Time Purchase (Lifetime) -->
-            <div class="px-6 py-5 border-b border-gray-100">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-900">Full Access (Lifetime)</h2>
-                        <p class="text-sm text-gray-500">One-time payment of $29.00 CAD</p>
-                    </div>
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                        Active
-                    </span>
-                </div>
-            </div>
-            <div class="px-6 py-5">
-                <p class="text-sm text-gray-600">You have lifetime access to all exams. No action needed.</p>
-            </div>
-        }
-    </div>
-
-    <!-- Quick Links -->
-    <div class="mt-6 flex space-x-4">
-        <a asp-page="/Payments/History"
-           class="inline-flex items-center text-sm text-blue-600 hover:text-blue-700 transition duration-200">
-            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-            </svg>
-            Payment History
-        </a>
-        <a asp-page="/Student/Exams/Index"
-           class="inline-flex items-center text-sm text-gray-600 hover:text-blue-600 transition duration-200">
-            <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 12H5M12 19l-7-7 7-7" />
-            </svg>
-            Back to Exams
-        </a>
-    </div>
+<div class="phead" data-reveal>
+    <div><span class="eyebrow eyebrow--signal">Billing &amp; subscription</span><h1>Your <em>plan</em></h1><p class="sub">Manage your subscription and payment details.</p></div>
 </div>
 
-@section Scripts {
-    <script>
-        function confirmCancel() {
-            if (confirm('Are you sure you want to cancel your subscription? You will retain access until the end of your current billing period.')) {
-                document.getElementById('cancel-form').submit();
-            }
-        }
-    </script>
+@if (!string.IsNullOrEmpty(Model.Message))
+{
+    <div class="alert alert--info" data-reveal>@Model.Message</div>
 }
+
+@if (s == null || !s.IsPremium)
+{
+    <div class="empty" data-reveal style="max-width:620px; text-align:left">
+        <div class="ic" style="margin:0 0 1.1rem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
+        <h3>No active plan</h3>
+        <p>Subscribe or buy full access to unlock unlimited attempts on every module.</p>
+        <a class="btn btn--primary" asp-page="/Payments/Pricing">View plans <span class="arrow">&rarr;</span></a>
+    </div>
+}
+else if (s.HasSubscription)
+{
+    <div class="bill-card" data-reveal>
+        <div class="bill-card__head">
+            <div>
+                <h2>Monthly subscription</h2>
+                <div class="price">CA$9.99 / month@(s.IsCancelPending && s.SubscriptionEndDate.HasValue ? $" · access until {s.SubscriptionEndDate.Value:dd MMM yyyy}" : "")</div>
+            </div>
+            <span class="status-badge @(s.IsCancelPending ? "cancel" : "active")">@(s.IsCancelPending ? "Cancelling" : "Active")</span>
+        </div>
+        <div class="bill-card__body">
+            @if (s.IsCancelPending)
+            {
+                <div class="info-note warn">Your subscription is cancelling. You keep full access until @(s.SubscriptionEndDate?.ToString("dd MMM yyyy") ?? "the end of the period"), then it won't renew.</div>
+            }
+            else
+            {
+                <div class="info-note" style="margin-bottom:1.3rem">You have full access to all modules and unlimited attempts.</div>
+                <form method="post" asp-page-handler="Cancel" onsubmit="return confirm('Cancel your subscription? You keep access until the end of the billing period.');">
+                    <button class="btn btn--danger" type="submit">Cancel subscription</button>
+                </form>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="bill-card" data-reveal>
+        <div class="bill-card__head">
+            <div>
+                <h2>Full access · Lifetime</h2>
+                <div class="price">One-time payment of CA$29.00</div>
+            </div>
+            <span class="status-badge active">Active</span>
+        </div>
+        <div class="bill-card__body">
+            <div class="info-note">You have lifetime access to all modules. No action needed.</div>
+        </div>
+    </div>
+}
+
+<div style="display:flex; gap:1.4rem; margin-top:1.4rem" data-reveal>
+    <a class="link" asp-page="/Payments/History">Payment history &rarr;</a>
+    <a class="link" asp-page="/Payments/Pricing">Change plan &rarr;</a>
+</div>
+
+<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>

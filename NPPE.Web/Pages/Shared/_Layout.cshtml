@@ -1,345 +1,111 @@
+@{
+    var authed = User.Identity?.IsAuthenticated == true;
+    var isAdmin = User.IsInRole("Admin");
+    var name = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "";
+    var email = User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value ?? "";
+    var parts = name.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+    var initials = parts.Length == 0 ? "U"
+        : (parts.Length == 1 ? parts[0].Substring(0, 1) : parts[0].Substring(0, 1) + parts[^1].Substring(0, 1)).ToUpper();
+    var active = ViewData["ActiveNav"] as string ?? "";
+    var culture = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+    var path = ViewContext.HttpContext.Request.Path;
+    string NavCls(string key) => active == key ? "is-active" : "";
+}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@culture">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NPPE Exam Prep</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .nav-gradient {
-            background: linear-gradient(135deg, #1e40af 0%, #4f46e5 100%);
-        }
-        .dropdown-enter {
-            animation: dropdownEnter 0.2s ease-out;
-        }
-        @@keyframes dropdownEnter {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', function (e) {
-                const languageButton = document.getElementById('language-button');
-                const languageMenu = document.getElementById('language-menu');
-                const profileButton = document.getElementById('profile-button');
-                const profileMenu = document.getElementById('profile-menu');
-                const mobileMenuButton = document.getElementById('mobile-menu-button');
-                const mobileMenu = document.getElementById('mobile-menu');
-
-                if (languageButton && !languageButton.contains(e.target) && languageMenu && !languageMenu.contains(e.target)) {
-                    languageMenu.classList.add('hidden');
-                }
-                if (profileButton && !profileButton.contains(e.target) && profileMenu && !profileMenu.contains(e.target)) {
-                    profileMenu.classList.add('hidden');
-                }
-                if (mobileMenuButton && !mobileMenuButton.contains(e.target) && mobileMenu && !mobileMenu.contains(e.target)) {
-                    mobileMenu.classList.add('hidden');
-                }
-            });
-
-            document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape') {
-                    document.getElementById('language-menu')?.classList.add('hidden');
-                    document.getElementById('profile-menu')?.classList.add('hidden');
-                    document.getElementById('mobile-menu')?.classList.add('hidden');
-                }
-            });
-
-            // Toggle language menu
-            const langBtn = document.getElementById('language-button');
-            if (langBtn) {
-                langBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    const menu = document.getElementById('language-menu');
-                    menu.classList.toggle('hidden');
-                    document.getElementById('profile-menu')?.classList.add('hidden');
-                });
-            }
-
-            // Toggle profile menu
-            const profBtn = document.getElementById('profile-button');
-            if (profBtn) {
-                profBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    const menu = document.getElementById('profile-menu');
-                    menu.classList.toggle('hidden');
-                    document.getElementById('language-menu')?.classList.add('hidden');
-                });
-            }
-
-            // Toggle mobile menu
-            const mobileBtn = document.getElementById('mobile-menu-button');
-            if (mobileBtn) {
-                mobileBtn.addEventListener('click', function (e) {
-                    e.stopPropagation();
-                    const menu = document.getElementById('mobile-menu');
-                    menu.classList.toggle('hidden');
-                });
-            }
-        });
-    </script>
+    <title>@ViewData["Title"] · NPPE Prep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/design-system.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    @await RenderSectionAsync("Head", required: false)
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col">
-    <!-- Navigation Bar -->
-    <nav class="nav-gradient shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <!-- Left side: Logo + Navigation -->
-                <div class="flex items-center space-x-8">
-                    <!-- Logo -->
-                    <a asp-page="/Index" class="flex items-center space-x-2">
-                        <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center shadow-md">
-                            <svg class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-white">NPPE Prep</span>
-                    </a>
+<body>
+    <header class="appbar">
+        <div class="appbar__in">
+            <a class="wm" asp-page="/Index"><span class="mk">N</span><b>NPPE&nbsp;Prep</b></a>
 
-                    <!-- Desktop Navigation Links -->
-                    @if (User.Identity?.IsAuthenticated == true)
+            @if (authed)
+            {
+                <nav class="nav" data-nav>
+                    <a asp-page="/Index" class="@NavCls("dashboard")">Dashboard</a>
+                    @if (isAdmin)
                     {
-                        <div class="hidden md:flex items-center space-x-1">
-                            <a asp-page="/Index"
-                               class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                                Dashboard
-                            </a>
-                            @if (User.IsInRole("Admin"))
-                            {
-                                <a asp-page="/Admin/Exams/Index"
-                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                                    Manage Exams
-                                </a>
-                            }
-                            else if (User.IsInRole("Student"))
-                            {
-                                <a asp-page="/Student/Exams/Index"
-                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                                    Take Exam
-                                </a>
-                                <a asp-page="/Student/History/Index"
-                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                                    History
-                                </a>
-                                <a asp-page="/Payments/Billing"
-                                   class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                                    Billing
-                                </a>
-                            }
-                        </div>
-                    }
-                </div>
-
-                <!-- Right side: Profile + Language -->
-                <div class="flex items-center space-x-3">
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <!-- Language Switcher -->
-                        <div class="relative hidden sm:block">
-                            <button id="language-button"
-                                    class="flex items-center space-x-1 px-3 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200 focus:outline-none">
-                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <line x1="2" y1="12" x2="22" y2="12"></line>
-                                    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                                </svg>
-                                @{
-                                    var currentCulture = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToUpper();
-                                }
-                                <span class="text-sm font-medium">@currentCulture</span>
-                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </button>
-                            <div id="language-menu" class="absolute right-0 mt-2 w-40 bg-white shadow-xl rounded-xl py-2 hidden dropdown-enter z-50 border border-gray-100">
-                                <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=en")"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
-                                    <span class="mr-2">🇬🇧</span> English
-                                </a>
-                                <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=fr")"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
-                                    <span class="mr-2">🇫🇷</span> Français
-                                </a>
-                            </div>
-                        </div>
-
-                        <!-- Profile Dropdown -->
-                        <div class="relative">
-                            <button id="profile-button"
-                                    class="flex items-center space-x-2 px-3 py-2 rounded-lg text-white hover:bg-white/10 transition duration-200 focus:outline-none">
-                                <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
-                                    <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                </div>
-                                <span class="hidden sm:inline text-sm font-medium">@User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value</span>
-                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="6 9 12 15 18 9"></polyline>
-                                </svg>
-                            </button>
-                            <div id="profile-menu" class="absolute right-0 mt-2 w-56 bg-white shadow-xl rounded-xl py-2 hidden dropdown-enter z-50 border border-gray-100">
-                                <div class="px-4 py-3 border-b border-gray-100">
-                                    <p class="text-sm font-medium text-gray-900">@User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value</p>
-                                    <p class="text-xs text-gray-500">@User.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value</p>
-                                </div>
-                                <a asp-page="/Account/Profile"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
-                                    <svg class="h-4 w-4 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                    My Profile
-                                </a>
-                                <a asp-page="/Account/ChangePassword"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
-                                    <svg class="h-4 w-4 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                    </svg>
-                                    Change Password
-                                </a>
-                                <a asp-page="/Payments/Billing"
-                                   class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition duration-200">
-                                    <svg class="h-4 w-4 mr-3 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
-                                        <line x1="1" y1="10" x2="23" y2="10"></line>
-                                    </svg>
-                                    Billing
-                                </a>
-                                <div class="border-t border-gray-100 mt-2 pt-2">
-                                    <form method="post" asp-page="/Index" asp-page-handler="Logout">
-                                        @Html.AntiForgeryToken()
-                                        <button type="submit"
-                                                class="flex items-center w-full px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition duration-200">
-                                            <svg class="h-4 w-4 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                                <polyline points="16 17 21 12 16 7"></polyline>
-                                                <line x1="21" y1="12" x2="9" y2="12"></line>
-                                            </svg>
-                                            @SharedLocalizer["Logout"]
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Mobile menu button -->
-                        <button id="mobile-menu-button" class="md:hidden p-2 rounded-lg text-white hover:bg-white/10 transition duration-200">
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            </svg>
-                        </button>
+                        <a asp-page="/Admin/Exams/Index" class="@NavCls("admin")">Manage Exams</a>
                     }
                     else
                     {
-                        <a asp-page="/Account/Login"
-                           class="px-4 py-2 rounded-lg text-sm font-medium text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            Login
-                        </a>
-                        <a asp-page="/Account/Register"
-                           class="px-4 py-2 bg-white text-indigo-600 rounded-lg text-sm font-semibold hover:bg-blue-50 transition duration-200 shadow-md">
-                            Sign Up
-                        </a>
+                        <a asp-page="/Student/Exams/Index" class="@NavCls("exams")">Practice Exams</a>
+                        <a asp-page="/Student/History/Index" class="@NavCls("history")">History</a>
+                        <a asp-page="/Payments/Billing" class="@NavCls("billing")">Billing</a>
                     }
-                </div>
-            </div>
-        </div>
+                </nav>
 
-        <!-- Mobile menu -->
-        @if (User.Identity?.IsAuthenticated == true)
-        {
-            <div id="mobile-menu" class="hidden md:hidden bg-indigo-700 border-t border-white/10">
-                <div class="px-4 py-3 space-y-1">
-                    <a asp-page="/Index"
-                       class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                        Dashboard
-                    </a>
-                    @if (User.IsInRole("Admin"))
-                    {
-                        <a asp-page="/Admin/Exams/Index"
-                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            Manage Exams
-                        </a>
-                    }
-                    else if (User.IsInRole("Student"))
-                    {
-                        <a asp-page="/Student/Exams/Index"
-                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            Take Exam
-                        </a>
-                        <a asp-page="/Student/History/Index"
-                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            History
-                        </a>
-                        <a asp-page="/Payments/Billing"
-                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            Billing
-                        </a>
-                    }
-                    <div class="border-t border-white/10 pt-2 mt-2">
-                        <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=en")"
-                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            🇬🇧 English
-                        </a>
-                        <a href="@($"{ViewContext.HttpContext.Request.Path}?culture=fr")"
-                           class="block px-4 py-2 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition duration-200">
-                            🇫🇷 Français
-                        </a>
+                <div class="appbar__right">
+                    <div class="lang">
+                        <a href="@($"{path}?culture=en")" class="@(culture == "en" ? "on" : "")">EN</a>
+                        <span class="sep">/</span>
+                        <a href="@($"{path}?culture=fr")" class="@(culture == "fr" ? "on" : "")">FR</a>
                     </div>
-                </div>
-            </div>
-        }
-    </nav>
 
-    <!-- Main Content -->
-    <main class="flex-grow px-4 sm:px-6 lg:px-8 py-8 w-full">
+                    <div class="profile" data-profile>
+                        <span class="avatar">@initials</span>
+                        <span class="who"><b>@name</b><span>@email</span></span>
+                        <span class="caret"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></span>
+                        <div class="menu" data-menu>
+                            <a asp-page="/Account/Profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg> My profile</a>
+                            <a asp-page="/Account/ChangePassword"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg> Change password</a>
+                            <a asp-page="/Payments/Billing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg> Billing</a>
+                            <div class="sep"></div>
+                            <form method="post" asp-page="/Index" asp-page-handler="Logout">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="mi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12H3"/><path d="M9 8l-4 4 4 4"/><path d="M13 4h6v16h-6"/></svg> @SharedLocalizer["Logout"]</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <button class="burger" data-burger aria-label="Menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+                </div>
+            }
+            else
+            {
+                <div class="appbar__right">
+                    <div class="lang">
+                        <a href="@($"{path}?culture=en")" class="@(culture == "en" ? "on" : "")">EN</a>
+                        <span class="sep">/</span>
+                        <a href="@($"{path}?culture=fr")" class="@(culture == "fr" ? "on" : "")">FR</a>
+                    </div>
+                    <a class="btn btn--ghost" asp-page="/Account/Login" style="border-color:var(--line-dark); color:var(--paper);">Sign in</a>
+                    <a class="btn btn--primary" asp-page="/Account/Register">Sign up</a>
+                </div>
+            }
+        </div>
+    </header>
+
+    <main class="page">
         @RenderBody()
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-white border-t border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between">
-                <div class="flex items-center space-x-2 mb-4 md:mb-0">
-                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                        <svg class="h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                        </svg>
-                    </div>
-                    <span class="text-lg font-semibold text-gray-900">NPPE Prep</span>
-                </div>
-                <div class="flex flex-wrap gap-6 text-sm text-gray-500">
-                    <a href="#" class="hover:text-blue-600 transition duration-200">About</a>
-                    <a href="#" class="hover:text-blue-600 transition duration-200">Privacy Policy</a>
-                    <a href="#" class="hover:text-blue-600 transition duration-200">Terms of Service</a>
-                    <a href="#" class="hover:text-blue-600 transition duration-200">Contact</a>
-                </div>
-            </div>
-            <div class="mt-6 pt-6 border-t border-gray-100 text-center text-sm text-gray-400">
-                &copy; @DateTime.Now.Year NPPE Exam Prep. All rights reserved.
-            </div>
+    <footer class="appfoot">
+        <div class="appfoot__in">
+            <div class="wm"><span class="mk">N</span><b>NPPE&nbsp;Prep</b></div>
+            <nav>
+                <a href="#">About</a>
+                <a asp-page="/Privacy">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Contact</a>
+            </nav>
+            <div class="copy">© @DateTime.Now.Year NPPE Prep — Built for engineers-in-training · Not affiliated with any regulator</div>
         </div>
     </footer>
 
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/motion.js" asp-append-version="true"></script>
+    <script src="~/js/app.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
