@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NPPE.Application.Commands.ExamAttempts.GetExamAttemptWithDetails;
@@ -6,6 +7,7 @@ using NPPE.Application.DTOs.ExamAttempts;
 
 namespace NPPE.Web.Pages.Student.Exams
 {
+    [Authorize(Policy = "StudentOnly")]
     public class ResultsModel : PageModel
     {
         private readonly IMediator _mediator;
@@ -20,8 +22,10 @@ namespace NPPE.Web.Pages.Student.Exams
 
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
             var attempt = await _mediator.Send(new GetExamAttemptWithDetailsQuery(id));
             if (attempt == null) return NotFound();
+            if (attempt.StudentId != userId) return Unauthorized();
 
             Attempt = attempt;
             ExamId = attempt.ExamId;

@@ -21,17 +21,20 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
     public HandlePaymentWebhookCommandHandler(
         IPaymentRepository paymentRepository,
         UserManager<AppUser> userManager,
         IConfiguration configuration,
-        IUserRepository userRepository)
+        IUserRepository userRepository,
+        IUnitOfWork unitOfWork)
     {
         _paymentRepository = paymentRepository;
         _userManager = userManager;
         _configuration = configuration;
         _userRepository = userRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<Unit> Handle(HandlePaymentWebhookCommand request, CancellationToken ct)
@@ -104,8 +107,15 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         }
 
         user.IsPremium = true;
-        await _paymentRepository.UpdateAsync(payment);
-        await _userManager.UpdateAsync(user);
+
+        // Commit payment + user together: a partial failure here would otherwise
+        // leave a paid user without premium, and the "already not Pending" guard
+        // above would prevent Stripe retries from ever fixing it.
+        await _unitOfWork.ExecuteInTransactionAsync(async () =>
+        {
+            await _paymentRepository.UpdateAsync(payment);
+            await _userManager.UpdateAsync(user);
+        });
     }
 
     private async Task HandleSubscriptionUpdated(Event stripeEvent)
@@ -116,25 +126,28 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         var user = await _userRepository.GetByStripeCustomerIdAsync(subscription.CustomerId);
         if (user == null) return;
 
-        if (subscription.CancelAtPeriodEnd)
-        {
-            user.SubscriptionEndDate = subscription.Items?.Data?.FirstOrDefault()?.CurrentPeriodEnd;
-            await _userManager.UpdateAsync(user);
-        }
-
-        // Update payment record
         var payment = await _paymentRepository.GetBySubscriptionIdAsync(subscription.Id);
-        if (payment != null)
+
+        await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
-            payment.SubscriptionStatus = subscription.Status switch
+            if (subscription.CancelAtPeriodEnd)
             {
-                "active" => SubscriptionStatus.Active,
-                "past_due" => SubscriptionStatus.PastDue,
-                "canceled" => SubscriptionStatus.Canceled,
-                _ => payment.SubscriptionStatus
-            };
-            await _paymentRepository.UpdateAsync(payment);
-        }
+                user.SubscriptionEndDate = subscription.Items?.Data?.FirstOrDefault()?.CurrentPeriodEnd;
+                await _userManager.UpdateAsync(user);
+            }
+
+            if (payment != null)
+            {
+                payment.SubscriptionStatus = subscription.Status switch
+                {
+                    "active" => SubscriptionStatus.Active,
+                    "past_due" => SubscriptionStatus.PastDue,
+                    "canceled" => SubscriptionStatus.Canceled,
+                    _ => payment.SubscriptionStatus
+                };
+                await _paymentRepository.UpdateAsync(payment);
+            }
+        });
     }
 
     private async Task HandleSubscriptionDeleted(Event stripeEvent)
@@ -154,15 +167,18 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
 
         user.StripeSubscriptionId = null;
         user.SubscriptionEndDate = null;
-        await _userManager.UpdateAsync(user);
 
-        // Update payment record
         var payment = await _paymentRepository.GetBySubscriptionIdAsync(subscription.Id);
-        if (payment != null)
+
+        await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
-            payment.SubscriptionStatus = SubscriptionStatus.Expired;
-            await _paymentRepository.UpdateAsync(payment);
-        }
+            await _userManager.UpdateAsync(user);
+            if (payment != null)
+            {
+                payment.SubscriptionStatus = SubscriptionStatus.Expired;
+                await _paymentRepository.UpdateAsync(payment);
+            }
+        });
     }
 
     private async Task HandleInvoicePaymentFailed(Event stripeEvent)

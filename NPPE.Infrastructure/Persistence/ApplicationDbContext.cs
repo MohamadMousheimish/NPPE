@@ -41,6 +41,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         builder.Entity<Question>(entity =>
         {
             entity.Property(q => q.Text).IsRequired().HasMaxLength(2000);
+            entity.Property(q => q.IsActive).HasDefaultValue(true);
             entity.HasOne(q => q.Exam)
                   .WithMany(e => e.Questions)
                   .HasForeignKey(q => q.ExamId)
@@ -62,6 +63,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         builder.Entity<Payment>(entity =>
         {
             entity.Property(p => p.StripeSessionId).IsRequired().HasMaxLength(255);
+            entity.Property(p => p.Amount).HasPrecision(18, 2);
             entity.Property(p => p.Currency).IsRequired().HasMaxLength(3);
             entity.Property(p => p.Status).IsRequired().HasMaxLength(50);
             entity.Property(p => p.PaymentType).IsRequired();

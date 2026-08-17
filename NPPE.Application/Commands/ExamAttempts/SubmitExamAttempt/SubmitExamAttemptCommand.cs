@@ -3,7 +3,12 @@ using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
 
 namespace NPPE.Application.Commands.ExamAttempts.SubmitExamAttempt;
-public record SubmitExamAttemptCommand(string StudentId, Guid ExamId, List<Guid> SelectedOptionsIds) : IRequest<Guid>;
+
+/// <summary>
+/// Submits an exam attempt. <paramref name="Answers"/> maps each QuestionId to the
+/// selected AnswerOptionId, so scoring does not depend on question ordering.
+/// </summary>
+public record SubmitExamAttemptCommand(string StudentId, Guid ExamId, IReadOnlyDictionary<Guid, Guid> Answers) : IRequest<Guid>;
 
 public class SubmitExamAttemptCommandHandler : IRequestHandler<SubmitExamAttemptCommand, Guid>
 {
@@ -28,19 +33,19 @@ public class SubmitExamAttemptCommandHandler : IRequestHandler<SubmitExamAttempt
         if (exam == null)
             throw new InvalidOperationException("Exam not found.");
 
-        if (request.SelectedOptionsIds.Count != exam.Questions.Count)
-            throw new ArgumentException("Answer count does not match question count.");
+        // Every question must be answered exactly once.
+        var unanswered = exam.Questions.Where(q => !request.Answers.ContainsKey(q.Id)).ToList();
+        if (unanswered.Count > 0)
+            throw new ArgumentException("All questions must be answered.");
 
-        // Calculate score
+        // Calculate score by matching each answer to its own question (order-independent).
         var total = exam.Questions.Count;
         var correct = 0;
         var attemptedAnswers = new List<AttemptedAnswer>();
-        var questions = exam.Questions.ToList();
 
-        for (int i = 0; i < exam.Questions.Count; i++)
+        foreach (var question in exam.Questions)
         {
-            var question = questions[i];
-            var selectedOptionId = request.SelectedOptionsIds[i];
+            var selectedOptionId = request.Answers[question.Id];
             var isCorrect = question.Options.Any(o => o.Id == selectedOptionId && o.IsCorrect);
 
             if (isCorrect) correct++;
@@ -60,6 +65,7 @@ public class SubmitExamAttemptCommandHandler : IRequestHandler<SubmitExamAttempt
             ExamId = request.ExamId,
             Score = correct,
             TotalQuestions = total,
+            TakenAt = DateTime.UtcNow,
             Answers = attemptedAnswers
         };
 

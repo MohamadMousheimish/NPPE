@@ -49,16 +49,15 @@ builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
 builder.Services.AddScoped<IExamAttemptRepository, ExamAttemptRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-// Razor Pages
-builder.Services.AddRazorPages();
-
-// Add role-based policies
+// Add role-based policies.
+// Premium access is intentionally NOT a policy: it is enforced at the point of
+// use via the live AppUser.IsPremium flag (see Student/Exams/Take) so that a
+// purchase takes effect immediately without requiring the user to re-login.
 builder.Services.AddAuthorizationBuilder()
                 .AddPolicy("AdminOnly", policy => policy.RequireRole(NppeRoles.Admin))
-                .AddPolicy("StudentOnly", policy => policy.RequireRole(NppeRoles.Student))
-                .AddPolicy("PremiumStudent", policy => policy.RequireRole("Student")
-                        .RequireAssertion(ctx =>ctx.User.FindFirst("premium")?.Value == "true"));
+                .AddPolicy("StudentOnly", policy => policy.RequireRole(NppeRoles.Student));
 
 var supportedCultures = new[] { "en", "fr" };
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -81,7 +80,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
-var localizationOptions = app.Services.GetService<IOptions<RequestLocalizationOptions>>().Value;
+var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
@@ -95,8 +94,9 @@ using (var scope = app.Services.CreateScope())
     db.Database.Migrate();
 }
 
-// Seed admin user
-await SeedAdminInitializer.SeedTestUsers(app);
+// Seed roles (all environments) and users (demo users in Development, or a
+// configuration-provided admin in other environments)
+await SeedAdminInitializer.SeedAsync(app);
 
 
 

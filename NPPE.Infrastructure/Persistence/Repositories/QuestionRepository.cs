@@ -12,7 +12,7 @@ public class QuestionRepository : GenericRepository<Question>, IQuestionReposito
     public async Task<List<Question>> GetQuestionsByExamIdAsync(Guid examId)
     {
         return await _context.Questions
-            .Where(q => q.ExamId == examId)
+            .Where(q => q.ExamId == examId && q.IsActive)
             .ToListAsync();
     }
 

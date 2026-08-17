@@ -1,57 +1,87 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
+using NPPE.Domain.Constants;
 using NPPE.Domain.Entities;
 
 namespace NPPE.Web.Initializers;
 
 public static class SeedAdminInitializer
 {
-    public async static Task SeedTestUsers(WebApplication app)
+    public async static Task SeedAsync(WebApplication app)
     {
         using var scope = app.Services.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-        // Create roles
-        var adminRole = "Admin";
-        var studentRole = "Student";
+        // Roles are required in every environment for authorization to work.
+        await EnsureRolesAsync(roleManager);
 
-        if (!await roleManager.RoleExistsAsync(adminRole))
-            await roleManager.CreateAsync(new IdentityRole(adminRole));
-        if (!await roleManager.RoleExistsAsync(studentRole))
-            await roleManager.CreateAsync(new IdentityRole(studentRole));
-
-        // Create admin user
-        const string adminEmail = "admin@nppe.ca";
-        if (await userManager.FindByEmailAsync(adminEmail) == null)
+        if (app.Environment.IsDevelopment())
         {
-            var admin = new AppUser
-            {
-                UserName = adminEmail,
-                Email = adminEmail,
-                FirstName = "NPPE",
-                LastName = "Admin",
-                EmailConfirmed = true
-            };
-
-            await userManager.CreateAsync(admin, "Admin@123!");
-            await userManager.AddToRoleAsync(admin, adminRole);
+            // Convenient demo accounts for local development only. These use
+            // well-known passwords, so they must never be seeded in production.
+            await SeedDevUsersAsync(userManager);
         }
-
-        // Create student user
-        const string studentEmail = "student@nppe.ca";
-        if (await userManager.FindByEmailAsync(studentEmail) == null)
+        else
         {
-            var student = new AppUser
-            {
-                UserName = studentEmail,
-                Email = studentEmail,
-                FirstName = "NPPE",
-                LastName = "Student",
-                EmailConfirmed = true
-            };
-
-            await userManager.CreateAsync(student, "Student@123!");
-            await userManager.AddToRoleAsync(student, studentRole);
+            // In non-development environments an initial admin is only created
+            // when explicit credentials are supplied via configuration/secrets.
+            // No default/backdoor admin is ever created.
+            await SeedConfiguredAdminAsync(userManager, app.Configuration);
         }
+    }
+
+    private static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
+    {
+        foreach (var role in new[] { NppeRoles.Admin, NppeRoles.Student })
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+                await roleManager.CreateAsync(new IdentityRole(role));
+        }
+    }
+
+    private static async Task SeedDevUsersAsync(UserManager<AppUser> userManager)
+    {
+        await CreateUserIfMissingAsync(userManager, "admin@nppe.ca", "NPPE", "Admin", "Admin@123!", NppeRoles.Admin);
+        await CreateUserIfMissingAsync(userManager, "student@nppe.ca", "NPPE", "Student", "Student@123!", NppeRoles.Student);
+    }
+
+    private static async Task SeedConfiguredAdminAsync(UserManager<AppUser> userManager, IConfiguration configuration)
+    {
+        var email = configuration["SeedAdmin:Email"];
+        var password = configuration["SeedAdmin:Password"];
+
+        // Nothing configured -> do not create any admin.
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+            return;
+
+        var firstName = configuration["SeedAdmin:FirstName"] ?? "NPPE";
+        var lastName = configuration["SeedAdmin:LastName"] ?? "Admin";
+
+        await CreateUserIfMissingAsync(userManager, email, firstName, lastName, password, NppeRoles.Admin);
+    }
+
+    private static async Task CreateUserIfMissingAsync(
+        UserManager<AppUser> userManager,
+        string email,
+        string firstName,
+        string lastName,
+        string password,
+        string role)
+    {
+        if (await userManager.FindByEmailAsync(email) != null)
+            return;
+
+        var user = new AppUser
+        {
+            UserName = email,
+            Email = email,
+            FirstName = firstName,
+            LastName = lastName,
+            EmailConfirmed = true
+        };
+
+        var result = await userManager.CreateAsync(user, password);
+        if (result.Succeeded)
+            await userManager.AddToRoleAsync(user, role);
     }
 }

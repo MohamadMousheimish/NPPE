@@ -19,6 +19,9 @@ public class DeleteQuestionCommandHandler : IRequestHandler<DeleteQuestionComman
         if (question == null)
             return; // or throw
 
-        await _questionRepository.DeleteAsync(question);
+        // Soft delete: keep the row so historical attempt results still resolve
+        // the question, but hide it from exams and admin listings.
+        question.IsActive = false;
+        await _questionRepository.UpdateAsync(question);
     }
 }

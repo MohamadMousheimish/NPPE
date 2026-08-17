@@ -9,7 +9,7 @@
     <div class="text-center mb-8">
         <h1 class="text-2xl font-bold text-gray-900">Exam Review</h1>
         <p class="mt-2 text-lg">
-            <span class="font-semibold">@Model.Attempt.Score</span> out of <span class="font-semibold">@Model.Attempt.TotalQuestions</span>
+            <span class="font-semibold">@Model.Attempt!.Score</span> out of <span class="font-semibold">@Model.Attempt.TotalQuestions</span>
         </p>
         <div class="mt-2 inline-block px-4 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
             @(Math.Round((double)Model.Attempt.Score / Model.Attempt.TotalQuestions * 100))% Correct

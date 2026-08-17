@@ -5,11 +5,8 @@ using NPPE.Domain.Entities;
 namespace NPPE.Infrastructure.Persistence.Repositories;
 public class PaymentRepository : GenericRepository<Payment>, IPaymentRepository
 {
-    private readonly ApplicationDbContext _context;
-
     public PaymentRepository(ApplicationDbContext context) : base(context)
     {
-        _context = context;
     }
 
     public async Task<Payment?> GetBySessionIdAsync(string sessionId)

@@ -19,7 +19,7 @@ public class ExamRepository : GenericRepository<Exam>, IExamRepository
     public async Task<Exam?> GetExamWithQuestionsAsync(Guid id)
     {
         return await _context.Exams
-            .Include(e => e.Questions)
+            .Include(e => e.Questions.Where(q => q.IsActive))
                 .ThenInclude(q => q.Options)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
