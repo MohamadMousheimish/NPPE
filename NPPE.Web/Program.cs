@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NPPE.Application.Queries.Exams.GetAllExams;
@@ -8,13 +9,15 @@ using NPPE.Domain.Entities;
 using NPPE.Infrastructure.Persistence;
 using NPPE.Infrastructure.Persistence.Repositories;
 using NPPE.Web.Initializers;
+using NPPE.Web.Resources;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages()
                 .AddViewLocalization()
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization(options =>
+                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource)));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -87,6 +90,19 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+
+// Persist the chosen language in a cookie so it sticks across navigation.
+app.MapGet("/set-culture", (string culture, string? returnUrl, HttpContext ctx) =>
+{
+    if (supportedCultures.Contains(culture))
+    {
+        ctx.Response.Cookies.Append(
+            CookieRequestCultureProvider.DefaultCookieName,
+            CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+            new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true, Path = "/" });
+    }
+    return Results.LocalRedirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
+});
 
 using (var scope = app.Services.CreateScope())
 {

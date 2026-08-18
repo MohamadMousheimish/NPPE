@@ -1,14 +1,14 @@
 @page
 @model NPPE.Web.Pages.Account.ProfileModel
 @{
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = SharedLocalizer["Profile"].Value;
     var parts = Model.FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries);
     var initials = parts.Length == 0 ? "U"
         : (parts.Length == 1 ? parts[0].Substring(0, 1) : parts[0].Substring(0, 1) + parts[^1].Substring(0, 1)).ToUpper();
 }
 
 <div class="phead" data-reveal>
-    <div><span class="eyebrow eyebrow--signal">Account</span><h1>Your <em>profile</em></h1></div>
+    <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Account"]</span><h1>@Html.Raw(SharedLocalizer["Your <em>profile</em>"])</h1></div>
 </div>
 
 <div class="profile-grid">
@@ -16,40 +16,40 @@
         <span class="reg-mark tl"></span><span class="reg-mark tr"></span><span class="reg-mark bl"></span><span class="reg-mark br"></span>
         <div class="big-avatar frame">@initials</div>
         <h2 style="font-size:1.3rem">@Model.FullName</h2>
-        <div class="tag tag--signal" style="margin-top:0.5rem; display:inline-block">@Model.Role</div>
+        <div class="tag tag--signal" style="margin-top:0.5rem; display:inline-block">@SharedLocalizer[Model.Role]</div>
         <div class="pstat">
-            <div><div class="v">@Model.ExamsCompleted</div><div class="k">Attempts</div></div>
-            <div><div class="v">@Model.AverageScore</div><div class="k">Avg</div></div>
+            <div><div class="v">@Model.ExamsCompleted</div><div class="k">@SharedLocalizer["Attempts"]</div></div>
+            <div><div class="v">@Model.AverageScore</div><div class="k">@SharedLocalizer["Avg"]</div></div>
         </div>
     </aside>
 
     <div style="display:grid; gap:1.4rem">
         <section class="pcard" data-reveal data-reveal-delay="60">
-            <div class="card-title"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><h2>Account details</h2></div>
+            <div class="card-title"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span><h2>@SharedLocalizer["Account details"]</h2></div>
             <div class="info-row">
-                <div class="info-field"><div class="k">Full name</div><div class="v">@Model.FullName</div></div>
-                <div class="info-field"><div class="k">Email</div><div class="v">@Model.Email</div></div>
-                <div class="info-field"><div class="k">Account type</div><div class="v">@Model.Role</div></div>
-                <div class="info-field"><div class="k">Member since</div><div class="v">@Model.MemberSince</div></div>
+                <div class="info-field"><div class="k">@SharedLocalizer["Full name"]</div><div class="v">@Model.FullName</div></div>
+                <div class="info-field"><div class="k">@SharedLocalizer["Email"]</div><div class="v">@Model.Email</div></div>
+                <div class="info-field"><div class="k">@SharedLocalizer["Account type"]</div><div class="v">@SharedLocalizer[Model.Role]</div></div>
+                <div class="info-field"><div class="k">@SharedLocalizer["Member since"]</div><div class="v">@Model.MemberSince</div></div>
             </div>
         </section>
 
         <section class="pcard" data-reveal data-reveal-delay="120">
-            <div class="card-title"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><h2>Security</h2></div>
+            <div class="card-title"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><h2>@SharedLocalizer["Security"]</h2></div>
             <div style="display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap">
-                <div class="info-field"><div class="k">Password</div><div class="v">••••••••••</div></div>
-                <a class="btn btn--ghost" asp-page="/Account/ChangePassword">Change password <span class="arrow">&rarr;</span></a>
+                <div class="info-field"><div class="k">@SharedLocalizer["Password"]</div><div class="v">••••••••••</div></div>
+                <a class="btn btn--ghost" asp-page="/Account/ChangePassword">@SharedLocalizer["Change password"] <span class="arrow">&rarr;</span></a>
             </div>
         </section>
 
         <section class="pcard" data-reveal data-reveal-delay="180">
-            <div class="card-title"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></span><h2>Quick actions</h2></div>
+            <div class="card-title"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13 2L3 14h7l-1 8 10-12h-7z"/></svg></span><h2>@SharedLocalizer["Quick actions"]</h2></div>
             <div class="rail">
-                <a class="action" asp-page="/Student/Exams/Index"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8"/></svg></span><span class="tx"><b>Take an exam</b><span>Browse modules</span></span><span class="arrow">&rarr;</span></a>
-                <a class="action" asp-page="/Payments/Billing"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span><span class="tx"><b>Manage billing</b><span>Plan &amp; payments</span></span><span class="arrow">&rarr;</span></a>
+                <a class="action" asp-page="/Student/Exams/Index"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8"/></svg></span><span class="tx"><b>@SharedLocalizer["Take an exam"]</b><span>@SharedLocalizer["Browse modules"]</span></span><span class="arrow">&rarr;</span></a>
+                <a class="action" asp-page="/Payments/Billing"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span><span class="tx"><b>@SharedLocalizer["Manage billing"]</b><span>@SharedLocalizer["Plan & payments"]</span></span><span class="arrow">&rarr;</span></a>
             </div>
         </section>
     </div>
 </div>
 
-<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

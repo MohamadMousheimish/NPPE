@@ -2,9 +2,11 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using NPPE.Application.Commands.Questions.UpdateQuestion;
 using NPPE.Application.DTOs.Questions;
 using NPPE.Application.Queries.Questions.GetQuestionById;
+using NPPE.Web.Resources;
 using System.ComponentModel.DataAnnotations;
 
 namespace NPPE.Web.Pages.Admin.Exams.Questions
@@ -13,10 +15,12 @@ namespace NPPE.Web.Pages.Admin.Exams.Questions
     public class EditModel : PageModel
     {
         private readonly IMediator _mediator;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public EditModel(IMediator mediator)
+        public EditModel(IMediator mediator, IStringLocalizer<SharedResource> localizer)
         {
             _mediator = mediator;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -73,7 +77,7 @@ namespace NPPE.Web.Pages.Admin.Exams.Questions
 
             if (Input.Options.Count(o => o.IsCorrect) != 1)
             {
-                ModelState.AddModelError(string.Empty, "Please select exactly one correct answer.");
+                ModelState.AddModelError(string.Empty, _localizer["Please select exactly one correct answer."]);
                 return Page();
             }
 

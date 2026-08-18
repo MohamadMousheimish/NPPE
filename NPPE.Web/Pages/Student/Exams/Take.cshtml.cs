@@ -15,11 +15,13 @@ namespace NPPE.Web.Pages.Student.Exams
     {
         private readonly IMediator _mediator;
         private readonly UserManager<AppUser> _userManager;
+        private readonly Microsoft.Extensions.Localization.IStringLocalizer<NPPE.Web.Resources.SharedResource> _localizer;
 
-        public TakeModel(IMediator mediator, UserManager<AppUser> userManager)
+        public TakeModel(IMediator mediator, UserManager<AppUser> userManager, Microsoft.Extensions.Localization.IStringLocalizer<NPPE.Web.Resources.SharedResource> localizer)
         {
             _mediator = mediator;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public ExamWithQuestionsDto? Exam { get; set; }
@@ -62,7 +64,7 @@ namespace NPPE.Web.Pages.Student.Exams
             var unanswered = exam.Questions.Any(q => !Answers.ContainsKey(q.Id));
             if (unanswered)
             {
-                ModelState.AddModelError(string.Empty, "Please answer all questions before submitting.");
+                ModelState.AddModelError(string.Empty, _localizer["Please answer all questions before submitting."]);
                 return Page();
             }
 

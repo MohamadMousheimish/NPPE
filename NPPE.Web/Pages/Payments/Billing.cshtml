@@ -1,27 +1,28 @@
 @page
 @model NPPE.Web.Pages.Payments.BillingModel
 @{
-    ViewData["Title"] = "Billing";
+    ViewData["Title"] = SharedLocalizer["Billing"].Value;
     ViewData["ActiveNav"] = "billing";
     var s = Model.SubscriptionStatus;
+    var endStr = s?.SubscriptionEndDate?.ToString("dd MMM yyyy") ?? SharedLocalizer["the end of the period"].Value;
 }
 
 <div class="phead" data-reveal>
-    <div><span class="eyebrow eyebrow--signal">Billing &amp; subscription</span><h1>Your <em>plan</em></h1><p class="sub">Manage your subscription and payment details.</p></div>
+    <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Billing & subscription"]</span><h1>@Html.Raw(SharedLocalizer["Your <em>plan</em>"])</h1><p class="sub">@SharedLocalizer["Manage your subscription and payment details."]</p></div>
 </div>
 
 @if (!string.IsNullOrEmpty(Model.Message))
 {
-    <div class="alert alert--info" data-reveal>@Model.Message</div>
+    <div class="alert alert--info" data-reveal>@SharedLocalizer[Model.Message]</div>
 }
 
 @if (s == null || !s.IsPremium)
 {
     <div class="empty" data-reveal style="max-width:620px; text-align:left">
         <div class="ic" style="margin:0 0 1.1rem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></div>
-        <h3>No active plan</h3>
-        <p>Subscribe or buy full access to unlock unlimited attempts on every module.</p>
-        <a class="btn btn--primary" asp-page="/Payments/Pricing">View plans <span class="arrow">&rarr;</span></a>
+        <h3>@SharedLocalizer["No active plan"]</h3>
+        <p>@SharedLocalizer["Subscribe or buy full access to unlock unlimited attempts on every module."]</p>
+        <a class="btn btn--primary" asp-page="/Payments/Pricing">@SharedLocalizer["View plans"] <span class="arrow">&rarr;</span></a>
     </div>
 }
 else if (s.HasSubscription)
@@ -29,22 +30,30 @@ else if (s.HasSubscription)
     <div class="bill-card" data-reveal>
         <div class="bill-card__head">
             <div>
-                <h2>Monthly subscription</h2>
-                <div class="price">CA$9.99 / month@(s.IsCancelPending && s.SubscriptionEndDate.HasValue ? $" · access until {s.SubscriptionEndDate.Value:dd MMM yyyy}" : "")</div>
+                <h2>@SharedLocalizer["Monthly subscription"]</h2>
+                <div class="price">@SharedLocalizer["CA$9.99 / month"]@(s.IsCancelPending && s.SubscriptionEndDate.HasValue ? $" · {SharedLocalizer["access until"].Value} {endStr}" : "")</div>
             </div>
-            <span class="status-badge @(s.IsCancelPending ? "cancel" : "active")">@(s.IsCancelPending ? "Cancelling" : "Active")</span>
+            <span class="status-badge @(s.IsCancelPending ? "cancel" : "active")">@(s.IsCancelPending ? SharedLocalizer["Cancelling"] : SharedLocalizer["Active"])</span>
         </div>
         <div class="bill-card__body">
             @if (s.IsCancelPending)
             {
-                <div class="info-note warn">Your subscription is cancelling. You keep full access until @(s.SubscriptionEndDate?.ToString("dd MMM yyyy") ?? "the end of the period"), then it won't renew.</div>
+                <div class="info-note warn">@SharedLocalizer["Your subscription is cancelling. You keep full access until {0}, then it won't renew.", endStr]</div>
             }
             else
             {
-                <div class="info-note" style="margin-bottom:1.3rem">You have full access to all modules and unlimited attempts.</div>
-                <form method="post" asp-page-handler="Cancel" onsubmit="return confirm('Cancel your subscription? You keep access until the end of the billing period.');">
-                    <button class="btn btn--danger" type="submit">Cancel subscription</button>
+                <div class="info-note" style="margin-bottom:1.3rem">@SharedLocalizer["You have full access to all modules and unlimited attempts."]</div>
+                <form method="post" asp-page-handler="Cancel" id="cancelForm">
+                    <button class="btn btn--danger" type="submit">@SharedLocalizer["Cancel subscription"]</button>
                 </form>
+                <script>
+                    (function () {
+                        var f = document.getElementById("cancelForm");
+                        if (f) f.addEventListener("submit", function (e) {
+                            if (!confirm(@Json.Serialize(SharedLocalizer["Cancel your subscription? You keep access until the end of the billing period."].Value))) e.preventDefault();
+                        });
+                    })();
+                </script>
             }
         </div>
     </div>
@@ -54,20 +63,20 @@ else
     <div class="bill-card" data-reveal>
         <div class="bill-card__head">
             <div>
-                <h2>Full access · Lifetime</h2>
-                <div class="price">One-time payment of CA$29.00</div>
+                <h2>@SharedLocalizer["Full access · Lifetime"]</h2>
+                <div class="price">@SharedLocalizer["One-time payment of CA$29.00"]</div>
             </div>
-            <span class="status-badge active">Active</span>
+            <span class="status-badge active">@SharedLocalizer["Active"]</span>
         </div>
         <div class="bill-card__body">
-            <div class="info-note">You have lifetime access to all modules. No action needed.</div>
+            <div class="info-note">@SharedLocalizer["You have lifetime access to all modules. No action needed."]</div>
         </div>
     </div>
 }
 
 <div style="display:flex; gap:1.4rem; margin-top:1.4rem" data-reveal>
-    <a class="link" asp-page="/Payments/History">Payment history &rarr;</a>
-    <a class="link" asp-page="/Payments/Pricing">Change plan &rarr;</a>
+    <a class="link" asp-page="/Payments/History">@SharedLocalizer["Payment history"] &rarr;</a>
+    <a class="link" asp-page="/Payments/Pricing">@SharedLocalizer["Change plan"] &rarr;</a>
 </div>
 
-<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
+using NPPE.Web.Resources;
 using System.ComponentModel.DataAnnotations;
 
 namespace NPPE.Web.Pages.Account
@@ -11,11 +13,13 @@ namespace NPPE.Web.Pages.Account
     {
         private readonly IUserRepository _userRepository;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public RegisterModel(IUserRepository userRepository, SignInManager<AppUser> signInManager)
+        public RegisterModel(IUserRepository userRepository, SignInManager<AppUser> signInManager, IStringLocalizer<SharedResource> localizer)
         {
             _userRepository = userRepository;
             _signInManager = signInManager;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -33,7 +37,7 @@ namespace NPPE.Web.Pages.Account
             var existingUser = await _userRepository.GetUserByEmailAsync(Input.Email);
             if (existingUser != null)
             {
-                ModelState.AddModelError("Input.Email", "Email is already registered.");
+                ModelState.AddModelError("Input.Email", _localizer["Email is already registered."]);
                 return Page();
             }
 

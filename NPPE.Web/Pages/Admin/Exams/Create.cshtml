@@ -1,21 +1,21 @@
 @page
 @model NPPE.Web.Pages.Admin.Exams.CreateModel
 @{
-    ViewData["Title"] = "New exam";
+    ViewData["Title"] = SharedLocalizer["New exam"].Value;
     ViewData["ActiveNav"] = "admin";
 }
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Admin · New exam</span>
-        <h1>Create an <em>exam</em></h1>
-        <p class="sub">Add a module, then attach its questions from the details view.</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · New exam"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Create an <em>exam</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Add a module, then attach its questions from the details view."]</p>
     </div>
 </div>
 
 @if (!string.IsNullOrEmpty(Model.SuccessMessage))
 {
-    <div class="alert alert--ok" data-reveal>@Model.SuccessMessage</div>
+    <div class="alert alert--ok" data-reveal>@SharedLocalizer[Model.SuccessMessage]</div>
 }
 
 <div class="form-card" data-reveal>
@@ -23,26 +23,26 @@
         <div asp-validation-summary="All"></div>
 
         <label class="field">
-            <span class="field__label">Title <span class="idx">01</span></span>
-            <span class="field__wrap"><input asp-for="Input.Title" class="field__input" placeholder="e.g. Professional Practice &amp; Ethics" /></span>
+            <span class="field__label">@SharedLocalizer["Title"] <span class="idx">01</span></span>
+            <span class="field__wrap"><input asp-for="Input.Title" class="field__input" placeholder="@SharedLocalizer["e.g. Professional Practice & Ethics"]" /></span>
             <span asp-validation-for="Input.Title" class="field-validation-error"></span>
         </label>
 
         <label class="field">
-            <span class="field__label">Description <span class="idx">02</span></span>
-            <span class="field__wrap"><textarea asp-for="Input.Description" class="field__input" placeholder="A short summary of what this module covers."></textarea></span>
+            <span class="field__label">@SharedLocalizer["Description"] <span class="idx">02</span></span>
+            <span class="field__wrap"><textarea asp-for="Input.Description" class="field__input" placeholder="@SharedLocalizer["A short summary of what this module covers."]"></textarea></span>
             <span asp-validation-for="Input.Description" class="field-validation-error"></span>
         </label>
 
-        <label class="check" style="margin-top:0.4rem"><input asp-for="Input.IsActive" /><span class="box"></span> Active — visible to students</label>
+        <label class="check" style="margin-top:0.4rem"><input asp-for="Input.IsActive" /><span class="box"></span> @SharedLocalizer["Active — visible to students"]</label>
 
         <div class="form-actions">
-            <button class="btn btn--primary" type="submit">Create exam <span class="arrow">&rarr;</span></button>
-            <a class="btn btn--ghost" asp-page="Index">Cancel</a>
+            <button class="btn btn--primary" type="submit">@SharedLocalizer["Create exam"] <span class="arrow">&rarr;</span></button>
+            <a class="btn btn--ghost" asp-page="Index">@SharedLocalizer["Cancel"]</a>
         </div>
     </form>
 </div>
 
-<a class="backlink" asp-page="Index">&larr; Back to library</a>
+<a class="backlink" asp-page="Index">&larr; @SharedLocalizer["Back to library"]</a>
 
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }

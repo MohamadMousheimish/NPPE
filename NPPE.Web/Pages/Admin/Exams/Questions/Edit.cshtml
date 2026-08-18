@@ -1,15 +1,15 @@
 @page
 @model NPPE.Web.Pages.Admin.Exams.Questions.EditModel
 @{
-    ViewData["Title"] = "Edit question";
+    ViewData["Title"] = SharedLocalizer["Edit question"].Value;
     ViewData["ActiveNav"] = "admin";
 }
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Admin · Edit question</span>
-        <h1>Edit <em>question</em></h1>
-        <p class="sub">Update the stem, feedback, and options. Exactly one option must be correct.</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Edit question"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Edit <em>question</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Update the stem, feedback, and options. Exactly one option must be correct."]</p>
     </div>
 </div>
 
@@ -20,34 +20,34 @@
         <div asp-validation-summary="All"></div>
 
         <label class="field">
-            <span class="field__label">Question text <span class="idx">01</span></span>
+            <span class="field__label">@SharedLocalizer["Question text"] <span class="idx">01</span></span>
             <span class="field__wrap"><textarea asp-for="Input.Text" class="field__input"></textarea></span>
             <span asp-validation-for="Input.Text" class="field-validation-error"></span>
         </label>
 
         <div class="row-2">
             <label class="field">
-                <span class="field__label">Feedback if correct <span class="idx">02</span></span>
+                <span class="field__label">@SharedLocalizer["Feedback if correct"] <span class="idx">02</span></span>
                 <span class="field__wrap"><textarea asp-for="Input.ExplanationForCorrect" class="field__input"></textarea></span>
                 <span asp-validation-for="Input.ExplanationForCorrect" class="field-validation-error"></span>
             </label>
             <label class="field">
-                <span class="field__label">Feedback if incorrect <span class="idx">03</span></span>
+                <span class="field__label">@SharedLocalizer["Feedback if incorrect"] <span class="idx">03</span></span>
                 <span class="field__wrap"><textarea asp-for="Input.ExplanationForIncorrect" class="field__input"></textarea></span>
                 <span asp-validation-for="Input.ExplanationForIncorrect" class="field-validation-error"></span>
             </label>
         </div>
 
-        <div class="field__label" style="margin:0.8rem 0 0.6rem">Answer options <span class="idx" style="color:var(--signal)">exactly one correct</span></div>
+        <div class="field__label" style="margin:0.8rem 0 0.6rem">@SharedLocalizer["Answer options"] <span class="idx" style="color:var(--signal)">@SharedLocalizer["exactly one correct"]</span></div>
         <partial name="Shared/_OptionsEditor" />
 
         <div class="form-actions">
-            <button class="btn btn--primary" type="submit">Save changes <span class="arrow">&rarr;</span></button>
-            <a class="btn btn--ghost" asp-page="/Admin/Exams/Details" asp-route-id="@Model.Input.ExamId">Cancel</a>
+            <button class="btn btn--primary" type="submit">@SharedLocalizer["Save changes"] <span class="arrow">&rarr;</span></button>
+            <a class="btn btn--ghost" asp-page="/Admin/Exams/Details" asp-route-id="@Model.Input.ExamId">@SharedLocalizer["Cancel"]</a>
         </div>
     </form>
 </div>
 
-<a class="backlink" asp-page="/Admin/Exams/Details" asp-route-id="@Model.Input.ExamId">&larr; Back to exam</a>
+<a class="backlink" asp-page="/Admin/Exams/Details" asp-route-id="@Model.Input.ExamId">&larr; @SharedLocalizer["Back to exam"]</a>
 
 @section Scripts { <partial name="_ValidationScriptsPartial" /> }

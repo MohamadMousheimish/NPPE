@@ -1,17 +1,17 @@
 @page
 @model NPPE.Web.Pages.Payments.CancelModel
 @{
-    ViewData["Title"] = "Payment cancelled";
+    ViewData["Title"] = SharedLocalizer["Payment cancelled"].Value;
     ViewData["ActiveNav"] = "billing";
 }
 
 <div class="success-hero" data-reveal>
     <div class="big-ic warn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v5"/><circle cx="12" cy="16.5" r="0.4" fill="currentColor"/><circle cx="12" cy="12" r="9"/></svg></div>
-    <span class="eyebrow eyebrow--signal" style="justify-content:center">Checkout cancelled</span>
-    <h1 style="margin-top:0.8rem">No charge made.</h1>
-    <p>Your checkout was cancelled and nothing was billed. You can pick a plan again whenever you're ready.</p>
+    <span class="eyebrow eyebrow--signal" style="justify-content:center">@SharedLocalizer["Checkout cancelled"]</span>
+    <h1 style="margin-top:0.8rem">@SharedLocalizer["No charge made."]</h1>
+    <p>@SharedLocalizer["Your checkout was cancelled and nothing was billed. You can pick a plan again whenever you're ready."]</p>
     <div style="display:flex; gap:0.7rem; justify-content:center">
-        <a class="btn btn--primary btn--lg" asp-page="/Payments/Pricing">Try again <span class="arrow">&rarr;</span></a>
-        <a class="btn btn--ghost btn--lg" asp-page="/Student/Exams/Index">Back to exams</a>
+        <a class="btn btn--primary btn--lg" asp-page="/Payments/Pricing">@SharedLocalizer["Try again"] <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--ghost btn--lg" asp-page="/Student/Exams/Index">@SharedLocalizer["Back to exams"]</a>
     </div>
 </div>

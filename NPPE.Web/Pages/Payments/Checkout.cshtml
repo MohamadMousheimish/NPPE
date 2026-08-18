@@ -1,32 +1,32 @@
 @page
 @model NPPE.Web.Pages.Payments.CheckoutModel
 @{
-    ViewData["Title"] = "Checkout";
+    ViewData["Title"] = SharedLocalizer["Checkout"].Value;
     ViewData["ActiveNav"] = "billing";
 }
 
 <div class="phead" data-reveal>
-    <div><span class="eyebrow eyebrow--signal">Checkout</span><h1>Unlock <em>full access</em></h1></div>
+    <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Checkout"]</span><h1>@Html.Raw(SharedLocalizer["Unlock <em>full access</em>"])</h1></div>
 </div>
 
 <div class="form-card" data-reveal style="max-width:480px">
-    <span class="eyebrow">Order summary</span>
+    <span class="eyebrow">@SharedLocalizer["Order summary"]</span>
     <div style="display:flex; justify-content:space-between; align-items:flex-start; margin:1rem 0 1.4rem">
         <div>
-            <b style="font-size:1.05rem; display:block">NPPE Prep — Full Access</b>
-            <span class="anno">One-time payment · unlimited attempts</span>
+            <b style="font-size:1.05rem; display:block">@SharedLocalizer["NPPE Prep — Full Access"]</b>
+            <span class="anno">@SharedLocalizer["One-time payment · unlimited attempts"]</span>
         </div>
         <div style="font-family:var(--font-display); font-weight:600; font-size:1.4rem">CA$29.00</div>
     </div>
     <hr class="hairline" />
     <div style="display:flex; justify-content:space-between; margin:1.2rem 0 1.6rem; font-family:var(--font-mono)">
-        <span>TOTAL DUE</span><b style="color:var(--signal)">CA$29.00</b>
+        <span>@SharedLocalizer["TOTAL DUE"]</span><b style="color:var(--signal)">CA$29.00</b>
     </div>
     <form method="post">
         <input type="hidden" asp-for="ReturnUrl" />
-        <button class="btn btn--primary btn--block btn--lg" type="submit">Pay now with Stripe <span class="arrow">&rarr;</span></button>
+        <button class="btn btn--primary btn--block btn--lg" type="submit">@SharedLocalizer["Pay now with Stripe"] <span class="arrow">&rarr;</span></button>
     </form>
-    <p class="anno" style="text-align:center; margin-top:1rem">Secured by Stripe · Your card details never touch our servers</p>
+    <p class="anno" style="text-align:center; margin-top:1rem">@SharedLocalizer["Secured by Stripe · Your card details never touch our servers"]</p>
 </div>
 
-<a class="backlink" asp-page="/Payments/Pricing">&larr; Back to pricing</a>
+<a class="backlink" asp-page="/Payments/Pricing">&larr; @SharedLocalizer["Back to pricing"]</a>

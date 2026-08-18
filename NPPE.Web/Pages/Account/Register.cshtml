@@ -1,7 +1,7 @@
 @page
 @model NPPE.Web.Pages.Account.RegisterModel
 @{
-    ViewData["Title"] = "Create account";
+    ViewData["Title"] = SharedLocalizer["Create account"].Value;
     Layout = "_AuthLayout";
 }
 
@@ -23,90 +23,90 @@
 
         <div class="wordmark">
             <span class="mark">N</span>
-            <div class="stack"><b>NPPE&nbsp;Prep</b><span>Exam Preparation</span></div>
+            <div class="stack"><b>NPPE&nbsp;Prep</b><span>@SharedLocalizer["Exam Preparation"]</span></div>
         </div>
 
         <div class="hero">
-            <span class="eyebrow eyebrow--signal">Enrollment · New candidate</span>
-            <h1>Open your <em>NPPE file.</em></h1>
-            <p>One account tracks every practice module, score, and worked answer on your road to the P.Eng.</p>
+            <span class="eyebrow eyebrow--signal">@SharedLocalizer["Enrollment · New candidate"]</span>
+            <h1>@SharedLocalizer["Open your"] <em>@SharedLocalizer["NPPE file."]</em></h1>
+            <p>@SharedLocalizer["One account tracks every practice module, score, and worked answer on your road to the P.Eng."]</p>
         </div>
 
         <div class="titleblock">
             <div class="row">
-                <div class="cell"><span class="k">Record</span><span class="v">CANDIDATE</span></div>
-                <div class="cell"><span class="k">Stage</span><span class="v">01 / 04</span></div>
-                <div class="cell"><span class="k">Status</span><span class="v"><span class="live-dot"></span>DRAFT</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Record"]</span><span class="v">@SharedLocalizer["CANDIDATE"]</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Stage"]</span><span class="v">01 / 04</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Status"]</span><span class="v"><span class="live-dot"></span>@SharedLocalizer["DRAFT"]</span></div>
             </div>
             <div class="row">
-                <div class="cell"><span class="k">Setup</span><span class="v">~1 MIN</span></div>
-                <div class="cell"><span class="k">Card</span><span class="v">NOT REQ.</span></div>
-                <div class="cell"><span class="k">Access</span><span class="v">INSTANT</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Setup"]</span><span class="v">~1 MIN</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Card"]</span><span class="v">@SharedLocalizer["NOT REQ."]</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Access"]</span><span class="v">@SharedLocalizer["INSTANT"]</span></div>
             </div>
         </div>
     </section>
 
     <section class="formside" data-study-field data-study-count="22">
         <div class="formcard frame seq">
-            <span class="eyebrow eyebrow--signal" style="--i:0">Enrollment · Create account</span>
-            <h2 style="--i:1">Create your account</h2>
-            <p class="sub" style="--i:2">Start prepping in about a minute. No card required.</p>
+            <span class="eyebrow eyebrow--signal" style="--i:0">@SharedLocalizer["Enrollment · Create account"]</span>
+            <h2 style="--i:1">@SharedLocalizer["Create your account"]</h2>
+            <p class="sub" style="--i:2">@SharedLocalizer["Start prepping in about a minute. No card required."]</p>
 
             <form method="post" style="--i:3">
                 <div asp-validation-summary="All"></div>
 
                 <div class="row-2">
                     <label class="field">
-                        <span class="field__label">First name <span class="idx">01</span></span>
+                        <span class="field__label">@SharedLocalizer["First name"] <span class="idx">01</span></span>
                         <span class="field__wrap"><input asp-for="Input.FirstName" class="field__input" placeholder="Ada" autocomplete="given-name" /></span>
                         <span asp-validation-for="Input.FirstName" class="field-validation-error"></span>
                     </label>
                     <label class="field">
-                        <span class="field__label">Last name <span class="idx">02</span></span>
+                        <span class="field__label">@SharedLocalizer["Last name"] <span class="idx">02</span></span>
                         <span class="field__wrap"><input asp-for="Input.LastName" class="field__input" placeholder="Lovelace" autocomplete="family-name" /></span>
                         <span asp-validation-for="Input.LastName" class="field-validation-error"></span>
                     </label>
                 </div>
 
                 <label class="field">
-                    <span class="field__label">Email <span class="idx">03</span></span>
+                    <span class="field__label">@SharedLocalizer["Email"] <span class="idx">03</span></span>
                     <span class="field__wrap"><input asp-for="Input.Email" class="field__input" placeholder="you@firm.ca" autocomplete="email" /></span>
                     <span asp-validation-for="Input.Email" class="field-validation-error"></span>
                 </label>
 
                 <label class="field">
-                    <span class="field__label">Password <span class="idx">04</span></span>
+                    <span class="field__label">@SharedLocalizer["Password"] <span class="idx">04</span></span>
                     <span class="field__wrap"><input asp-for="Input.Password" type="password" class="field__input" placeholder="••••••••" autocomplete="new-password" /></span>
                     <span asp-validation-for="Input.Password" class="field-validation-error"></span>
                 </label>
 
                 <label class="field">
-                    <span class="field__label">Confirm password <span class="idx">05</span></span>
+                    <span class="field__label">@SharedLocalizer["Confirm password"] <span class="idx">05</span></span>
                     <span class="field__wrap"><input asp-for="Input.ConfirmPassword" type="password" class="field__input" placeholder="••••••••" autocomplete="new-password" /></span>
                     <span asp-validation-for="Input.ConfirmPassword" class="field-validation-error"></span>
                 </label>
 
                 <div class="note">
-                    <span class="anno"><strong>Password spec</strong></span>
+                    <span class="anno"><strong>@SharedLocalizer["Password spec"]</strong></span>
                     <ul>
-                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> At least 8 characters</li>
-                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> One uppercase letter</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["At least 8 characters"]</li>
+                        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["One uppercase letter"]</li>
                     </ul>
                 </div>
 
                 <button class="btn btn--primary btn--block btn--lg" type="submit">
-                    Create account <span class="arrow">&rarr;</span>
+                    @SharedLocalizer["Create account"] <span class="arrow">&rarr;</span>
                 </button>
 
-                <div class="divider mydivider">Or</div>
+                <div class="divider mydivider">@SharedLocalizer["Or"]</div>
 
                 <button class="btn btn--ghost btn--block provider gbtn" type="submit" asp-page-handler="GoogleSignup">
                     <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.4 30.2 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.2 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.1 24.6c0-1.6-.1-2.8-.4-4.1H24v7.8h12.5c-.3 2.1-1.6 5.2-4.6 7.3l7.1 5.5c4.3-3.9 6.8-9.7 6.8-16.5z"/><path fill="#FBBC05" d="M10.5 28.3c-.5-1.4-.8-2.9-.8-4.3s.3-3 .7-4.3l-7.9-6.1C.9 16.6 0 20.2 0 24s.9 7.4 2.6 10.5l7.9-6.2z"/><path fill="#34A853" d="M24 48c6.2 0 11.4-2 15.2-5.6l-7.1-5.5c-2 1.4-4.6 2.3-8.1 2.3-6.3 0-11.6-3.7-13.5-9.1l-7.9 6.2C6.5 42.6 14.6 48 24 48z"/></svg>
-                    Continue with Google
+                    @SharedLocalizer["Continue with Google"]
                 </button>
             </form>
 
-            <p class="foot">Already enrolled? <a asp-page="/Account/Login">Sign in</a></p>
+            <p class="foot">@SharedLocalizer["Already enrolled?"] <a asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a></p>
         </div>
     </section>
 </main>

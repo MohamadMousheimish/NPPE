@@ -1,7 +1,7 @@
 @page
 @model NPPE.Web.Pages.Student.History.DetailsModel
 @{
-    ViewData["Title"] = "Exam review";
+    ViewData["Title"] = SharedLocalizer["Exam review"].Value;
     ViewData["ActiveNav"] = "history";
     var a = Model.Attempt!;
     var pct = a.TotalQuestions > 0 ? (int)Math.Round(a.Score * 100.0 / a.TotalQuestions) : 0;
@@ -9,30 +9,27 @@
     var incorrect = a.TotalQuestions - a.Score;
 }
 
-<span class="eyebrow eyebrow--signal" data-reveal>@a.ExamTitle · Attempt</span>
+<span class="eyebrow eyebrow--signal" data-reveal>@a.ExamTitle · @SharedLocalizer["Attempt"]</span>
 
 <section class="result-hero @(pass ? "pass" : "fail")" data-animate data-reveal style="margin-top:1rem">
     <div class="result-ring @(pass ? "pass" : "fail")">
-        <svg viewBox="0 0 148 148">
-            <circle class="track" cx="74" cy="74" r="66"></circle>
-            <circle class="fill" cx="74" cy="74" r="66" data-pct="@pct" data-circ="414.7"></circle>
-        </svg>
-        <div class="ctr"><div class="pct">@pct%</div><div class="lb">Score</div></div>
+        <svg viewBox="0 0 148 148"><circle class="track" cx="74" cy="74" r="66"></circle><circle class="fill" cx="74" cy="74" r="66" data-pct="@pct" data-circ="414.7"></circle></svg>
+        <div class="ctr"><div class="pct">@pct%</div><div class="lb">@SharedLocalizer["Score"]</div></div>
     </div>
     <div class="result-verdict @(pass ? "pass" : "fail")">
-        <span class="eyebrow @(pass ? "eyebrow--signal" : "")">@(pass ? "Passed" : "Below the 65% line")</span>
-        <h1>@a.Score <em>/ @a.TotalQuestions correct</em></h1>
-        <p>A full record of this attempt — your answer, the correct answer, and the reasoning for every question.</p>
+        <span class="eyebrow @(pass ? "eyebrow--signal" : "")">@(pass ? SharedLocalizer["Passed"] : SharedLocalizer["Below the 65% line"])</span>
+        <h1>@a.Score <em>/ @a.TotalQuestions @SharedLocalizer["Correct"]</em></h1>
+        <p>@SharedLocalizer["A full record of this attempt — your answer, the correct answer, and the reasoning for every question."]</p>
         <div class="result-stats">
-            <div class="st"><div class="v" style="color:var(--pass)">@a.Score</div><div class="k">Correct</div></div>
-            <div class="st"><div class="v" style="color:var(--fail)">@incorrect</div><div class="k">Incorrect</div></div>
-            <div class="st"><div class="v">@pct%</div><div class="k">Pass line 65%</div></div>
+            <div class="st"><div class="v" style="color:var(--pass)">@a.Score</div><div class="k">@SharedLocalizer["Correct"]</div></div>
+            <div class="st"><div class="v" style="color:var(--fail)">@incorrect</div><div class="k">@SharedLocalizer["Incorrect"]</div></div>
+            <div class="st"><div class="v">@pct%</div><div class="k">@SharedLocalizer["Pass line 65%"]</div></div>
         </div>
     </div>
 </section>
 
 <div class="sec-head" data-reveal>
-    <div><span class="eyebrow eyebrow--signal">Full review</span><h2>Every question</h2></div>
+    <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Full review"]</span><h2>@SharedLocalizer["Every question"]</h2></div>
 </div>
 
 @foreach (var q in a.Questions)
@@ -51,19 +48,19 @@
             </span>
             <div><h3>@q.QuestionText</h3></div>
         </div>
-        <div class="ans @(q.IsCorrect ? "mine-ok" : "mine-no")"><span class="al">@q.SelectedLabel</span> Your answer — @q.SelectedText</div>
+        <div class="ans @(q.IsCorrect ? "mine-ok" : "mine-no")"><span class="al">@q.SelectedLabel</span> @SharedLocalizer["Your answer —"] @q.SelectedText</div>
         @if (!q.IsCorrect)
         {
-            <div class="ans correct"><span class="al">@q.CorrectLabel</span> Correct answer — @q.CorrectText</div>
+            <div class="ans correct"><span class="al">@q.CorrectLabel</span> @SharedLocalizer["Correct answer —"] @q.CorrectText</div>
         }
         <div class="explain" style="white-space:pre-line">@q.FeedbackMessage</div>
     </div>
 }
 
 <div class="take-submit" data-reveal style="margin-top:1.6rem">
-    <div><b>Try for a higher score?</b><p>Retake this module or head back to your full history.</p></div>
+    <div><b>@SharedLocalizer["Try for a higher score?"]</b><p>@SharedLocalizer["Retake this module or head back to your full history."]</p></div>
     <div style="display:flex; gap:0.7rem">
-        <a class="btn btn--ghost" asp-page="Index">Back to history</a>
-        <a class="btn btn--primary" asp-page="/Student/Exams/Take" asp-route-id="@a.ExamId">Retake <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--ghost" asp-page="Index">@SharedLocalizer["Back to history"]</a>
+        <a class="btn btn--primary" asp-page="/Student/Exams/Take" asp-route-id="@a.ExamId">@SharedLocalizer["Retake"] <span class="arrow">&rarr;</span></a>
     </div>
 </div>

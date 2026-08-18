@@ -1,17 +1,17 @@
 @page
 @model NPPE.Web.Pages.Student.Exams.IndexModel
 @{
-    ViewData["Title"] = "Practice exams";
+    ViewData["Title"] = SharedLocalizer["Practice Exams"].Value;
     ViewData["ActiveNav"] = "exams";
 }
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Module library</span>
-        <h1>Practice <em>exams</em></h1>
-        <p class="sub">Each module mirrors the real NPPE format — multiple choice with worked explanations on every item.</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Module library"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Practice <em>exams</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Each module mirrors the real NPPE format — multiple choice with worked explanations on every item."]</p>
     </div>
-    <span class="count-chip"><span class="live-dot"></span>@Model.Exams.Count module@(Model.Exams.Count == 1 ? "" : "s")</span>
+    <span class="count-chip"><span class="live-dot"></span>@SharedLocalizer["{0} modules", Model.Exams.Count]</span>
 </div>
 
 @if (Model.Exams.Any())
@@ -22,12 +22,12 @@
         {
             i++;
             <a class="exam-card" asp-page="Take" asp-route-id="@exam.Id" data-reveal data-reveal-delay="@(((i - 1) % 3) * 60)">
-                <div class="exam-card__top"><span class="code">MOD @i.ToString("D2")</span><span class="tag tag--pass">Active</span></div>
+                <div class="exam-card__top"><span class="code">MOD @i.ToString("D2")</span><span class="tag tag--pass">@SharedLocalizer["Active"]</span></div>
                 <div class="exam-card__body">
                     <h3>@exam.Title</h3>
                     <p>@exam.Description</p>
-                    <div class="exam-card__meta"><span>MULTIPLE CHOICE</span><span>@exam.CreatedAt.ToString("MMM yyyy")</span></div>
-                    <span class="btn btn--primary btn--block">Start module <span class="arrow">&rarr;</span></span>
+                    <div class="exam-card__meta"><span>@SharedLocalizer["MULTIPLE CHOICE"]</span><span>@exam.CreatedAt.ToString("MMM yyyy")</span></div>
+                    <span class="btn btn--primary btn--block">@SharedLocalizer["Start module"] <span class="arrow">&rarr;</span></span>
                 </div>
             </a>
         }
@@ -37,10 +37,10 @@ else
 {
     <div class="empty" data-reveal>
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8"/></svg></div>
-        <h3>No exams available yet</h3>
-        <p>Check back soon — new practice modules are on the way.</p>
-        <a class="btn btn--primary" asp-page="/Index">Back to dashboard <span class="arrow">&rarr;</span></a>
+        <h3>@SharedLocalizer["No exams available yet"]</h3>
+        <p>@SharedLocalizer["Check back soon — new practice modules are on the way."]</p>
+        <a class="btn btn--primary" asp-page="/Index">@SharedLocalizer["Back to dashboard"] <span class="arrow">&rarr;</span></a>
     </div>
 }
 
-<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

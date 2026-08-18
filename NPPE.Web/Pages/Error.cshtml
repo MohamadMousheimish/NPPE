@@ -1,15 +1,16 @@
 @page
 @model ErrorModel
 @{
-    ViewData["Title"] = "Something went wrong";
+    ViewData["Title"] = SharedLocalizer["Something went wrong"].Value;
     Layout = null;
+    var culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
 }
 <!DOCTYPE html>
-<html lang="en">
+<html lang="@culture">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Something went wrong · NPPE Prep</title>
+    <title>@SharedLocalizer["Something went wrong"] · NPPE Prep</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
@@ -30,12 +31,12 @@
     <main class="err">
         <div class="grid grid-bg--faint"></div>
         <div class="err__in">
-            <span class="code">— Fault · Signal lost</span>
-            <h1>Off the grid.</h1>
-            <p>Something went wrong on our end and the page didn't load. The issue has been logged — try again, or head back to safe ground.</p>
+            <span class="code">@SharedLocalizer["— Fault · Signal lost"]</span>
+            <h1>@SharedLocalizer["Off the grid."]</h1>
+            <p>@SharedLocalizer["Something went wrong on our end and the page didn't load. The issue has been logged — try again, or head back to safe ground."]</p>
             <div style="display:flex; gap:0.7rem; justify-content:center">
-                <a class="btn btn--primary" asp-page="/Index">Back to dashboard <span class="arrow">&rarr;</span></a>
-                <a class="btn btn--ghost" href="javascript:location.reload()">Retry</a>
+                <a class="btn btn--primary" asp-page="/Index">@SharedLocalizer["Back to dashboard"] <span class="arrow">&rarr;</span></a>
+                <a class="btn btn--ghost" href="javascript:location.reload()">@SharedLocalizer["Retry"]</a>
             </div>
             @if (Model.ShowRequestId)
             {

@@ -1,7 +1,7 @@
 @page
 @model NPPE.Web.Pages.Student.Exams.TakeModel
 @{
-    ViewData["Title"] = Model.Exam?.Title ?? "Take exam";
+    ViewData["Title"] = Model.Exam?.Title ?? SharedLocalizer["Take exam"].Value;
     ViewData["ActiveNav"] = "exams";
     var exam = Model.Exam!;
     var total = exam.Questions.Count;
@@ -10,12 +10,12 @@
 <div class="take-head">
     <div class="take-head__in">
         <div class="meta">
-            <span class="eyebrow">In progress</span>
+            <span class="eyebrow">@SharedLocalizer["In progress"]</span>
             <h1>@exam.Title</h1>
         </div>
         <div class="take-gauge">
             <div class="big"><span id="answered">0</span>/<span id="total">@total</span></div>
-            <div class="lbl">ANSWERED</div>
+            <div class="lbl" style="text-transform:uppercase">@SharedLocalizer["Answered"]</div>
         </div>
     </div>
     <div class="take-progress"><i id="bar"></i></div>
@@ -32,8 +32,8 @@
         <div class="q-card">
             <div class="q-card__head">
                 <span class="q-num">@((qi + 1).ToString("D2"))</span>
-                <span class="of">Question @(qi + 1) of @total</span>
-                <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> Not answered</span>
+                <span class="of">@SharedLocalizer["Question"] @(qi + 1) @SharedLocalizer["of"] @total</span>
+                <span class="q-status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/></svg> @SharedLocalizer["Not answered"]</span>
             </div>
             <div class="q-card__body">
                 <p class="q-text">@q.Text</p>
@@ -51,13 +51,13 @@
 
     <div class="take-submit">
         <div>
-            <b>Ready to submit?</b>
-            <p>Answer every question, then submit to see your score and explanations.</p>
+            <b>@SharedLocalizer["Ready to submit?"]</b>
+            <p>@SharedLocalizer["Answer every question, then submit to see your score and explanations."]</p>
         </div>
-        <button class="btn btn--primary btn--lg" type="submit">Submit exam <span class="arrow">&rarr;</span></button>
+        <button class="btn btn--primary btn--lg" type="submit">@SharedLocalizer["Submit exam"] <span class="arrow">&rarr;</span></button>
     </div>
 
-    <a class="backlink" asp-page="Index">&larr; Leave without submitting</a>
+    <a class="backlink" asp-page="Index">&larr; @SharedLocalizer["Leave without submitting"]</a>
 </form>
 
 @section Scripts {
@@ -69,13 +69,14 @@
             var total = cards.length;
             var answeredEl = document.getElementById("answered");
             var bar = document.getElementById("bar");
+            var lblAnswered = @Json.Serialize(SharedLocalizer["Answered"].Value);
 
             form.addEventListener("change", function (e) {
                 if (e.target.type !== "radio") return;
                 var card = e.target.closest(".q-card");
                 var status = card.querySelector(".q-status");
                 status.classList.add("done");
-                status.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg> Answered';
+                status.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12.5l4 4 10-10"/></svg> ' + lblAnswered;
 
                 var done = cards.filter(function (c) { return c.querySelector("input:checked"); }).length;
                 answeredEl.textContent = done;

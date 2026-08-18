@@ -1,21 +1,21 @@
 @page
 @model NPPE.Web.Pages.Payments.SuccessModel
 @{
-    ViewData["Title"] = "Payment successful";
+    ViewData["Title"] = SharedLocalizer["Payment successful"].Value;
     ViewData["ActiveNav"] = "billing";
 }
 
 <div class="success-hero" data-reveal>
     <div class="big-ic pass"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4.5 4.5L19 7"/></svg></div>
-    <span class="eyebrow eyebrow--signal" style="justify-content:center">Payment confirmed</span>
-    <h1 style="margin-top:0.8rem">You're in.</h1>
-    <p>Full access is unlocked — every module and unlimited attempts are ready when you are.</p>
+    <span class="eyebrow eyebrow--signal" style="justify-content:center">@SharedLocalizer["Payment confirmed"]</span>
+    <h1 style="margin-top:0.8rem">@SharedLocalizer["You're in."]</h1>
+    <p>@SharedLocalizer["Full access is unlocked — every module and unlimited attempts are ready when you are."]</p>
     @if (!string.IsNullOrEmpty(Model.ReturnUrl))
     {
-        <a class="btn btn--primary btn--lg" href="@Model.ReturnUrl">Continue <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--primary btn--lg" href="@Model.ReturnUrl">@SharedLocalizer["Continue"] <span class="arrow">&rarr;</span></a>
     }
     else
     {
-        <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">Start practising <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">@SharedLocalizer["Start practising"] <span class="arrow">&rarr;</span></a>
     }
 </div>

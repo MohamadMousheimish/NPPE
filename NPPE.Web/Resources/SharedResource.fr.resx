@@ -120,4 +120,425 @@
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Bienvenue à la préparation à l'examen NPPE</value>
   </data>
+  <!-- Shell / navigation -->
+  <data name="Dashboard" xml:space="preserve"><value>Tableau de bord</value></data>
+  <data name="Manage Exams" xml:space="preserve"><value>Gérer les examens</value></data>
+  <data name="Practice Exams" xml:space="preserve"><value>Examens pratiques</value></data>
+  <data name="History" xml:space="preserve"><value>Historique</value></data>
+  <data name="Billing" xml:space="preserve"><value>Facturation</value></data>
+  <data name="My profile" xml:space="preserve"><value>Mon profil</value></data>
+  <data name="Change password" xml:space="preserve"><value>Changer le mot de passe</value></data>
+  <data name="Sign out" xml:space="preserve"><value>Se déconnecter</value></data>
+  <data name="About" xml:space="preserve"><value>À propos</value></data>
+  <data name="Privacy" xml:space="preserve"><value>Confidentialité</value></data>
+  <data name="Terms" xml:space="preserve"><value>Conditions</value></data>
+  <data name="Contact" xml:space="preserve"><value>Contact</value></data>
+  <data name="Built for engineers-in-training · Not affiliated with any regulator" xml:space="preserve"><value>Conçu pour les ingénieurs en formation · Non affilié à un organisme de réglementation</value></data>
+  <data name="Sign in" xml:space="preserve"><value>Se connecter</value></data>
+  <data name="Sign up" xml:space="preserve"><value>S'inscrire</value></data>
+  <!-- Auth: brand panel -->
+  <data name="Exam Preparation" xml:space="preserve"><value>Préparation à l'examen</value></data>
+  <data name="Professional Practice Exam" xml:space="preserve"><value>Examen de pratique professionnelle</value></data>
+  <data name="Calibrated prep for your" xml:space="preserve"><value>Une préparation calibrée pour votre</value></data>
+  <data name="Timed practice modules, worked explanations, and progress you can actually measure — built for engineers-in-training." xml:space="preserve"><value>Des modules pratiques chronométrés, des explications détaillées et des progrès réellement mesurables — conçu pour les ingénieurs en formation.</value></data>
+  <data name="Drawing" xml:space="preserve"><value>Plan</value></data>
+  <data name="Rev" xml:space="preserve"><value>Rév</value></data>
+  <data name="Sheet" xml:space="preserve"><value>Feuille</value></data>
+  <data name="Modules" xml:space="preserve"><value>Modules</value></data>
+  <data name="Status" xml:space="preserve"><value>Statut</value></data>
+  <data name="LIVE" xml:space="preserve"><value>EN LIGNE</value></data>
+  <data name="Record" xml:space="preserve"><value>Dossier</value></data>
+  <data name="CANDIDATE" xml:space="preserve"><value>CANDIDAT</value></data>
+  <data name="Stage" xml:space="preserve"><value>Étape</value></data>
+  <data name="DRAFT" xml:space="preserve"><value>BROUILLON</value></data>
+  <data name="Setup" xml:space="preserve"><value>Config.</value></data>
+  <data name="Card" xml:space="preserve"><value>Carte</value></data>
+  <data name="NOT REQ." xml:space="preserve"><value>NON REQ.</value></data>
+  <data name="Access" xml:space="preserve"><value>Accès</value></data>
+  <data name="INSTANT" xml:space="preserve"><value>INSTANTANÉ</value></data>
+  <!-- Auth: login form -->
+  <data name="Access · Sign in" xml:space="preserve"><value>Accès · Connexion</value></data>
+  <data name="Sign in to continue" xml:space="preserve"><value>Connectez-vous pour continuer</value></data>
+  <data name="Pick up your prep where you left off." xml:space="preserve"><value>Reprenez votre préparation là où vous l'avez laissée.</value></data>
+  <data name="Email" xml:space="preserve"><value>Courriel</value></data>
+  <data name="Password" xml:space="preserve"><value>Mot de passe</value></data>
+  <data name="Keep me signed in" xml:space="preserve"><value>Rester connecté</value></data>
+  <data name="Reset password" xml:space="preserve"><value>Réinitialiser le mot de passe</value></data>
+  <data name="Or" xml:space="preserve"><value>Ou</value></data>
+  <data name="Continue with Google" xml:space="preserve"><value>Continuer avec Google</value></data>
+  <data name="New here?" xml:space="preserve"><value>Nouveau ici ?</value></data>
+  <data name="Create an account" xml:space="preserve"><value>Créer un compte</value></data>
+  <!-- Auth: register form -->
+  <data name="Create account" xml:space="preserve"><value>Créer un compte</value></data>
+  <data name="Enrollment · New candidate" xml:space="preserve"><value>Inscription · Nouveau candidat</value></data>
+  <data name="Open your" xml:space="preserve"><value>Ouvrez votre</value></data>
+  <data name="NPPE file." xml:space="preserve"><value>dossier NPPE.</value></data>
+  <data name="One account tracks every practice module, score, and worked answer on your road to the P.Eng." xml:space="preserve"><value>Un seul compte suit chaque module pratique, score et réponse détaillée sur votre chemin vers le P.Eng.</value></data>
+  <data name="Enrollment · Create account" xml:space="preserve"><value>Inscription · Créer un compte</value></data>
+  <data name="Create your account" xml:space="preserve"><value>Créez votre compte</value></data>
+  <data name="Start prepping in about a minute. No card required." xml:space="preserve"><value>Commencez à réviser en une minute. Aucune carte requise.</value></data>
+  <data name="First name" xml:space="preserve"><value>Prénom</value></data>
+  <data name="Last name" xml:space="preserve"><value>Nom</value></data>
+  <data name="Confirm password" xml:space="preserve"><value>Confirmer le mot de passe</value></data>
+  <data name="Password spec" xml:space="preserve"><value>Exigences du mot de passe</value></data>
+  <data name="At least 8 characters" xml:space="preserve"><value>Au moins 8 caractères</value></data>
+  <data name="One uppercase letter" xml:space="preserve"><value>Une lettre majuscule</value></data>
+  <data name="Already enrolled?" xml:space="preserve"><value>Déjà inscrit ?</value></data>
+  <!-- Auth: password recovery -->
+  <data name="Account recovery" xml:space="preserve"><value>Récupération du compte</value></data>
+  <data name="Let's get you" xml:space="preserve"><value>On vous</value></data>
+  <data name="back in." xml:space="preserve"><value>reconnecte.</value></data>
+  <data name="Reset takes under a minute. Your progress and history stay exactly where you left them." xml:space="preserve"><value>La réinitialisation prend moins d'une minute. Vos progrès et votre historique restent exactement là où vous les avez laissés.</value></data>
+  <data name="Process" xml:space="preserve"><value>Processus</value></data>
+  <data name="Step" xml:space="preserve"><value>Étape</value></data>
+  <data name="Channel" xml:space="preserve"><value>Canal</value></data>
+  <data name="Link TTL" xml:space="preserve"><value>Durée du lien</value></data>
+  <data name="Method" xml:space="preserve"><value>Méthode</value></data>
+  <data name="SECURE" xml:space="preserve"><value>SÉCURISÉ</value></data>
+  <data name="READY" xml:space="preserve"><value>PRÊT</value></data>
+  <data name="Reset your password" xml:space="preserve"><value>Réinitialisez votre mot de passe</value></data>
+  <data name="Enter your email and we'll send a link to set a new one." xml:space="preserve"><value>Entrez votre courriel et nous vous enverrons un lien pour en définir un nouveau.</value></data>
+  <data name="Send reset link" xml:space="preserve"><value>Envoyer le lien</value></data>
+  <data name="Remembered it?" xml:space="preserve"><value>Vous vous en souvenez ?</value></data>
+  <data name="Back to sign in" xml:space="preserve"><value>Retour à la connexion</value></data>
+  <data name="Link" xml:space="preserve"><value>Lien</value></data>
+  <data name="dispatched." xml:space="preserve"><value>envoyé.</value></data>
+  <data name="Check your inbox for a secure reset link. It's valid for the next 60 minutes." xml:space="preserve"><value>Vérifiez votre boîte de réception pour un lien de réinitialisation sécurisé. Il est valide pendant les 60 prochaines minutes.</value></data>
+  <data name="SENT" xml:space="preserve"><value>ENVOYÉ</value></data>
+  <data name="Check your email" xml:space="preserve"><value>Vérifiez votre courriel</value></data>
+  <data name="If an account matches that address, a reset link is on its way." xml:space="preserve"><value>Si un compte correspond à cette adresse, un lien de réinitialisation est en route.</value></data>
+  <data name="Didn't get it?" xml:space="preserve"><value>Vous ne l'avez pas reçu ?</value></data>
+  <data name="Check your spam or junk folder" xml:space="preserve"><value>Vérifiez votre dossier de pourriels</value></data>
+  <data name="Give it a couple of minutes to arrive" xml:space="preserve"><value>Accordez-lui quelques minutes pour arriver</value></data>
+  <data name="Wrong address?" xml:space="preserve"><value>Mauvaise adresse ?</value></data>
+  <data name="Try a different email" xml:space="preserve"><value>Essayer un autre courriel</value></data>
+  <data name="Set a" xml:space="preserve"><value>Définissez une</value></data>
+  <data name="new key." xml:space="preserve"><value>nouvelle clé.</value></data>
+  <data name="Choose a fresh password and you're back to prepping in seconds." xml:space="preserve"><value>Choisissez un nouveau mot de passe et reprenez votre préparation en quelques secondes.</value></data>
+  <data name="Token" xml:space="preserve"><value>Jeton</value></data>
+  <data name="VERIFIED" xml:space="preserve"><value>VÉRIFIÉ</value></data>
+  <data name="Min len" xml:space="preserve"><value>Long. min</value></data>
+  <data name="Upper" xml:space="preserve"><value>Majuscule</value></data>
+  <data name="REQ." xml:space="preserve"><value>REQ.</value></data>
+  <data name="Encrypt" xml:space="preserve"><value>Chiffrement</value></data>
+  <data name="Set a new password" xml:space="preserve"><value>Définir un nouveau mot de passe</value></data>
+  <data name="Make it strong — you'll use it to sign in from now on." xml:space="preserve"><value>Choisissez-en un solide — vous l'utiliserez pour vous connecter désormais.</value></data>
+  <data name="New password" xml:space="preserve"><value>Nouveau mot de passe</value></data>
+  <data name="Changed your mind?" xml:space="preserve"><value>Vous avez changé d'avis ?</value></data>
+  <data name="You're all" xml:space="preserve"><value>Vous êtes</value></data>
+  <data name="set." xml:space="preserve"><value>prêt.</value></data>
+  <data name="Your password is updated. Sign in and pick your prep back up." xml:space="preserve"><value>Votre mot de passe est mis à jour. Connectez-vous et reprenez votre préparation.</value></data>
+  <data name="Result" xml:space="preserve"><value>Résultat</value></data>
+  <data name="SUCCESS" xml:space="preserve"><value>SUCCÈS</value></data>
+  <data name="CLOSED" xml:space="preserve"><value>FERMÉ</value></data>
+  <data name="Sessions" xml:space="preserve"><value>Sessions</value></data>
+  <data name="CLEARED" xml:space="preserve"><value>EFFACÉES</value></data>
+  <data name="Progress" xml:space="preserve"><value>Progrès</value></data>
+  <data name="INTACT" xml:space="preserve"><value>INTACT</value></data>
+  <data name="Next" xml:space="preserve"><value>Suivant</value></data>
+  <data name="Password updated" xml:space="preserve"><value>Mot de passe mis à jour</value></data>
+  <data name="You can now sign in with your new password." xml:space="preserve"><value>Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.</value></data>
+  <data name="Signing you in" xml:space="preserve"><value>Connexion en cours</value></data>
+  <data name="Google · Verifying" xml:space="preserve"><value>Google · Vérification</value></data>
+  <data name="Signing you in…" xml:space="preserve"><value>Connexion en cours…</value></data>
+  <data name="Hold tight while we finish connecting your account." xml:space="preserve"><value>Patientez pendant que nous finalisons la connexion de votre compte.</value></data>
+  <!-- Admin -->
+  <data name="Admin · Library" xml:space="preserve"><value>Admin · Bibliothèque</value></data>
+  <data name="Manage &lt;em&gt;exams&lt;/em&gt;" xml:space="preserve"><value>Gérer les &lt;em&gt;examens&lt;/em&gt;</value></data>
+  <data name="Create, edit, and organise the modules students practise with." xml:space="preserve"><value>Créez, modifiez et organisez les modules sur lesquels les étudiants s'exercent.</value></data>
+  <data name="New exam" xml:space="preserve"><value>Nouvel examen</value></data>
+  <data name="Active" xml:space="preserve"><value>Actif</value></data>
+  <data name="Inactive" xml:space="preserve"><value>Inactif</value></data>
+  <data name="Open" xml:space="preserve"><value>Ouvrir</value></data>
+  <data name="Edit" xml:space="preserve"><value>Modifier</value></data>
+  <data name="Delete" xml:space="preserve"><value>Supprimer</value></data>
+  <data name="No exams yet" xml:space="preserve"><value>Aucun examen pour l'instant</value></data>
+  <data name="Create your first module to get students practising." xml:space="preserve"><value>Créez votre premier module pour permettre aux étudiants de s'exercer.</value></data>
+  <data name="Back to dashboard" xml:space="preserve"><value>Retour au tableau de bord</value></data>
+  <data name="Exam created successfully." xml:space="preserve"><value>Examen créé avec succès.</value></data>
+  <data name="Exam updated successfully." xml:space="preserve"><value>Examen mis à jour avec succès.</value></data>
+  <data name="Exam deleted successfully." xml:space="preserve"><value>Examen supprimé avec succès.</value></data>
+  <data name="Question added successfully." xml:space="preserve"><value>Question ajoutée avec succès.</value></data>
+  <data name="Question updated successfully." xml:space="preserve"><value>Question mise à jour avec succès.</value></data>
+  <data name="Question deleted successfully." xml:space="preserve"><value>Question supprimée avec succès.</value></data>
+  <data name="Admin · New exam" xml:space="preserve"><value>Admin · Nouvel examen</value></data>
+  <data name="Create an &lt;em&gt;exam&lt;/em&gt;" xml:space="preserve"><value>Créer un &lt;em&gt;examen&lt;/em&gt;</value></data>
+  <data name="Add a module, then attach its questions from the details view." xml:space="preserve"><value>Ajoutez un module, puis attachez ses questions depuis la vue des détails.</value></data>
+  <data name="Title" xml:space="preserve"><value>Titre</value></data>
+  <data name="e.g. Professional Practice &amp; Ethics" xml:space="preserve"><value>p. ex. Pratique professionnelle et éthique</value></data>
+  <data name="Description" xml:space="preserve"><value>Description</value></data>
+  <data name="A short summary of what this module covers." xml:space="preserve"><value>Un bref résumé de ce que couvre ce module.</value></data>
+  <data name="Active — visible to students" xml:space="preserve"><value>Actif — visible pour les étudiants</value></data>
+  <data name="Create exam" xml:space="preserve"><value>Créer l'examen</value></data>
+  <data name="Cancel" xml:space="preserve"><value>Annuler</value></data>
+  <data name="Back to library" xml:space="preserve"><value>Retour à la bibliothèque</value></data>
+  <data name="Edit exam" xml:space="preserve"><value>Modifier l'examen</value></data>
+  <data name="Admin · Edit" xml:space="preserve"><value>Admin · Modifier</value></data>
+  <data name="Edit &lt;em&gt;exam&lt;/em&gt;" xml:space="preserve"><value>Modifier l'&lt;em&gt;examen&lt;/em&gt;</value></data>
+  <data name="Save changes" xml:space="preserve"><value>Enregistrer les modifications</value></data>
+  <data name="Exam details" xml:space="preserve"><value>Détails de l'examen</value></data>
+  <data name="Exam" xml:space="preserve"><value>Examen</value></data>
+  <data name="Add question" xml:space="preserve"><value>Ajouter une question</value></data>
+  <data name="Questions" xml:space="preserve"><value>Questions</value></data>
+  <data name="item" xml:space="preserve"><value>élément</value></data>
+  <data name="items" xml:space="preserve"><value>éléments</value></data>
+  <data name="Question" xml:space="preserve"><value>Question</value></data>
+  <data name="No questions yet" xml:space="preserve"><value>Aucune question pour l'instant</value></data>
+  <data name="Add the first question to this module." xml:space="preserve"><value>Ajoutez la première question à ce module.</value></data>
+  <data name="Admin · Confirm" xml:space="preserve"><value>Admin · Confirmer</value></data>
+  <data name="Delete &lt;em&gt;exam&lt;/em&gt;" xml:space="preserve"><value>Supprimer l'&lt;em&gt;examen&lt;/em&gt;</value></data>
+  <data name="Deactivate this exam?" xml:space="preserve"><value>Désactiver cet examen ?</value></data>
+  <data name="You're about to deactivate" xml:space="preserve"><value>Vous êtes sur le point de désactiver</value></data>
+  <data name="It will be hidden from students, but existing attempt history is kept intact — this is a soft delete and can be reversed by re-activating it." xml:space="preserve"><value>Il sera masqué aux étudiants, mais l'historique des tentatives existant reste intact — il s'agit d'une suppression réversible que vous pouvez annuler en le réactivant.</value></data>
+  <data name="Yes, deactivate" xml:space="preserve"><value>Oui, désactiver</value></data>
+  <data name="New &lt;em&gt;question&lt;/em&gt;" xml:space="preserve"><value>Nouvelle &lt;em&gt;question&lt;/em&gt;</value></data>
+  <data name="Write the question, add four options, and mark exactly one as correct." xml:space="preserve"><value>Rédigez la question, ajoutez quatre options et marquez-en exactement une comme correcte.</value></data>
+  <data name="Question text" xml:space="preserve"><value>Texte de la question</value></data>
+  <data name="Enter the question stem…" xml:space="preserve"><value>Saisissez l'énoncé de la question…</value></data>
+  <data name="Feedback if correct" xml:space="preserve"><value>Rétroaction si correcte</value></data>
+  <data name="Shown when the student answers correctly." xml:space="preserve"><value>Affichée lorsque l'étudiant répond correctement.</value></data>
+  <data name="Feedback if incorrect" xml:space="preserve"><value>Rétroaction si incorrecte</value></data>
+  <data name="Shown when the student answers incorrectly." xml:space="preserve"><value>Affichée lorsque l'étudiant répond incorrectement.</value></data>
+  <data name="Answer options" xml:space="preserve"><value>Options de réponse</value></data>
+  <data name="exactly one correct" xml:space="preserve"><value>exactement une correcte</value></data>
+  <data name="Back to exam" xml:space="preserve"><value>Retour à l'examen</value></data>
+  <data name="Admin · Edit question" xml:space="preserve"><value>Admin · Modifier la question</value></data>
+  <data name="Edit &lt;em&gt;question&lt;/em&gt;" xml:space="preserve"><value>Modifier la &lt;em&gt;question&lt;/em&gt;</value></data>
+  <data name="Update the stem, feedback, and options. Exactly one option must be correct." xml:space="preserve"><value>Mettez à jour l'énoncé, la rétroaction et les options. Exactement une option doit être correcte.</value></data>
+  <data name="Delete &lt;em&gt;question&lt;/em&gt;" xml:space="preserve"><value>Supprimer la &lt;em&gt;question&lt;/em&gt;</value></data>
+  <data name="Remove this question?" xml:space="preserve"><value>Supprimer cette question ?</value></data>
+  <data name="This question will be removed from the module. Past attempts that referenced it keep their recorded answers." xml:space="preserve"><value>Cette question sera retirée du module. Les tentatives passées qui y faisaient référence conservent leurs réponses enregistrées.</value></data>
+  <data name="Yes, delete" xml:space="preserve"><value>Oui, supprimer</value></data>
+  <data name="Correct" xml:space="preserve"><value>Correcte</value></data>
+  <!-- Dashboard -->
+  <data name="there" xml:space="preserve"><value>vous</value></data>
+  <data name="Welcome back," xml:space="preserve"><value>Bon retour,</value></data>
+  <data name="Keep the momentum going — pick your next module." xml:space="preserve"><value>Gardez l'élan — choisissez votre prochain module.</value></data>
+  <data name="Ready when you are — pick a module and start practising." xml:space="preserve"><value>Quand vous voulez — choisissez un module et commencez à vous exercer.</value></data>
+  <data name="Start new exam" xml:space="preserve"><value>Commencer un examen</value></data>
+  <data name="Attempts logged" xml:space="preserve"><value>Tentatives enregistrées</value></data>
+  <data name="across all modules" xml:space="preserve"><value>sur tous les modules</value></data>
+  <data name="Avg correct" xml:space="preserve"><value>Moy. correctes</value></data>
+  <data name="answers per attempt" xml:space="preserve"><value>réponses par tentative</value></data>
+  <data name="Modules available" xml:space="preserve"><value>Modules disponibles</value></data>
+  <data name="ready to practise" xml:space="preserve"><value>prêts pour la pratique</value></data>
+  <data name="Role" xml:space="preserve"><value>Rôle</value></data>
+  <data name="Admin" xml:space="preserve"><value>Admin</value></data>
+  <data name="Student" xml:space="preserve"><value>Étudiant</value></data>
+  <data name="full management access" xml:space="preserve"><value>accès de gestion complet</value></data>
+  <data name="full practice access" xml:space="preserve"><value>accès complet à la pratique</value></data>
+  <data name="Register" xml:space="preserve"><value>Registre</value></data>
+  <data name="Recent attempts" xml:space="preserve"><value>Tentatives récentes</value></data>
+  <data name="View all" xml:space="preserve"><value>Tout voir</value></data>
+  <data name="SCORE" xml:space="preserve"><value>SCORE</value></data>
+  <data name="No attempts yet" xml:space="preserve"><value>Aucune tentative pour l'instant</value></data>
+  <data name="Attempts appear here once students start taking exams." xml:space="preserve"><value>Les tentatives apparaissent ici lorsque les étudiants commencent à passer des examens.</value></data>
+  <data name="Take your first module to start building your history." xml:space="preserve"><value>Faites votre premier module pour commencer à bâtir votre historique.</value></data>
+  <data name="Browse exams" xml:space="preserve"><value>Parcourir les examens</value></data>
+  <data name="Create &amp; edit modules" xml:space="preserve"><value>Créer et modifier des modules</value></data>
+  <data name="Add a module" xml:space="preserve"><value>Ajouter un module</value></data>
+  <data name="Take an exam" xml:space="preserve"><value>Passer un examen</value></data>
+  <data name="{0} modules available" xml:space="preserve"><value>{0} modules disponibles</value></data>
+  <data name="Review history" xml:space="preserve"><value>Revoir l'historique</value></data>
+  <data name="{0} past attempts" xml:space="preserve"><value>{0} tentatives passées</value></data>
+  <data name="Manage billing" xml:space="preserve"><value>Gérer la facturation</value></data>
+  <data name="Plan &amp; payments" xml:space="preserve"><value>Forfait et paiements</value></data>
+  <data name="Account &amp; security" xml:space="preserve"><value>Compte et sécurité</value></data>
+  <!-- Student exams -->
+  <data name="Module library" xml:space="preserve"><value>Bibliothèque de modules</value></data>
+  <data name="Practice &lt;em&gt;exams&lt;/em&gt;" xml:space="preserve"><value>Examens &lt;em&gt;pratiques&lt;/em&gt;</value></data>
+  <data name="Each module mirrors the real NPPE format — multiple choice with worked explanations on every item." xml:space="preserve"><value>Chaque module reproduit le vrai format NPPE — choix multiples avec explications détaillées pour chaque élément.</value></data>
+  <data name="{0} modules" xml:space="preserve"><value>{0} modules</value></data>
+  <data name="MULTIPLE CHOICE" xml:space="preserve"><value>CHOIX MULTIPLES</value></data>
+  <data name="Start module" xml:space="preserve"><value>Commencer le module</value></data>
+  <data name="No exams available yet" xml:space="preserve"><value>Aucun examen disponible pour l'instant</value></data>
+  <data name="Check back soon — new practice modules are on the way." xml:space="preserve"><value>Revenez bientôt — de nouveaux modules pratiques arrivent.</value></data>
+  <!-- Take exam -->
+  <data name="Take exam" xml:space="preserve"><value>Passer l'examen</value></data>
+  <data name="In progress" xml:space="preserve"><value>En cours</value></data>
+  <data name="of" xml:space="preserve"><value>sur</value></data>
+  <data name="Not answered" xml:space="preserve"><value>Sans réponse</value></data>
+  <data name="Answered" xml:space="preserve"><value>Répondu</value></data>
+  <data name="Ready to submit?" xml:space="preserve"><value>Prêt à soumettre ?</value></data>
+  <data name="Answer every question, then submit to see your score and explanations." xml:space="preserve"><value>Répondez à chaque question, puis soumettez pour voir votre score et les explications.</value></data>
+  <data name="Submit exam" xml:space="preserve"><value>Soumettre l'examen</value></data>
+  <data name="Leave without submitting" xml:space="preserve"><value>Quitter sans soumettre</value></data>
+  <!-- Results / review -->
+  <data name="Results" xml:space="preserve"><value>Résultats</value></data>
+  <data name="Passed · above the 65% line" xml:space="preserve"><value>Réussi · au-dessus du seuil de 65 %</value></data>
+  <data name="Below the 65% line" xml:space="preserve"><value>Sous le seuil de 65 %</value></data>
+  <data name="Nicely done." xml:space="preserve"><value>Bien joué.</value></data>
+  <data name="Keep practising." xml:space="preserve"><value>Continuez à vous exercer.</value></data>
+  <data name="You cleared this module. Review anything you missed below to lock it in." xml:space="preserve"><value>Vous avez réussi ce module. Revoyez ci-dessous ce que vous avez manqué pour bien l'ancrer.</value></data>
+  <data name="Close — review the explanations below and retake when you're ready." xml:space="preserve"><value>C'est proche — revoyez les explications ci-dessous et reprenez quand vous serez prêt.</value></data>
+  <data name="Incorrect" xml:space="preserve"><value>Incorrecte</value></data>
+  <data name="Total items" xml:space="preserve"><value>Total d'éléments</value></data>
+  <data name="Answer review" xml:space="preserve"><value>Revue des réponses</value></data>
+  <data name="See what you missed" xml:space="preserve"><value>Voyez ce que vous avez manqué</value></data>
+  <data name="Your answer —" xml:space="preserve"><value>Votre réponse —</value></data>
+  <data name="Correct answer —" xml:space="preserve"><value>Bonne réponse —</value></data>
+  <data name="What's next?" xml:space="preserve"><value>Et ensuite ?</value></data>
+  <data name="Retake this module to push the score higher, or move on to another." xml:space="preserve"><value>Reprenez ce module pour améliorer votre score, ou passez à un autre.</value></data>
+  <data name="All modules" xml:space="preserve"><value>Tous les modules</value></data>
+  <data name="Retake" xml:space="preserve"><value>Reprendre</value></data>
+  <data name="View full history" xml:space="preserve"><value>Voir l'historique complet</value></data>
+  <!-- History -->
+  <data name="Attempt register" xml:space="preserve"><value>Registre des tentatives</value></data>
+  <data name="Your &lt;em&gt;history&lt;/em&gt;" xml:space="preserve"><value>Votre &lt;em&gt;historique&lt;/em&gt;</value></data>
+  <data name="Every attempt you've logged, newest first. Open any one to review the questions and explanations again." xml:space="preserve"><value>Chaque tentative enregistrée, la plus récente en premier. Ouvrez-en une pour revoir les questions et les explications.</value></data>
+  <data name="Attempts" xml:space="preserve"><value>Tentatives</value></data>
+  <data name="logged" xml:space="preserve"><value>enregistrées</value></data>
+  <data name="Avg score" xml:space="preserve"><value>Score moyen</value></data>
+  <data name="across all attempts" xml:space="preserve"><value>sur toutes les tentatives</value></data>
+  <data name="Pass rate" xml:space="preserve"><value>Taux de réussite</value></data>
+  <data name="65% to pass" xml:space="preserve"><value>65 % pour réussir</value></data>
+  <data name="Best score" xml:space="preserve"><value>Meilleur score</value></data>
+  <data name="personal best" xml:space="preserve"><value>record personnel</value></data>
+  <data name="Take your first module and your results will show up here." xml:space="preserve"><value>Faites votre premier module et vos résultats apparaîtront ici.</value></data>
+  <data name="Exam review" xml:space="preserve"><value>Revue d'examen</value></data>
+  <data name="Attempt" xml:space="preserve"><value>Tentative</value></data>
+  <data name="Passed" xml:space="preserve"><value>Réussi</value></data>
+  <data name="A full record of this attempt — your answer, the correct answer, and the reasoning for every question." xml:space="preserve"><value>Un dossier complet de cette tentative — votre réponse, la bonne réponse et le raisonnement pour chaque question.</value></data>
+  <data name="Pass line 65%" xml:space="preserve"><value>Seuil de 65 %</value></data>
+  <data name="Full review" xml:space="preserve"><value>Revue complète</value></data>
+  <data name="Every question" xml:space="preserve"><value>Chaque question</value></data>
+  <data name="Try for a higher score?" xml:space="preserve"><value>Viser un meilleur score ?</value></data>
+  <data name="Retake this module or head back to your full history." xml:space="preserve"><value>Reprenez ce module ou revenez à votre historique complet.</value></data>
+  <data name="Back to history" xml:space="preserve"><value>Retour à l'historique</value></data>
+  <!-- Profile / change password -->
+  <data name="Profile" xml:space="preserve"><value>Profil</value></data>
+  <data name="Account" xml:space="preserve"><value>Compte</value></data>
+  <data name="Your &lt;em&gt;profile&lt;/em&gt;" xml:space="preserve"><value>Votre &lt;em&gt;profil&lt;/em&gt;</value></data>
+  <data name="Avg" xml:space="preserve"><value>Moy.</value></data>
+  <data name="Account details" xml:space="preserve"><value>Détails du compte</value></data>
+  <data name="Full name" xml:space="preserve"><value>Nom complet</value></data>
+  <data name="Account type" xml:space="preserve"><value>Type de compte</value></data>
+  <data name="Member since" xml:space="preserve"><value>Membre depuis</value></data>
+  <data name="Security" xml:space="preserve"><value>Sécurité</value></data>
+  <data name="Quick actions" xml:space="preserve"><value>Actions rapides</value></data>
+  <data name="Browse modules" xml:space="preserve"><value>Parcourir les modules</value></data>
+  <data name="Change &lt;em&gt;password&lt;/em&gt;" xml:space="preserve"><value>Changer le &lt;em&gt;mot de passe&lt;/em&gt;</value></data>
+  <data name="Choose a new password for your account. You'll stay signed in on this device." xml:space="preserve"><value>Choisissez un nouveau mot de passe pour votre compte. Vous resterez connecté sur cet appareil.</value></data>
+  <data name="Current password" xml:space="preserve"><value>Mot de passe actuel</value></data>
+  <data name="Confirm new password" xml:space="preserve"><value>Confirmer le nouveau mot de passe</value></data>
+  <data name="Update password" xml:space="preserve"><value>Mettre à jour le mot de passe</value></data>
+  <data name="Back to profile" xml:space="preserve"><value>Retour au profil</value></data>
+  <data name="Your password has been changed successfully." xml:space="preserve"><value>Votre mot de passe a été changé avec succès.</value></data>
+  <!-- Pricing / billing / checkout -->
+  <data name="Pricing" xml:space="preserve"><value>Tarifs</value></data>
+  <data name="Unlock full access" xml:space="preserve"><value>Débloquez l'accès complet</value></data>
+  <data name="Choose your &lt;em&gt;plan&lt;/em&gt;" xml:space="preserve"><value>Choisissez votre &lt;em&gt;forfait&lt;/em&gt;</value></data>
+  <data name="One price, everything included — all modules, unlimited attempts, and every worked explanation." xml:space="preserve"><value>Un seul prix, tout inclus — tous les modules, des tentatives illimitées et chaque explication détaillée.</value></data>
+  <data name="One-time" xml:space="preserve"><value>Paiement unique</value></data>
+  <data name="Pay once. Access forever." xml:space="preserve"><value>Payez une fois. Accès à vie.</value></data>
+  <data name="Unlimited exam attempts" xml:space="preserve"><value>Tentatives d'examen illimitées</value></data>
+  <data name="All practice modules" xml:space="preserve"><value>Tous les modules pratiques</value></data>
+  <data name="Worked explanations on every item" xml:space="preserve"><value>Des explications détaillées pour chaque élément</value></data>
+  <data name="No subscription, no renewals" xml:space="preserve"><value>Aucun abonnement, aucun renouvellement</value></data>
+  <data name="Pay CA$29 once" xml:space="preserve"><value>Payer 29 $ CA une fois</value></data>
+  <data name="Most flexible" xml:space="preserve"><value>Le plus flexible</value></data>
+  <data name="Monthly" xml:space="preserve"><value>Mensuel</value></data>
+  <data name="/mo" xml:space="preserve"><value>/mois</value></data>
+  <data name="Cancel anytime, keep access to period end." xml:space="preserve"><value>Annulez à tout moment, gardez l'accès jusqu'à la fin de la période.</value></data>
+  <data name="Cancel in one click, anytime" xml:space="preserve"><value>Annulez en un clic, à tout moment</value></data>
+  <data name="Subscribe for CA$9.99/mo" xml:space="preserve"><value>S'abonner pour 9,99 $ CA/mois</value></data>
+  <data name="Secure checkout by Stripe · Cancel or refund per our terms" xml:space="preserve"><value>Paiement sécurisé par Stripe · Annulation ou remboursement selon nos conditions</value></data>
+  <data name="Back to exams" xml:space="preserve"><value>Retour aux examens</value></data>
+  <data name="Billing &amp; subscription" xml:space="preserve"><value>Facturation et abonnement</value></data>
+  <data name="Your &lt;em&gt;plan&lt;/em&gt;" xml:space="preserve"><value>Votre &lt;em&gt;forfait&lt;/em&gt;</value></data>
+  <data name="Manage your subscription and payment details." xml:space="preserve"><value>Gérez votre abonnement et vos informations de paiement.</value></data>
+  <data name="the end of the period" xml:space="preserve"><value>la fin de la période</value></data>
+  <data name="No active plan" xml:space="preserve"><value>Aucun forfait actif</value></data>
+  <data name="Subscribe or buy full access to unlock unlimited attempts on every module." xml:space="preserve"><value>Abonnez-vous ou achetez l'accès complet pour débloquer des tentatives illimitées sur chaque module.</value></data>
+  <data name="View plans" xml:space="preserve"><value>Voir les forfaits</value></data>
+  <data name="Monthly subscription" xml:space="preserve"><value>Abonnement mensuel</value></data>
+  <data name="CA$9.99 / month" xml:space="preserve"><value>9,99 $ CA / mois</value></data>
+  <data name="access until" xml:space="preserve"><value>accès jusqu'au</value></data>
+  <data name="Cancelling" xml:space="preserve"><value>Annulation en cours</value></data>
+  <data name="Your subscription is cancelling. You keep full access until {0}, then it won't renew." xml:space="preserve"><value>Votre abonnement est en cours d'annulation. Vous gardez l'accès complet jusqu'au {0}, puis il ne sera pas renouvelé.</value></data>
+  <data name="You have full access to all modules and unlimited attempts." xml:space="preserve"><value>Vous avez un accès complet à tous les modules et des tentatives illimitées.</value></data>
+  <data name="Cancel subscription" xml:space="preserve"><value>Annuler l'abonnement</value></data>
+  <data name="Cancel your subscription? You keep access until the end of the billing period." xml:space="preserve"><value>Annuler votre abonnement ? Vous gardez l'accès jusqu'à la fin de la période de facturation.</value></data>
+  <data name="Full access · Lifetime" xml:space="preserve"><value>Accès complet · À vie</value></data>
+  <data name="One-time payment of CA$29.00" xml:space="preserve"><value>Paiement unique de 29,00 $ CA</value></data>
+  <data name="You have lifetime access to all modules. No action needed." xml:space="preserve"><value>Vous avez un accès à vie à tous les modules. Aucune action requise.</value></data>
+  <data name="Payment history" xml:space="preserve"><value>Historique des paiements</value></data>
+  <data name="Change plan" xml:space="preserve"><value>Changer de forfait</value></data>
+  <data name="Your subscription has been cancelled. You will retain access until the end of your billing period." xml:space="preserve"><value>Votre abonnement a été annulé. Vous conserverez l'accès jusqu'à la fin de votre période de facturation.</value></data>
+  <data name="Unable to cancel subscription. Please try again or contact support." xml:space="preserve"><value>Impossible d'annuler l'abonnement. Veuillez réessayer ou contacter le soutien.</value></data>
+  <data name="Checkout" xml:space="preserve"><value>Paiement</value></data>
+  <data name="Unlock &lt;em&gt;full access&lt;/em&gt;" xml:space="preserve"><value>Débloquer l'&lt;em&gt;accès complet&lt;/em&gt;</value></data>
+  <data name="Order summary" xml:space="preserve"><value>Récapitulatif de la commande</value></data>
+  <data name="NPPE Prep — Full Access" xml:space="preserve"><value>NPPE Prep — Accès complet</value></data>
+  <data name="One-time payment · unlimited attempts" xml:space="preserve"><value>Paiement unique · tentatives illimitées</value></data>
+  <data name="TOTAL DUE" xml:space="preserve"><value>TOTAL À PAYER</value></data>
+  <data name="Pay now with Stripe" xml:space="preserve"><value>Payer maintenant avec Stripe</value></data>
+  <data name="Secured by Stripe · Your card details never touch our servers" xml:space="preserve"><value>Sécurisé par Stripe · Vos informations de carte ne transitent jamais par nos serveurs</value></data>
+  <data name="Back to pricing" xml:space="preserve"><value>Retour aux tarifs</value></data>
+  <data name="Payment successful" xml:space="preserve"><value>Paiement réussi</value></data>
+  <data name="Payment confirmed" xml:space="preserve"><value>Paiement confirmé</value></data>
+  <data name="You're in." xml:space="preserve"><value>Vous y êtes.</value></data>
+  <data name="Full access is unlocked — every module and unlimited attempts are ready when you are." xml:space="preserve"><value>L'accès complet est débloqué — chaque module et des tentatives illimitées sont prêts quand vous l'êtes.</value></data>
+  <data name="Continue" xml:space="preserve"><value>Continuer</value></data>
+  <data name="Start practising" xml:space="preserve"><value>Commencer à s'exercer</value></data>
+  <data name="Payment cancelled" xml:space="preserve"><value>Paiement annulé</value></data>
+  <data name="Checkout cancelled" xml:space="preserve"><value>Paiement annulé</value></data>
+  <data name="No charge made." xml:space="preserve"><value>Aucun débit effectué.</value></data>
+  <data name="Your checkout was cancelled and nothing was billed. You can pick a plan again whenever you're ready." xml:space="preserve"><value>Votre paiement a été annulé et rien n'a été facturé. Vous pouvez choisir un forfait à nouveau quand vous le souhaitez.</value></data>
+  <data name="Try again" xml:space="preserve"><value>Réessayer</value></data>
+  <data name="Transactions" xml:space="preserve"><value>Transactions</value></data>
+  <data name="Payment &lt;em&gt;history&lt;/em&gt;" xml:space="preserve"><value>Historique des &lt;em&gt;paiements&lt;/em&gt;</value></data>
+  <data name="Every charge on your account." xml:space="preserve"><value>Tous les frais sur votre compte.</value></data>
+  <data name="Amount" xml:space="preserve"><value>Montant</value></data>
+  <data name="Subscription" xml:space="preserve"><value>Abonnement</value></data>
+  <data name="OneTime" xml:space="preserve"><value>Paiement unique</value></data>
+  <data name="Succeeded" xml:space="preserve"><value>Réussi</value></data>
+  <data name="Pending" xml:space="preserve"><value>En attente</value></data>
+  <data name="Failed" xml:space="preserve"><value>Échoué</value></data>
+  <data name="No payments yet" xml:space="preserve"><value>Aucun paiement pour l'instant</value></data>
+  <data name="Your transactions will appear here once you subscribe or buy access." xml:space="preserve"><value>Vos transactions apparaîtront ici une fois que vous vous abonnez ou achetez l'accès.</value></data>
+  <data name="Back to billing" xml:space="preserve"><value>Retour à la facturation</value></data>
+  <!-- Legal / error -->
+  <data name="Legal" xml:space="preserve"><value>Mentions légales</value></data>
+  <data name="Privacy &lt;em&gt;policy&lt;/em&gt;" xml:space="preserve"><value>Politique de &lt;em&gt;confidentialité&lt;/em&gt;</value></data>
+  <data name="How NPPE Prep handles your data." xml:space="preserve"><value>Comment NPPE Prep gère vos données.</value></data>
+  <data name="This page explains what data NPPE Prep collects, why, and how you control it." xml:space="preserve"><value>Cette page explique quelles données NPPE Prep collecte, pourquoi et comment vous les contrôlez.</value></data>
+  <data name="What we collect" xml:space="preserve"><value>Ce que nous collectons</value></data>
+  <data name="Your account details (name, email), your exam attempts and scores, and payment records processed securely through Stripe. We never store your card details on our servers." xml:space="preserve"><value>Vos informations de compte (nom, courriel), vos tentatives d'examen et vos scores, ainsi que les registres de paiement traités de façon sécurisée par Stripe. Nous ne stockons jamais vos informations de carte sur nos serveurs.</value></data>
+  <data name="How we use it" xml:space="preserve"><value>Comment nous les utilisons</value></data>
+  <data name="To run your account, show your progress and history, process payments, and improve the practice material. We do not sell your data." xml:space="preserve"><value>Pour gérer votre compte, afficher vos progrès et votre historique, traiter les paiements et améliorer le matériel de pratique. Nous ne vendons pas vos données.</value></data>
+  <data name="Your controls" xml:space="preserve"><value>Vos contrôles</value></data>
+  <data name="You can view and update your profile at any time, or request deletion of your account. Reach us through the contact link in the footer." xml:space="preserve"><value>Vous pouvez consulter et mettre à jour votre profil à tout moment, ou demander la suppression de votre compte. Contactez-nous via le lien dans le pied de page.</value></data>
+  <data name="Cookies" xml:space="preserve"><value>Témoins</value></data>
+  <data name="We use only the cookies needed to keep you signed in and remember your language preference." xml:space="preserve"><value>Nous n'utilisons que les témoins nécessaires pour vous garder connecté et mémoriser votre préférence de langue.</value></data>
+  <data name="Something went wrong" xml:space="preserve"><value>Une erreur est survenue</value></data>
+  <data name="— Fault · Signal lost" xml:space="preserve"><value>— Panne · Signal perdu</value></data>
+  <data name="Off the grid." xml:space="preserve"><value>Hors réseau.</value></data>
+  <data name="Something went wrong on our end and the page didn't load. The issue has been logged — try again, or head back to safe ground." xml:space="preserve"><value>Une erreur s'est produite de notre côté et la page n'a pas pu se charger. Le problème a été enregistré — réessayez ou revenez en terrain sûr.</value></data>
+  <data name="Retry" xml:space="preserve"><value>Réessayer</value></data>
+  <!-- Validation messages -->
+  <data name="Email is required." xml:space="preserve"><value>Le courriel est requis.</value></data>
+  <data name="Invalid email address." xml:space="preserve"><value>Adresse courriel invalide.</value></data>
+  <data name="Password is required." xml:space="preserve"><value>Le mot de passe est requis.</value></data>
+  <data name="First name is required." xml:space="preserve"><value>Le prénom est requis.</value></data>
+  <data name="First name cannot exceed 100 characters." xml:space="preserve"><value>Le prénom ne peut pas dépasser 100 caractères.</value></data>
+  <data name="Last name is required." xml:space="preserve"><value>Le nom est requis.</value></data>
+  <data name="Last name cannot exceed 100 characters." xml:space="preserve"><value>Le nom ne peut pas dépasser 100 caractères.</value></data>
+  <data name="Password must be at least 8 characters." xml:space="preserve"><value>Le mot de passe doit contenir au moins 8 caractères.</value></data>
+  <data name="Please confirm your password." xml:space="preserve"><value>Veuillez confirmer votre mot de passe.</value></data>
+  <data name="Passwords do not match." xml:space="preserve"><value>Les mots de passe ne correspondent pas.</value></data>
+  <data name="Current password is required." xml:space="preserve"><value>Le mot de passe actuel est requis.</value></data>
+  <data name="New password is required." xml:space="preserve"><value>Le nouveau mot de passe est requis.</value></data>
+  <data name="Please confirm your new password." xml:space="preserve"><value>Veuillez confirmer votre nouveau mot de passe.</value></data>
+  <data name="Title is required." xml:space="preserve"><value>Le titre est requis.</value></data>
+  <data name="Title cannot exceed 200 characters." xml:space="preserve"><value>Le titre ne peut pas dépasser 200 caractères.</value></data>
+  <data name="Description is too long." xml:space="preserve"><value>La description est trop longue.</value></data>
+  <data name="Question text is required." xml:space="preserve"><value>Le texte de la question est requis.</value></data>
+  <data name="Feedback for correct answer is required." xml:space="preserve"><value>La rétroaction pour une bonne réponse est requise.</value></data>
+  <data name="Feedback for incorrect answer is required." xml:space="preserve"><value>La rétroaction pour une mauvaise réponse est requise.</value></data>
+  <data name="Invalid login attempt." xml:space="preserve"><value>Tentative de connexion invalide.</value></data>
+  <data name="Email is already registered." xml:space="preserve"><value>Ce courriel est déjà enregistré.</value></data>
+  <data name="Please select exactly one correct answer." xml:space="preserve"><value>Veuillez sélectionner exactement une bonne réponse.</value></data>
+  <data name="Please answer all questions before submitting." xml:space="preserve"><value>Veuillez répondre à toutes les questions avant de soumettre.</value></data>
+  <data name="User not found." xml:space="preserve"><value>Utilisateur introuvable.</value></data>
 </root>

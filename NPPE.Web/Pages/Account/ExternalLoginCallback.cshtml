@@ -1,7 +1,7 @@
 @page
 @model NPPE.Web.Pages.Account.ExternalLoginCallbackModel
 @{
-    ViewData["Title"] = "Signing you in";
+    ViewData["Title"] = SharedLocalizer["Signing you in"].Value;
     Layout = "_AuthLayout";
 }
 
@@ -12,9 +12,9 @@
             <circle cx="64" cy="64" r="52" fill="none" stroke="var(--signal)" stroke-width="6" stroke-linecap="round"
                     stroke-dasharray="80 300" style="transform-origin:64px 64px; animation:spin 1s linear infinite;"></circle>
         </svg>
-        <span class="eyebrow eyebrow--signal" style="justify-content:center;">Google · Verifying</span>
-        <h1 style="font-family:var(--font-display); color:var(--paper); font-size:1.6rem; margin:0.7rem 0 0.4rem;">Signing you in…</h1>
-        <p style="color:#9AA1AD;">Hold tight while we finish connecting your account.</p>
+        <span class="eyebrow eyebrow--signal" style="justify-content:center;">@SharedLocalizer["Google · Verifying"]</span>
+        <h1 style="font-family:var(--font-display); color:var(--paper); font-size:1.6rem; margin:0.7rem 0 0.4rem;">@SharedLocalizer["Signing you in…"]</h1>
+        <p style="color:#9AA1AD;">@SharedLocalizer["Hold tight while we finish connecting your account."]</p>
     </div>
 </main>
 

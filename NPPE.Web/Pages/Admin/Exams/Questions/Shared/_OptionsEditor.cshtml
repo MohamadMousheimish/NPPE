@@ -10,7 +10,7 @@
                 <label class="check">
                     <input type="checkbox" name="Input.Options[@i].IsCorrect" value="true"
                            @(option.IsCorrect ? "checked" : "") onchange="handleCorrectChange(this)" />
-                    <span class="box"></span> Correct
+                    <span class="box"></span> @SharedLocalizer["Correct"]
                 </label>
                 <input type="hidden" name="Input.Options[@i].IsCorrect" value="false" />
             </div>

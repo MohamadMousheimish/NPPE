@@ -9,10 +9,12 @@ namespace NPPE.Web.Pages.Account
     public class ResetPasswordModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly Microsoft.Extensions.Localization.IStringLocalizer<NPPE.Web.Resources.SharedResource> _localizer;
 
-        public ResetPasswordModel(UserManager<AppUser> userManager)
+        public ResetPasswordModel(UserManager<AppUser> userManager, Microsoft.Extensions.Localization.IStringLocalizer<NPPE.Web.Resources.SharedResource> localizer)
         {
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -38,7 +40,7 @@ namespace NPPE.Web.Pages.Account
             var user = await _userManager.FindByIdAsync(Input.UserId);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "User not found.");
+                ModelState.AddModelError(string.Empty, _localizer["User not found."]);
                 return Page();
             }
 

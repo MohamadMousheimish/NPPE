@@ -92,3 +92,11 @@
 .note ul { list-style: none; padding: 0; margin: 0.4rem 0 0; display: grid; gap: 0.35rem; }
 .note li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.82rem; color: var(--slate); }
 .note li svg { width: 14px; height: 14px; color: var(--signal); flex-shrink: 0; }
+
+/* language toggle for auth screens */
+.auth-lang { position: fixed; top: 1.2rem; right: 1.4rem; z-index: 20; display: flex; align-items: center; gap: 0.4rem;
+    font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.08em; color: var(--slate-2); }
+.auth-lang a { color: var(--slate-2); text-decoration: none; padding: 0.2rem 0.35rem; transition: color 0.15s ease; }
+.auth-lang a.on { color: var(--signal); }
+.auth-lang a:hover { color: var(--ink); }
+@media (max-width: 900px) { .auth-lang a { color: var(--paper); } .auth-lang { color: #9AA1AD; } }

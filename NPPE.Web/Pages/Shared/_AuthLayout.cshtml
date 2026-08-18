@@ -1,5 +1,8 @@
 @{
     Layout = null;
+    var culture = System.Globalization.CultureInfo.CurrentCulture.TwoLetterISOLanguageName.ToLower();
+    var returnUrl = Uri.EscapeDataString(ViewContext.HttpContext.Request.Path + ViewContext.HttpContext.Request.QueryString);
+    string CultureUrl(string c) => $"/set-culture?culture={c}&returnUrl={returnUrl}";
 }
 <!DOCTYPE html>
 <html lang="@System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
@@ -15,6 +18,11 @@
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body>
+    <div class="auth-lang">
+        <a href="@CultureUrl("en")" class="@(culture == "en" ? "on" : "")">EN</a>
+        <span>/</span>
+        <a href="@CultureUrl("fr")" class="@(culture == "fr" ? "on" : "")">FR</a>
+    </div>
     @RenderBody()
 
     <script src="~/js/study-field.js" asp-append-version="true"></script>

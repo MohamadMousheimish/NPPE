@@ -1,56 +1,56 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = SharedLocalizer["Dashboard"].Value;
     ViewData["ActiveNav"] = "dashboard";
 }
 
 <section class="welcome" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Dashboard</span>
-        <h1>Welcome back, <em>@(string.IsNullOrEmpty(Model.FirstName) ? "there" : Model.FirstName)</em>.</h1>
-        <p class="sub">@(Model.ExamsCompleted > 0 ? $"You've logged {Model.ExamsCompleted} attempt{(Model.ExamsCompleted == 1 ? "" : "s")} so far — keep the momentum going." : "Ready when you are — pick a module and start practising.")</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Dashboard"]</span>
+        <h1>@SharedLocalizer["Welcome back,"] <em>@(string.IsNullOrEmpty(Model.FirstName) ? SharedLocalizer["there"].Value : Model.FirstName)</em>.</h1>
+        <p class="sub">@(Model.ExamsCompleted > 0 ? SharedLocalizer["Keep the momentum going — pick your next module."] : SharedLocalizer["Ready when you are — pick a module and start practising."])</p>
     </div>
     @if (Model.IsAdmin)
     {
-        <a class="btn btn--primary btn--lg" asp-page="/Admin/Exams/Index">Manage exams <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--primary btn--lg" asp-page="/Admin/Exams/Index">@SharedLocalizer["Manage Exams"] <span class="arrow">&rarr;</span></a>
     }
     else
     {
-        <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">Start new exam <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">@SharedLocalizer["Start new exam"] <span class="arrow">&rarr;</span></a>
     }
 </section>
 
 <section class="readouts" data-animate>
     <div class="readout" data-reveal>
-        <div class="k">Attempts logged</div>
+        <div class="k">@SharedLocalizer["Attempts logged"]</div>
         <div class="val"><span data-count="@Model.ExamsCompleted">0</span></div>
-        <div class="foot">across all modules</div>
+        <div class="foot">@SharedLocalizer["across all modules"]</div>
     </div>
     <div class="readout" data-reveal data-reveal-delay="70">
-        <div class="k">Avg correct</div>
+        <div class="k">@SharedLocalizer["Avg correct"]</div>
         <div class="val"><span data-count="@Model.AverageScore">0</span></div>
-        <div class="foot">answers per attempt</div>
+        <div class="foot">@SharedLocalizer["answers per attempt"]</div>
     </div>
     <div class="readout" data-reveal data-reveal-delay="140">
-        <div class="k">Modules available</div>
+        <div class="k">@SharedLocalizer["Modules available"]</div>
         <div class="val"><span data-count="@Model.TotalExamsAvailable">0</span></div>
-        <div class="foot">ready to practise</div>
+        <div class="foot">@SharedLocalizer["ready to practise"]</div>
     </div>
     <div class="readout" data-reveal data-reveal-delay="210">
-        <div class="k">Role</div>
-        <div class="val" style="font-size:1.6rem; margin-top:1.8rem">@(Model.IsAdmin ? "Admin" : "Student")</div>
-        <div class="foot">@(Model.IsAdmin ? "full management access" : "full practice access")</div>
+        <div class="k">@SharedLocalizer["Role"]</div>
+        <div class="val" style="font-size:1.6rem; margin-top:1.8rem">@(Model.IsAdmin ? SharedLocalizer["Admin"] : SharedLocalizer["Student"])</div>
+        <div class="foot">@(Model.IsAdmin ? SharedLocalizer["full management access"] : SharedLocalizer["full practice access"])</div>
     </div>
 </section>
 
 <div class="grid-2">
     <div>
         <div class="sec-head" data-reveal>
-            <div><span class="eyebrow eyebrow--signal">Register</span><h2>Recent attempts</h2></div>
+            <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Register"]</span><h2>@SharedLocalizer["Recent attempts"]</h2></div>
             @if (!Model.IsAdmin)
             {
-                <a class="link" asp-page="/Student/History/Index">View all &rarr;</a>
+                <a class="link" asp-page="/Student/History/Index">@SharedLocalizer["View all"] &rarr;</a>
             }
         </div>
 
@@ -62,8 +62,8 @@
                     <a class="log__row" asp-page="/Student/Exams/Results" asp-route-id="@a.AttemptId">
                         <span class="log__tick" style="background:var(--slate)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h11l3 3v13H5z"/><path d="M8 11h8M8 15h5"/></svg></span>
                         <span class="log__title"><b>@a.ExamTitle</b><span>@a.CompletedAt.ToString("dd MMM yyyy")</span></span>
-                        <span class="log__date">SCORE</span>
-                        <span class="log__score">@a.Score<span>correct</span></span>
+                        <span class="log__date">@SharedLocalizer["SCORE"]</span>
+                        <span class="log__score">@a.Score<span>@SharedLocalizer["Correct"]</span></span>
                     </a>
                 }
             </div>
@@ -72,11 +72,11 @@
         {
             <div class="empty" data-reveal>
                 <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="8"/></svg></div>
-                <h3>No attempts yet</h3>
-                <p>@(Model.IsAdmin ? "Attempts appear here once students start taking exams." : "Take your first module to start building your history.")</p>
+                <h3>@SharedLocalizer["No attempts yet"]</h3>
+                <p>@(Model.IsAdmin ? SharedLocalizer["Attempts appear here once students start taking exams."] : SharedLocalizer["Take your first module to start building your history."])</p>
                 @if (!Model.IsAdmin)
                 {
-                    <a class="btn btn--primary" asp-page="/Student/Exams/Index">Browse exams <span class="arrow">&rarr;</span></a>
+                    <a class="btn btn--primary" asp-page="/Student/Exams/Index">@SharedLocalizer["Browse exams"] <span class="arrow">&rarr;</span></a>
                 }
             </div>
         }
@@ -87,31 +87,31 @@
         {
             <a class="action" asp-page="/Admin/Exams/Index" data-reveal>
                 <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span>
-                <span class="tx"><b>Manage exams</b><span>Create &amp; edit modules</span></span><span class="arrow">&rarr;</span>
+                <span class="tx"><b>@SharedLocalizer["Manage Exams"]</b><span>@SharedLocalizer["Create & edit modules"]</span></span><span class="arrow">&rarr;</span>
             </a>
             <a class="action" asp-page="/Admin/Exams/Create" data-reveal data-reveal-delay="80">
                 <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 5v14M5 12h14"/></svg></span>
-                <span class="tx"><b>New exam</b><span>Add a module</span></span><span class="arrow">&rarr;</span>
+                <span class="tx"><b>@SharedLocalizer["New exam"]</b><span>@SharedLocalizer["Add a module"]</span></span><span class="arrow">&rarr;</span>
             </a>
         }
         else
         {
             <a class="action" asp-page="/Student/Exams/Index" data-reveal>
                 <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8"/></svg></span>
-                <span class="tx"><b>Take an exam</b><span>@Model.TotalExamsAvailable modules available</span></span><span class="arrow">&rarr;</span>
+                <span class="tx"><b>@SharedLocalizer["Take an exam"]</b><span>@SharedLocalizer["{0} modules available", Model.TotalExamsAvailable]</span></span><span class="arrow">&rarr;</span>
             </a>
             <a class="action" asp-page="/Student/History/Index" data-reveal data-reveal-delay="80">
                 <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="8"/></svg></span>
-                <span class="tx"><b>Review history</b><span>@Model.ExamsCompleted past attempts</span></span><span class="arrow">&rarr;</span>
+                <span class="tx"><b>@SharedLocalizer["Review history"]</b><span>@SharedLocalizer["{0} past attempts", Model.ExamsCompleted]</span></span><span class="arrow">&rarr;</span>
             </a>
             <a class="action" asp-page="/Payments/Billing" data-reveal data-reveal-delay="140">
                 <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span>
-                <span class="tx"><b>Manage billing</b><span>Plan &amp; payments</span></span><span class="arrow">&rarr;</span>
+                <span class="tx"><b>@SharedLocalizer["Manage billing"]</b><span>@SharedLocalizer["Plan & payments"]</span></span><span class="arrow">&rarr;</span>
             </a>
         }
         <a class="action" asp-page="/Account/Profile" data-reveal data-reveal-delay="200">
             <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></span>
-            <span class="tx"><b>My profile</b><span>Account &amp; security</span></span><span class="arrow">&rarr;</span>
+            <span class="tx"><b>@SharedLocalizer["My profile"]</b><span>@SharedLocalizer["Account & security"]</span></span><span class="arrow">&rarr;</span>
         </a>
     </aside>
 </div>

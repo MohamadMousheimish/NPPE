@@ -2,7 +2,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using NPPE.Domain.Entities;
+using NPPE.Web.Resources;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
@@ -12,11 +14,13 @@ namespace NPPE.Web.Pages.Account
     {
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public LoginModel(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        public LoginModel(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IStringLocalizer<SharedResource> localizer)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -69,7 +73,7 @@ namespace NPPE.Web.Pages.Account
                     return RedirectToPage("/Index");
             }
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, _localizer["Invalid login attempt."]);
             return Page();
         }
 

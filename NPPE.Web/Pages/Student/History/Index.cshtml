@@ -1,7 +1,7 @@
 @page
 @model NPPE.Web.Pages.Student.History.IndexModel
 @{
-    ViewData["Title"] = "History";
+    ViewData["Title"] = SharedLocalizer["History"].Value;
     ViewData["ActiveNav"] = "history";
     var count = Model.Attempts.Count;
     var avg = count > 0 ? (int)Math.Round(Model.Attempts.Average(x => x.Percentage)) : 0;
@@ -11,20 +11,20 @@
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Attempt register</span>
-        <h1>Your <em>history</em></h1>
-        <p class="sub">Every attempt you've logged, newest first. Open any one to review the questions and explanations again.</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Attempt register"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Your <em>history</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Every attempt you've logged, newest first. Open any one to review the questions and explanations again."]</p>
     </div>
-    <span class="count-chip">@count attempt@(count == 1 ? "" : "s") · @avg% avg</span>
+    <span class="count-chip">@count @(count == 1 ? SharedLocalizer["Attempt"] : SharedLocalizer["Attempts"]) · @avg% @SharedLocalizer["Avg"]</span>
 </div>
 
 @if (count > 0)
 {
     <section class="readouts" data-animate style="margin-bottom:2rem">
-        <div class="readout" data-reveal><div class="k">Attempts</div><div class="val"><span data-count="@count">0</span></div><div class="foot">logged</div></div>
-        <div class="readout" data-reveal data-reveal-delay="70"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="@avg"/></svg><div class="k">Avg score</div><div class="val"><span data-count="@avg">0</span>%</div><div class="foot">across all attempts</div></div>
-        <div class="readout" data-reveal data-reveal-delay="140"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="@passRate"/></svg><div class="k">Pass rate</div><div class="val"><span data-count="@passRate">0</span>%</div><div class="foot">65% to pass</div></div>
-        <div class="readout" data-reveal data-reveal-delay="210"><div class="k">Best score</div><div class="val"><span data-count="@best">0</span>%</div><div class="foot">personal best</div></div>
+        <div class="readout" data-reveal><div class="k">@SharedLocalizer["Attempts"]</div><div class="val"><span data-count="@count">0</span></div><div class="foot">@SharedLocalizer["logged"]</div></div>
+        <div class="readout" data-reveal data-reveal-delay="70"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="@avg"/></svg><div class="k">@SharedLocalizer["Avg score"]</div><div class="val"><span data-count="@avg">0</span>%</div><div class="foot">@SharedLocalizer["across all attempts"]</div></div>
+        <div class="readout" data-reveal data-reveal-delay="140"><svg class="dial" viewBox="0 0 60 60"><circle class="track" cx="30" cy="30" r="26"/><circle class="fill" cx="30" cy="30" r="26" data-pct="@passRate"/></svg><div class="k">@SharedLocalizer["Pass rate"]</div><div class="val"><span data-count="@passRate">0</span>%</div><div class="foot">@SharedLocalizer["65% to pass"]</div></div>
+        <div class="readout" data-reveal data-reveal-delay="210"><div class="k">@SharedLocalizer["Best score"]</div><div class="val"><span data-count="@best">0</span>%</div><div class="foot">@SharedLocalizer["personal best"]</div></div>
     </section>
 
     <div class="log" data-reveal>
@@ -54,10 +54,10 @@ else
 {
     <div class="empty" data-reveal>
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="8"/></svg></div>
-        <h3>No attempts yet</h3>
-        <p>Take your first module and your results will show up here.</p>
-        <a class="btn btn--primary" asp-page="/Student/Exams/Index">Browse exams <span class="arrow">&rarr;</span></a>
+        <h3>@SharedLocalizer["No attempts yet"]</h3>
+        <p>@SharedLocalizer["Take your first module and your results will show up here."]</p>
+        <a class="btn btn--primary" asp-page="/Student/Exams/Index">@SharedLocalizer["Browse exams"] <span class="arrow">&rarr;</span></a>
     </div>
 }
 
-<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

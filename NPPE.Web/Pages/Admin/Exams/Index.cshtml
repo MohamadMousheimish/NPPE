@@ -1,22 +1,22 @@
 @page
 @model NPPE.Web.Pages.Admin.Exams.IndexModel
 @{
-    ViewData["Title"] = "Manage exams";
+    ViewData["Title"] = SharedLocalizer["Manage Exams"].Value;
     ViewData["ActiveNav"] = "admin";
 }
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Admin · Library</span>
-        <h1>Manage <em>exams</em></h1>
-        <p class="sub">Create, edit, and organise the modules students practise with.</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Library"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Manage <em>exams</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Create, edit, and organise the modules students practise with."]</p>
     </div>
-    <a class="btn btn--primary" asp-page="/Admin/Exams/Create">New exam <span class="arrow">&rarr;</span></a>
+    <a class="btn btn--primary" asp-page="/Admin/Exams/Create">@SharedLocalizer["New exam"] <span class="arrow">&rarr;</span></a>
 </div>
 
 @if (TempData["SuccessMessage"] != null)
 {
-    <div class="alert alert--ok" data-reveal>@TempData["SuccessMessage"]</div>
+    <div class="alert alert--ok" data-reveal>@SharedLocalizer[TempData["SuccessMessage"]!.ToString()!]</div>
 }
 
 @if (Model.Exams.Any())
@@ -34,11 +34,11 @@
                 </div>
                 <span class="grow"></span>
                 <span class="anno">@exam.CreatedAt.ToString("dd MMM yyyy")</span>
-                <span class="state-tag @(exam.IsActive ? "on" : "off")">@(exam.IsActive ? "Active" : "Inactive")</span>
+                <span class="state-tag @(exam.IsActive ? "on" : "off")">@(exam.IsActive ? SharedLocalizer["Active"] : SharedLocalizer["Inactive"])</span>
                 <div class="acts">
-                    <a class="pill" asp-page="Details" asp-route-id="@exam.Id">Open</a>
-                    <a class="pill" asp-page="Edit" asp-route-id="@exam.Id">Edit</a>
-                    <a class="pill danger" asp-page="Delete" asp-route-id="@exam.Id">Delete</a>
+                    <a class="pill" asp-page="Details" asp-route-id="@exam.Id">@SharedLocalizer["Open"]</a>
+                    <a class="pill" asp-page="Edit" asp-route-id="@exam.Id">@SharedLocalizer["Edit"]</a>
+                    <a class="pill danger" asp-page="Delete" asp-route-id="@exam.Id">@SharedLocalizer["Delete"]</a>
                 </div>
             </div>
         }
@@ -48,10 +48,10 @@ else
 {
     <div class="empty" data-reveal>
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></div>
-        <h3>No exams yet</h3>
-        <p>Create your first module to get students practising.</p>
-        <a class="btn btn--primary" asp-page="/Admin/Exams/Create">New exam <span class="arrow">&rarr;</span></a>
+        <h3>@SharedLocalizer["No exams yet"]</h3>
+        <p>@SharedLocalizer["Create your first module to get students practising."]</p>
+        <a class="btn btn--primary" asp-page="/Admin/Exams/Create">@SharedLocalizer["New exam"] <span class="arrow">&rarr;</span></a>
     </div>
 }
 
-<a class="backlink" asp-page="/Index">&larr; Back to dashboard</a>
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

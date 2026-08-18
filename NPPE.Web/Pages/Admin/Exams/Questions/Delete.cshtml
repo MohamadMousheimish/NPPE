@@ -1,28 +1,28 @@
 @page
 @model NPPE.Web.Pages.Admin.Exams.Questions.DeleteModel
 @{
-    ViewData["Title"] = "Delete question";
+    ViewData["Title"] = SharedLocalizer["Delete question"].Value;
     ViewData["ActiveNav"] = "admin";
 }
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">Admin · Confirm</span>
-        <h1>Delete <em>question</em></h1>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Confirm"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Delete <em>question</em>"])</h1>
     </div>
 </div>
 
 <div class="confirm-card" data-reveal>
     <div class="warn-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 9v4"/><path d="M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg></div>
-    <h2 style="font-size:1.3rem; margin-bottom:0.5rem">Remove this question?</h2>
-    <p class="muted">This question will be removed from the module. Past attempts that referenced it keep their recorded answers.</p>
-    <div class="preview-box"><span class="anno">QUESTION</span><br />@Model.QuestionText</div>
+    <h2 style="font-size:1.3rem; margin-bottom:0.5rem">@SharedLocalizer["Remove this question?"]</h2>
+    <p class="muted">@SharedLocalizer["This question will be removed from the module. Past attempts that referenced it keep their recorded answers."]</p>
+    <div class="preview-box"><span class="anno">@SharedLocalizer["Question"]</span><br />@Model.QuestionText</div>
     <form method="post" class="form-actions">
         <input type="hidden" asp-for="Id" />
         <input type="hidden" asp-for="ExamId" />
-        <button class="btn btn--danger" type="submit">Yes, delete</button>
-        <a class="btn btn--ghost" asp-page="/Admin/Exams/Details" asp-route-id="@Model.ExamId">Cancel</a>
+        <button class="btn btn--danger" type="submit">@SharedLocalizer["Yes, delete"]</button>
+        <a class="btn btn--ghost" asp-page="/Admin/Exams/Details" asp-route-id="@Model.ExamId">@SharedLocalizer["Cancel"]</a>
     </form>
 </div>
 
-<a class="backlink" asp-page="/Admin/Exams/Details" asp-route-id="@Model.ExamId">&larr; Back to exam</a>
+<a class="backlink" asp-page="/Admin/Exams/Details" asp-route-id="@Model.ExamId">&larr; @SharedLocalizer["Back to exam"]</a>

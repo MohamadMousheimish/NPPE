@@ -33,8 +33,8 @@ namespace NPPE.Web.Pages.Admin.Exams
 
             var command = new CreateExamCommand(Input.Title, Input.Description, Input.IsActive);
 
-            var examId = await _mediator.Send(command);
-            SuccessMessage = $"Exam created successfully! ID: {examId}";
+            await _mediator.Send(command);
+            SuccessMessage = "Exam created successfully.";
             return Page();
         }
 
