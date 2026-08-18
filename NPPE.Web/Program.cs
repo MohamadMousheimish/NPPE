@@ -1,6 +1,8 @@
+using System.Threading.RateLimiting;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NPPE.Application.Queries.Exams.GetAllExams;
@@ -28,7 +30,11 @@ builder.Host.UseSerilog((context, services, configuration) => configuration
 builder.Services.AddRazorPages()
                 .AddViewLocalization()
                 .AddDataAnnotationsLocalization(options =>
-                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource)));
+                    options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource)))
+                .AddRazorPagesOptions(options =>
+                    // Throttle the auth pages (login/register/reset) against brute force.
+                    options.Conventions.AddFolderApplicationModelConvention("/Account",
+                        model => model.EndpointMetadata.Add(new EnableRateLimitingAttribute("auth"))));
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -71,6 +77,22 @@ builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastruct
 // Liveness/readiness probe for the host, including a database connectivity check.
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
 
+// Per-IP rate limiting for the auth pages (partitioned by client IP, which is the
+// real caller thanks to the forwarded-headers middleware above).
+builder.Services.AddRateLimiter(options =>
+{
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+    options.AddPolicy("auth", httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
+            factory: _ => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 30,
+                Window = TimeSpan.FromMinutes(1),
+                QueueLimit = 0
+            }));
+});
+
 // Honour X-Forwarded-* from the hosting reverse proxy (Azure, Nginx, etc.) so
 // Request.Scheme is "https". Stripe return URLs and OAuth redirect URIs are built
 // from the scheme, and would otherwise be generated as insecure "http".
@@ -108,6 +130,29 @@ app.UseForwardedHeaders();
 // Concise per-request log line (method, path, status, elapsed).
 app.UseSerilogRequestLogging();
 
+// Security response headers. The CSP allows self-hosted assets, Google Fonts, and
+// inline script/style (the app uses inline <script> blocks and style attributes);
+// tightening script-src to nonces is a future hardening step.
+app.Use(async (context, next) =>
+{
+    var headers = context.Response.Headers;
+    headers["X-Content-Type-Options"] = "nosniff";
+    headers["X-Frame-Options"] = "DENY";
+    headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
+    headers["Content-Security-Policy"] =
+        "default-src 'self'; " +
+        "script-src 'self' 'unsafe-inline'; " +
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+        "font-src 'self' https://fonts.gstatic.com; " +
+        "img-src 'self' data:; " +
+        "connect-src 'self'; " +
+        "frame-ancestors 'none'; " +
+        "base-uri 'self'; " +
+        "form-action 'self'; " +
+        "object-src 'none'";
+    await next();
+});
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -117,6 +162,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseRateLimiter();
 var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
 app.UseRequestLocalization(localizationOptions);
 
