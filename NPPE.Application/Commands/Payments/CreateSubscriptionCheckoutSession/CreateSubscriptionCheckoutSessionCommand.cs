@@ -56,7 +56,7 @@ public class CreateSubscriptionCheckoutSessionCommandHandler
                 Email = user.Email,
                 Name = $"{user.FirstName} {user.LastName}",
                 Metadata = new Dictionary<string, string> { { "user_id", user.Id } }
-            });
+            }, new RequestOptions { IdempotencyKey = $"customer_{user.Id}" });
             customerId = customer.Id;
             user.StripeCustomerId = customerId;
             await _userManager.UpdateAsync(user);
@@ -110,8 +110,11 @@ public class CreateSubscriptionCheckoutSessionCommandHandler
             }
         };
 
+        // Idempotency key (keyed on our pending payment id) so a retried request
+        // reuses the same Checkout Session instead of creating a duplicate.
         var service = new SessionService();
-        var session = await service.CreateAsync(options);
+        var session = await service.CreateAsync(
+            options, new RequestOptions { IdempotencyKey = $"checkout_{payment.Id}" });
 
         payment.StripeSessionId = session.Id;
         await _paymentRepository.UpdateAsync(payment);

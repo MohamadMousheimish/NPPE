@@ -73,8 +73,11 @@ public class CreateCheckoutSessionCommandHandler : IRequestHandler<CreateCheckou
             }
         };
 
+        // Idempotency key (keyed on our pending payment id) so a retried request
+        // reuses the same Checkout Session instead of creating a duplicate.
         var service = new SessionService();
-        var session = await service.CreateAsync(options);
+        var session = await service.CreateAsync(
+            options, new RequestOptions { IdempotencyKey = $"checkout_{payment.Id}" });
 
         // Update payment with session ID
         payment.StripeSessionId = session.Id;
