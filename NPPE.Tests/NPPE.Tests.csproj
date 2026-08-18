@@ -21,9 +21,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <!-- Needed to reference the Razor Pages web project and use ASP.NET types in tests. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
     <ProjectReference Include="..\NPPE.Application\NPPE.Application.csproj" />
     <ProjectReference Include="..\NPPE.Domain\NPPE.Domain.csproj" />
     <ProjectReference Include="..\NPPE.Infrastructure\NPPE.Infrastructure.csproj" />
+    <ProjectReference Include="..\NPPE.Web\NPPE.Web.csproj" />
   </ItemGroup>
 
 </Project>
