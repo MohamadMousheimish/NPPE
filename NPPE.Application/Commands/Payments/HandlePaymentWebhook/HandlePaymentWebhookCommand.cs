@@ -229,8 +229,12 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
 
             // The first invoice (billing_reason "subscription_create") is already
             // recorded by checkout.session.completed. Record only later renewals
-            // ("subscription_cycle") as their own payment-history rows.
-            if (invoice.BillingReason == "subscription_cycle")
+            // ("subscription_cycle") as their own payment-history rows — and only once,
+            // since Stripe can redeliver the same event (dedupe on the invoice id).
+            var alreadyRecorded = !string.IsNullOrEmpty(invoice.Id)
+                && await _paymentRepository.HasPaymentForInvoiceAsync(invoice.Id);
+
+            if (invoice.BillingReason == "subscription_cycle" && !alreadyRecorded)
             {
                 await _paymentRepository.AddAsync(new Payment
                 {
@@ -241,6 +245,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
                     PaidAt = DateTime.UtcNow,
                     PaymentType = PaymentType.Subscription,
                     StripeSubscriptionId = subscriptionId,
+                    StripeInvoiceId = invoice.Id,
                     SubscriptionStatus = SubscriptionStatus.Active,
                     StripeSessionId = string.Empty
                 });

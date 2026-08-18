@@ -15,4 +15,7 @@ public class Payment : BaseEntity
     public PaymentType PaymentType { get; set; } = PaymentType.OneTime;
     public string? StripeSubscriptionId { get; set; }
     public SubscriptionStatus? SubscriptionStatus { get; set; }
+
+    /// <summary>Stripe invoice id for subscription renewals — used to dedupe redelivered webhooks.</summary>
+    public string? StripeInvoiceId { get; set; }
 }

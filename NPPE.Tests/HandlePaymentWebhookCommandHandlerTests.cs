@@ -166,6 +166,7 @@ public class HandlePaymentWebhookCommandHandlerTests
 
         var invoice = new Invoice
         {
+            Id = "in_1",
             BillingReason = "subscription_cycle",
             AmountPaid = 999,
             Currency = "cad",
@@ -181,6 +182,33 @@ public class HandlePaymentWebhookCommandHandlerTests
         Assert.Equal(9.99m, added!.Amount);
         Assert.Equal(PaymentType.Subscription, added.PaymentType);
         Assert.Equal(PaymentStatus.Succeeded, added.Status);
+        Assert.Equal("in_1", added.StripeInvoiceId);
         Assert.True(user.IsPremium);
+    }
+
+    [Fact]
+    public async Task Invoice_payment_succeeded_does_not_duplicate_on_redelivery()
+    {
+        var user = NewUser();
+        var original = new Payment { UserId = user.Id, StripeSubscriptionId = "sub_1", PaymentType = PaymentType.Subscription };
+        _payments.Setup(p => p.GetBySubscriptionIdAsync("sub_1")).ReturnsAsync(original);
+        _users.Setup(u => u.GetByStripeSubscriptionIdAsync("sub_1")).ReturnsAsync(user);
+        _payments.Setup(p => p.HasPaymentForInvoiceAsync("in_1")).ReturnsAsync(true); // already recorded
+
+        var invoice = new Invoice
+        {
+            Id = "in_1",
+            BillingReason = "subscription_cycle",
+            AmountPaid = 999,
+            Currency = "cad",
+            Parent = new InvoiceParent
+            {
+                SubscriptionDetails = new InvoiceParentSubscriptionDetails { SubscriptionId = "sub_1" }
+            }
+        };
+
+        await CreateHandler().ProcessEventAsync(Wrap("invoice.payment_succeeded", invoice));
+
+        _payments.Verify(p => p.AddAsync(It.IsAny<Payment>()), Times.Never); // deduped
     }
 }

@@ -7,4 +7,5 @@ public interface IPaymentRepository : IGenericRepository<Payment>
     Task<List<Payment>> GetPaymentsByUserIdAsync(string userId);
     Task<Payment?> GetBySubscriptionIdAsync(string subscriptionId);
     Task<bool> HasSucceededOneTimePaymentAsync(string userId);
+    Task<bool> HasPaymentForInvoiceAsync(string invoiceId);
 }

@@ -38,4 +38,10 @@ public class PaymentRepository : GenericRepository<Payment>, IPaymentRepository
                 && p.PaymentType == Domain.Enums.PaymentType.OneTime
                 && p.Status == Domain.Enums.PaymentStatus.Succeeded);
     }
+
+    public async Task<bool> HasPaymentForInvoiceAsync(string invoiceId)
+    {
+        return await _context.Payments
+            .AnyAsync(p => p.StripeInvoiceId == invoiceId);
+    }
 }
