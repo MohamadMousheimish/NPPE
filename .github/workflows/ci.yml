@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore
+        run: dotnet restore NPPE.ExamPrep.sln
+
+      - name: Build
+        run: dotnet build NPPE.ExamPrep.sln -c Release --no-restore
+
+      - name: Test
+        run: dotnet test NPPE.ExamPrep.sln -c Release --no-build --verbosity normal
