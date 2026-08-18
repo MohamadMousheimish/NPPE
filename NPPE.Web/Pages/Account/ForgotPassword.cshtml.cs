@@ -1,7 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
+using NPPE.Application.Email;
 using NPPE.Domain.Entities;
+using NPPE.Web.Resources;
 using System.ComponentModel.DataAnnotations;
 
 namespace NPPE.Web.Pages.Account
@@ -9,10 +12,17 @@ namespace NPPE.Web.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public ForgotPasswordModel(UserManager<AppUser> userManager)
+        public ForgotPasswordModel(
+            UserManager<AppUser> userManager,
+            IEmailSender emailSender,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userManager = userManager;
+            _emailSender = emailSender;
+            _localizer = localizer;
         }
 
         [BindProperty]
@@ -39,9 +49,12 @@ namespace NPPE.Web.Pages.Account
                 new { userId = user.Id, code = code },
                 protocol: Request.Scheme);
 
-            // TODO: In production, send real email
-            // For now, log to console or show in dev
-            Console.WriteLine($"Password reset link: {callbackUrl}");
+            var subject = _localizer["Reset your password"];
+            var body =
+                $"<p>{_localizer["We received a request to reset your password."]}</p>" +
+                $"<p><a href=\"{callbackUrl}\">{_localizer["Set a new password"]}</a></p>" +
+                $"<p>{_localizer["If you didn't request this, you can safely ignore this email."]}</p>";
+            await _emailSender.SendEmailAsync(user.Email!, subject, body);
 
             TempData["StatusMessage"] = "If your email is registered, you will receive a password reset link.";
             return RedirectToPage("./ForgotPasswordConfirmation");

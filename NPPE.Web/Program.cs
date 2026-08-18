@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +56,17 @@ builder.Services.AddScoped<IExamAttemptRepository, ExamAttemptRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<NPPE.Application.Documents.IExamDocumentParser, NPPE.Infrastructure.Documents.ExamDocumentParser>();
+builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastructure.Email.SmtpEmailSender>();
+
+// Honour X-Forwarded-* from the hosting reverse proxy (Azure, Nginx, etc.) so
+// Request.Scheme is "https". Stripe return URLs and OAuth redirect URIs are built
+// from the scheme, and would otherwise be generated as insecure "http".
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownNetworks.Clear();
+    options.KnownProxies.Clear();
+});
 
 // Add role-based policies.
 // Premium access is intentionally NOT a policy: it is enforced at the point of
@@ -75,6 +87,10 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 builder.Services.AddLocalization();
 
 var app = builder.Build();
+
+// Must run before any middleware that inspects the scheme/host (HTTPS redirect,
+// authentication, URL generation).
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

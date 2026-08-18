@@ -236,3 +236,6 @@ _Pvt_Extensions
 
 # Playwright MCP test output
 .playwright-mcp/
+
+# Local planning reports — not for the remote
+Reports/

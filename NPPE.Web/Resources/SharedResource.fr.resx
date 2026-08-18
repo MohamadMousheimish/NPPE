@@ -579,4 +579,7 @@
   <data name="Only Word (.docx) files are supported." xml:space="preserve"><value>Seuls les fichiers Word (.docx) sont pris en charge.</value></data>
   <data name="Please enter an exam title." xml:space="preserve"><value>Veuillez saisir un titre d'examen.</value></data>
   <data name="Exam imported successfully." xml:space="preserve"><value>Examen importé avec succès.</value></data>
+  <!-- Emails -->
+  <data name="We received a request to reset your password." xml:space="preserve"><value>Nous avons reçu une demande de réinitialisation de votre mot de passe.</value></data>
+  <data name="If you didn't request this, you can safely ignore this email." xml:space="preserve"><value>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce courriel en toute sécurité.</value></data>
 </root>
