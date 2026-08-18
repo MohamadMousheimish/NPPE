@@ -22,6 +22,7 @@ public class HandlePaymentWebhookCommandHandlerTests
     private readonly Mock<IPaymentRepository> _payments = new();
     private readonly Mock<IUserRepository> _users = new();
     private readonly Mock<IUnitOfWork> _uow = new();
+    private readonly Mock<IProcessedStripeEventRepository> _processedEvents = new();
     private readonly Mock<UserManager<AppUser>> _userManager = MockUserManager();
 
     public HandlePaymentWebhookCommandHandlerTests()
@@ -41,10 +42,11 @@ public class HandlePaymentWebhookCommandHandlerTests
 
     private HandlePaymentWebhookCommandHandler CreateHandler() =>
         new(_payments.Object, _userManager.Object, new Mock<IConfiguration>().Object,
-            _users.Object, _uow.Object, NullLogger<HandlePaymentWebhookCommandHandler>.Instance);
+            _users.Object, _uow.Object, _processedEvents.Object,
+            NullLogger<HandlePaymentWebhookCommandHandler>.Instance);
 
-    private static Event Wrap(string type, IHasObject payload) =>
-        new() { Type = type, Data = new EventData { Object = payload } };
+    private static Event Wrap(string type, IHasObject payload, string id = "evt_test") =>
+        new() { Id = id, Type = type, Data = new EventData { Object = payload } };
 
     private static AppUser NewUser(string id = "user_1") =>
         new() { Id = id, Email = "s@nppe.ca", FirstName = "S", LastName = "T", IsPremium = false };
@@ -210,5 +212,20 @@ public class HandlePaymentWebhookCommandHandlerTests
         await CreateHandler().ProcessEventAsync(Wrap("invoice.payment_succeeded", invoice));
 
         _payments.Verify(p => p.AddAsync(It.IsAny<Payment>()), Times.Never); // deduped
+    }
+
+    [Fact]
+    public async Task Already_processed_event_is_skipped_entirely()
+    {
+        _processedEvents.Setup(p => p.ExistsAsync("evt_dup")).ReturnsAsync(true);
+
+        var evt = Wrap("checkout.session.completed",
+            new Session { Id = "cs_9", Mode = "payment", PaymentStatus = "paid" }, "evt_dup");
+
+        await CreateHandler().ProcessEventAsync(evt);
+
+        // The whole handler body is short-circuited and the event is not re-recorded.
+        _payments.Verify(p => p.GetBySessionIdAsync(It.IsAny<string>()), Times.Never);
+        _processedEvents.Verify(p => p.AddAsync(It.IsAny<ProcessedStripeEvent>()), Times.Never);
     }
 }

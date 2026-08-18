@@ -11,6 +11,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<AnswerOption> AnswerOptions => Set<AnswerOption>();
     public DbSet<AttemptedAnswer> AttemptedAnswers => Set<AttemptedAnswer>();
     public DbSet<Payment> Payments { get; set; }
+    public DbSet<ProcessedStripeEvent> ProcessedStripeEvents => Set<ProcessedStripeEvent>();
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -69,6 +70,13 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             entity.Property(p => p.PaymentType).IsRequired();
             entity.Property(p => p.StripeSubscriptionId).HasMaxLength(255);
             entity.Property(p => p.SubscriptionStatus);
+        });
+
+        // Processed Stripe webhook events (idempotency)
+        builder.Entity<ProcessedStripeEvent>(entity =>
+        {
+            entity.Property(e => e.StripeEventId).IsRequired().HasMaxLength(255);
+            entity.HasIndex(e => e.StripeEventId).IsUnique();
         });
     }
 }

@@ -24,6 +24,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IProcessedStripeEventRepository _processedEvents;
     private readonly ILogger<HandlePaymentWebhookCommandHandler> _logger;
 
     public HandlePaymentWebhookCommandHandler(
@@ -32,6 +33,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         IConfiguration configuration,
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
+        IProcessedStripeEventRepository processedEvents,
         ILogger<HandlePaymentWebhookCommandHandler> logger)
     {
         _paymentRepository = paymentRepository;
@@ -39,6 +41,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         _configuration = configuration;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _processedEvents = processedEvents;
         _logger = logger;
     }
 
@@ -75,6 +78,11 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     /// </summary>
     internal async Task ProcessEventAsync(Event stripeEvent)
     {
+        // Endpoint-wide idempotency: Stripe can deliver the same event more than
+        // once. If we've already handled a delivery of this event, skip it.
+        if (!string.IsNullOrEmpty(stripeEvent.Id) && await _processedEvents.ExistsAsync(stripeEvent.Id))
+            return;
+
         switch (stripeEvent.Type)
         {
             case "checkout.session.completed":
@@ -93,6 +101,10 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
                 await HandleInvoicePaymentFailed(stripeEvent);
                 break;
         }
+
+        // Remember this event so a later redelivery is skipped by the guard above.
+        if (!string.IsNullOrEmpty(stripeEvent.Id))
+            await _processedEvents.AddAsync(new ProcessedStripeEvent { StripeEventId = stripeEvent.Id });
     }
 
     private async Task HandleCheckoutSessionCompleted(Event stripeEvent)
