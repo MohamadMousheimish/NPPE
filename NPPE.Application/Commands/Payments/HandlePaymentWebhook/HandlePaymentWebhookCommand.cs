@@ -50,26 +50,13 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
 
         try
         {
-            var stripeEvent = EventUtility.ConstructEvent(json, stripeSignatureHeader, secret);
+            // Don't hard-fail when our Stripe.net version's pinned API version differs
+            // from the account's — it causes spurious webhook failures. The signature is
+            // still verified, which is the security-critical check.
+            var stripeEvent = EventUtility.ConstructEvent(
+                json, stripeSignatureHeader, secret, throwOnApiVersionMismatch: false);
 
-            switch (stripeEvent.Type)
-            {
-                case "checkout.session.completed":
-                    await HandleCheckoutSessionCompleted(stripeEvent);
-                    break;
-                case "customer.subscription.updated":
-                    await HandleSubscriptionUpdated(stripeEvent);
-                    break;
-                case "customer.subscription.deleted":
-                    await HandleSubscriptionDeleted(stripeEvent);
-                    break;
-                case "invoice.payment_succeeded":
-                    await HandleInvoicePaymentSucceeded(stripeEvent);
-                    break;
-                case "invoice.payment_failed":
-                    await HandleInvoicePaymentFailed(stripeEvent);
-                    break;
-            }
+            await ProcessEventAsync(stripeEvent);
         }
         catch (Exception ex)
         {
@@ -79,6 +66,33 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         }
 
         return Unit.Value;
+    }
+
+    /// <summary>
+    /// Dispatches a verified Stripe event to the right handler. Separated from
+    /// <see cref="Handle"/> (which does signature verification) so the reconciliation
+    /// logic can be unit-tested without forging Stripe signatures.
+    /// </summary>
+    internal async Task ProcessEventAsync(Event stripeEvent)
+    {
+        switch (stripeEvent.Type)
+        {
+            case "checkout.session.completed":
+                await HandleCheckoutSessionCompleted(stripeEvent);
+                break;
+            case "customer.subscription.updated":
+                await HandleSubscriptionUpdated(stripeEvent);
+                break;
+            case "customer.subscription.deleted":
+                await HandleSubscriptionDeleted(stripeEvent);
+                break;
+            case "invoice.payment_succeeded":
+                await HandleInvoicePaymentSucceeded(stripeEvent);
+                break;
+            case "invoice.payment_failed":
+                await HandleInvoicePaymentFailed(stripeEvent);
+                break;
+        }
     }
 
     private async Task HandleCheckoutSessionCompleted(Event stripeEvent)
