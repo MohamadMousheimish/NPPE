@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<ItemGroup>
 		<PackageReference Include="MediatR" Version="12.5.0" />
@@ -45,6 +45,7 @@
 		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-	</PropertyGroup>
+	  <UserSecretsId>d102f32a-3922-44a2-ae37-98ea88e975e2</UserSecretsId>
+  </PropertyGroup>
 
 </Project>
