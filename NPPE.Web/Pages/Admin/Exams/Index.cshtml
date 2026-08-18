@@ -11,7 +11,10 @@
         <h1>@Html.Raw(SharedLocalizer["Manage <em>exams</em>"])</h1>
         <p class="sub">@SharedLocalizer["Create, edit, and organise the modules students practise with."]</p>
     </div>
-    <a class="btn btn--primary" asp-page="/Admin/Exams/Create">@SharedLocalizer["New exam"] <span class="arrow">&rarr;</span></a>
+    <div class="phead__acts">
+        <a class="btn btn--ghost" asp-page="/Admin/Exams/Import">@SharedLocalizer["Import"] <span class="arrow">&rarr;</span></a>
+        <a class="btn btn--primary" asp-page="/Admin/Exams/Create">@SharedLocalizer["New exam"] <span class="arrow">&rarr;</span></a>
+    </div>
 </div>
 
 @if (TempData["SuccessMessage"] != null)

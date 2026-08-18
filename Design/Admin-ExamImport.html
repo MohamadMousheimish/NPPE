@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Import exam · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="exams" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page">
+    <div class="phead" data-reveal>
+        <div>
+            <span class="eyebrow eyebrow--signal">Admin · Import</span>
+            <h1>Import an <em>exam</em></h1>
+            <p class="sub">Upload a Word document in the NPPE format and we'll parse the questions, answers and explanations for you to review.</p>
+        </div>
+    </div>
+
+    <div class="stepper" data-reveal>
+        <div class="step is-active" data-stepper="1"><span class="num">01</span><span class="tx"><b>Upload</b><span>Choose a file</span></span></div>
+        <div class="step" data-stepper="2"><span class="num">02</span><span class="tx"><b>Details</b><span>Title &amp; description</span></span></div>
+        <div class="step" data-stepper="3"><span class="num">03</span><span class="tx"><b>Review</b><span>Fix &amp; create</span></span></div>
+    </div>
+
+    <form onsubmit="return false" id="importForm">
+        <!-- STEP 1 · Upload -->
+        <div class="wpanel is-active" data-step="1">
+            <div class="dropzone" id="dropzone" tabindex="0" role="button">
+                <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+                <h3>Drop your exam here</h3>
+                <p>or click to choose a .docx file</p>
+                <div class="file" id="fileName" hidden></div>
+            </div>
+            <div class="wloader" id="loader" hidden>
+                <svg viewBox="0 0 128 128" aria-hidden="true">
+                    <circle class="ltrack" cx="64" cy="64" r="52"></circle>
+                    <circle class="lspin" cx="64" cy="64" r="52"></circle>
+                </svg>
+                <div class="lbl">Parsing…</div>
+            </div>
+        </div>
+
+        <!-- STEP 2 · Details -->
+        <div class="wpanel" data-step="2">
+            <div class="form-card" style="max-width:560px">
+                <label class="field">
+                    <span class="field__label">Title <span class="idx">01</span></span>
+                    <span class="field__wrap"><input class="field__input" id="examTitle" value="Professional Practice & Ethics" placeholder="e.g. Professional Practice & Ethics" /></span>
+                    <span class="field-validation-error" id="titleError"></span>
+                </label>
+                <label class="field">
+                    <span class="field__label">Description <span class="idx">02</span></span>
+                    <span class="field__wrap"><textarea class="field__input" placeholder="A short summary of what this module covers.">Ten questions on the regulator's code of ethics, conflicts of interest, and professional designations.</textarea></span>
+                </label>
+                <label class="check" style="margin-top:0.4rem"><input type="checkbox" checked /><span class="box"></span> Active — visible to students</label>
+            </div>
+            <div class="wnav">
+                <button type="button" class="btn btn--ghost" data-back>&larr; Back</button>
+                <button type="button" class="btn btn--primary" id="toReview">Review questions <span class="arrow">&rarr;</span></button>
+            </div>
+        </div>
+
+        <!-- STEP 3 · Review -->
+        <div class="wpanel" data-step="3">
+            <div class="wchip" id="summary">
+                <span><b id="cQ">0</b> questions</span>
+                <span><b id="cO">0</b> options</span>
+                <span class="flagged" id="cFlagWrap"><b id="cFlag">0</b> flagged</span>
+            </div>
+            <div id="reviewList"></div>
+            <div class="wnav">
+                <button type="button" class="btn btn--ghost" data-back>&larr; Back</button>
+                <button type="submit" class="btn btn--primary" id="createBtn" disabled>Create exam <span class="arrow">&rarr;</span></button>
+            </div>
+        </div>
+    </form>
+
+    <a class="backlink" href="Admin-Exams.html">&larr; Back to library</a>
+</main>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+<script>
+/* Static mockup: hard-coded sample of a parsed NPPE exam so the review step,
+   red-flagging, and the gated Create button can be explored without a server. */
+(function () {
+    var panels = [].slice.call(document.querySelectorAll(".wpanel"));
+    var steps = [].slice.call(document.querySelectorAll("[data-stepper]"));
+    var reviewList = document.getElementById("reviewList");
+    var createBtn = document.getElementById("createBtn");
+    var dropzone = document.getElementById("dropzone");
+    var loader = document.getElementById("loader");
+    var fileName = document.getElementById("fileName");
+
+    // One clean question, one carrying a parser note, one deliberately broken
+    // (empty option D + no correct marked) to show the red state and disabled button.
+    var questions = [
+        {
+            text: "A Professional Engineer discovers a design flaw in a colleague's sealed drawings that could endanger the public. What is the most appropriate first action?",
+            explanationForCorrect: "The paramount duty is to public welfare, so the concern must be raised through the proper professional channels.",
+            explanationForIncorrect: "Ignoring the flaw or acting outside professional channels breaches the duty to hold public safety paramount.",
+            notes: [],
+            options: [
+                { text: "Say nothing to avoid embarrassing a colleague", isCorrect: false },
+                { text: "Report the concern to the appropriate authority and the colleague", isCorrect: true },
+                { text: "Anonymously post the drawings online", isCorrect: false },
+                { text: "Wait to see whether anyone else notices", isCorrect: false }
+            ]
+        },
+        {
+            text: "Which designation may a recent Geology graduate use before becoming licensed?",
+            explanationForCorrect: "A graduate in training may use the G.I.T. designation while accruing experience toward licensure.",
+            explanationForIncorrect: "Reserved titles such as P.Geo. or P.Eng. may only be used once licensed.",
+            notes: ["Options had no A–D labels — they were assigned by order."],
+            options: [
+                { text: "P.Eng.", isCorrect: false },
+                { text: "P.Geo.", isCorrect: false },
+                { text: "G.I.T. (Geologist in Training)", isCorrect: true },
+                { text: "Ing.", isCorrect: false }
+            ]
+        },
+        {
+            text: "Under the Act, who is in violation if an unlicensed person is knowingly contracted to perform the services of a Professional Engineer?",
+            explanationForCorrect: "No explanation provided.",
+            explanationForIncorrect: "No explanation provided.",
+            notes: ["No “correct” explanation was found — a placeholder was inserted."],
+            options: [
+                { text: "The unlicensed contractor", isCorrect: false },
+                { text: "The person who hired them", isCorrect: false },
+                { text: "Both parties", isCorrect: false },
+                { text: "", isCorrect: false }
+            ]
+        }
+    ];
+
+    function goStep(n) {
+        panels.forEach(function (p) { p.classList.toggle("is-active", +p.dataset.step === n); });
+        steps.forEach(function (s) {
+            var k = +s.dataset.stepper;
+            s.classList.toggle("is-active", k === n);
+            s.classList.toggle("is-done", k < n);
+        });
+        if (n === 1) { dropzone.hidden = false; loader.hidden = true; }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    // fake upload → loader → details
+    function fakeUpload() {
+        fileName.hidden = false; fileName.textContent = "NPPE-Practice-Exam.docx";
+        dropzone.hidden = true; loader.hidden = false;
+        setTimeout(function () { loader.hidden = true; renderReview(); goStep(2); }, 900);
+    }
+    dropzone.addEventListener("click", fakeUpload);
+    dropzone.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fakeUpload(); } });
+
+    document.getElementById("toReview").addEventListener("click", function () { goStep(3); validate(); });
+    document.querySelectorAll("[data-back]").forEach(function (b) {
+        b.addEventListener("click", function () {
+            var cur = panels.filter(function (p) { return p.classList.contains("is-active"); })[0];
+            goStep(+cur.dataset.step - 1);
+        });
+    });
+
+    function esc(s) { var d = document.createElement("div"); d.textContent = s; return d.innerHTML; }
+
+    function renderReview() {
+        reviewList.innerHTML = "";
+        questions.forEach(function (q, qi) { reviewList.appendChild(buildCard(q, qi)); });
+    }
+
+    function buildCard(q, qi) {
+        var card = document.createElement("div");
+        card.className = "rev-q";
+        var num = ("0" + (qi + 1)).slice(-2);
+        var notesHtml = (q.notes || []).map(function (n) {
+            return '<div class="q-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/></svg>' + esc(n) + "</div>";
+        }).join("");
+        var optsHtml = "";
+        for (var oi = 0; oi < 4; oi++) {
+            var letter = String.fromCharCode(65 + oi);
+            var checked = (q.options[oi] && q.options[oi].isCorrect) ? "checked" : "";
+            optsHtml +=
+                '<div class="opt-edit">' +
+                    '<div class="opt-edit__top"><span class="lab">' + letter + '</span>' +
+                    '<label class="check"><input type="radio" name="correct-' + qi + '" data-correct ' + checked + ' /><span class="box"></span> Correct</label></div>' +
+                    '<span class="field__wrap"><input class="field__input" data-opt placeholder="Option ' + letter + '" /></span>' +
+                '</div>';
+        }
+        card.innerHTML =
+            '<div class="rev-q__head"><span class="n">' + num + '</span><b>Question ' + (qi + 1) + '</b><span class="flag" hidden>Needs a fix</span></div>' +
+            notesHtml +
+            '<label class="field"><span class="field__label">Question text</span><span class="field__wrap"><textarea class="field__input" data-f="text" rows="2"></textarea></span></label>' +
+            '<div class="opt-editor">' + optsHtml + '</div>' +
+            '<div class="row-2" style="margin-top:1rem">' +
+                '<label class="field"><span class="field__label">Feedback if correct</span><span class="field__wrap"><textarea class="field__input" data-f="ec"></textarea></span></label>' +
+                '<label class="field"><span class="field__label">Feedback if incorrect</span><span class="field__wrap"><textarea class="field__input" data-f="ei"></textarea></span></label>' +
+            '</div>';
+        card.querySelector('[data-f="text"]').value = q.text;
+        card.querySelector('[data-f="ec"]').value = q.explanationForCorrect;
+        card.querySelector('[data-f="ei"]').value = q.explanationForIncorrect;
+        var optInputs = card.querySelectorAll("[data-opt]");
+        for (var j = 0; j < optInputs.length; j++) optInputs[j].value = (q.options[j] && q.options[j].text) || "";
+        return card;
+    }
+
+    reviewList.addEventListener("input", validate);
+    reviewList.addEventListener("change", validate);
+
+    function validate() {
+        var cards = [].slice.call(reviewList.querySelectorAll(".rev-q"));
+        var flagged = 0, totalOptions = 0;
+        cards.forEach(function (card) {
+            var qFlag = false;
+            var stem = card.querySelector('[data-f="text"]');
+            var badStem = !stem.value.trim();
+            stem.classList.toggle("invalid", badStem); if (badStem) qFlag = true;
+            var opts = [].slice.call(card.querySelectorAll(".opt-edit"));
+            totalOptions += opts.length;
+            var hasCorrect = false;
+            opts.forEach(function (o) {
+                var inp = o.querySelector("[data-opt]");
+                var empty = !inp.value.trim();
+                inp.classList.toggle("invalid", empty); if (empty) qFlag = true;
+                var isC = o.querySelector("[data-correct]").checked;
+                o.classList.toggle("correct", isC);
+                if (isC) hasCorrect = true;
+            });
+            if (opts.length !== 4 || !hasCorrect) qFlag = true;
+            card.classList.toggle("invalid", qFlag);
+            card.querySelector(".flag").hidden = !qFlag;
+            if (qFlag) flagged++;
+        });
+        document.getElementById("cQ").textContent = cards.length;
+        document.getElementById("cO").textContent = totalOptions;
+        document.getElementById("cFlag").textContent = flagged;
+        document.getElementById("cFlagWrap").classList.toggle("has", flagged > 0);
+        createBtn.disabled = !(flagged === 0 && cards.length > 0);
+    }
+
+    renderReview();
+})();
+</script>
+</body>
+</html>

@@ -556,4 +556,27 @@
   <data name="Username '{0}' is already taken." xml:space="preserve"><value>Le nom d'utilisateur « {0} » est déjà utilisé.</value></data>
   <data name="Invalid or expired token." xml:space="preserve"><value>Jeton invalide ou expiré.</value></data>
   <data name="Email is invalid." xml:space="preserve"><value>Le courriel est invalide.</value></data>
+  <!-- Admin: import wizard -->
+  <data name="Import" xml:space="preserve"><value>Importer</value></data>
+  <data name="Import exam" xml:space="preserve"><value>Importer un examen</value></data>
+  <data name="Admin · Import" xml:space="preserve"><value>Admin · Importation</value></data>
+  <data name="Import an &lt;em&gt;exam&lt;/em&gt;" xml:space="preserve"><value>Importer un &lt;em&gt;examen&lt;/em&gt;</value></data>
+  <data name="Upload a Word document in the NPPE format and we'll parse the questions, answers and explanations for you to review." xml:space="preserve"><value>Téléversez un document Word au format NPPE et nous analyserons les questions, les réponses et les explications pour que vous puissiez les vérifier.</value></data>
+  <data name="Upload" xml:space="preserve"><value>Téléverser</value></data>
+  <data name="Choose a file" xml:space="preserve"><value>Choisir un fichier</value></data>
+  <data name="Details" xml:space="preserve"><value>Détails</value></data>
+  <data name="Title &amp; description" xml:space="preserve"><value>Titre et description</value></data>
+  <data name="Review" xml:space="preserve"><value>Vérifier</value></data>
+  <data name="Fix &amp; create" xml:space="preserve"><value>Corriger et créer</value></data>
+  <data name="Drop your exam here" xml:space="preserve"><value>Déposez votre examen ici</value></data>
+  <data name="or click to choose a .docx file" xml:space="preserve"><value>ou cliquez pour choisir un fichier .docx</value></data>
+  <data name="Parsing…" xml:space="preserve"><value>Analyse en cours…</value></data>
+  <data name="Back" xml:space="preserve"><value>Retour</value></data>
+  <data name="Review questions" xml:space="preserve"><value>Vérifier les questions</value></data>
+  <data name="Option" xml:space="preserve"><value>Option</value></data>
+  <data name="Needs a fix" xml:space="preserve"><value>À corriger</value></data>
+  <data name="flagged" xml:space="preserve"><value>signalées</value></data>
+  <data name="Only Word (.docx) files are supported." xml:space="preserve"><value>Seuls les fichiers Word (.docx) sont pris en charge.</value></data>
+  <data name="Please enter an exam title." xml:space="preserve"><value>Veuillez saisir un titre d'examen.</value></data>
+  <data name="Exam imported successfully." xml:space="preserve"><value>Examen importé avec succès.</value></data>
 </root>

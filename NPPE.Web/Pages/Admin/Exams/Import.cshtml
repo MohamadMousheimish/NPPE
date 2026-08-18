@@ -1,0 +1,103 @@
+@page
+@model NPPE.Web.Pages.Admin.Exams.ImportModel
+@{
+    ViewData["Title"] = SharedLocalizer["Import exam"].Value;
+    ViewData["ActiveNav"] = "admin";
+    var i18n = new Dictionary<string, object>
+    {
+        ["parsing"] = SharedLocalizer["Parsing…"].Value,
+        ["onlyDocx"] = SharedLocalizer["Only Word (.docx) files are supported."].Value,
+        ["questionText"] = SharedLocalizer["Question text"].Value,
+        ["feedbackCorrect"] = SharedLocalizer["Feedback if correct"].Value,
+        ["feedbackIncorrect"] = SharedLocalizer["Feedback if incorrect"].Value,
+        ["correct"] = SharedLocalizer["Correct"].Value,
+        ["option"] = SharedLocalizer["Option"].Value,
+        ["question"] = SharedLocalizer["Question"].Value,
+        ["needsFix"] = SharedLocalizer["Needs a fix"].Value,
+        ["titleRequired"] = SharedLocalizer["Please enter an exam title."].Value
+    };
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Import"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Import an <em>exam</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Upload a Word document in the NPPE format and we'll parse the questions, answers and explanations for you to review."]</p>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert--fail" data-reveal>@Model.ErrorMessage</div>
+}
+
+<div class="stepper" data-reveal>
+    <div class="step is-active" data-stepper="1"><span class="num">01</span><span class="tx"><b>@SharedLocalizer["Upload"]</b><span>@SharedLocalizer["Choose a file"]</span></span></div>
+    <div class="step" data-stepper="2"><span class="num">02</span><span class="tx"><b>@SharedLocalizer["Details"]</b><span>@SharedLocalizer["Title & description"]</span></span></div>
+    <div class="step" data-stepper="3"><span class="num">03</span><span class="tx"><b>@SharedLocalizer["Review"]</b><span>@SharedLocalizer["Fix & create"]</span></span></div>
+</div>
+
+<form method="post" asp-page-handler="Create" id="importForm">
+    @Html.AntiForgeryToken()
+
+    <!-- STEP 1 · Upload -->
+    <div class="wpanel is-active" data-step="1">
+        <div class="dropzone" id="dropzone" tabindex="0" role="button">
+            <input type="file" id="fileInput" accept=".docx" hidden />
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4"/><path d="M8 8l4-4 4 4"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+            <h3>@SharedLocalizer["Drop your exam here"]</h3>
+            <p>@SharedLocalizer["or click to choose a .docx file"]</p>
+            <div class="file" id="fileName" hidden></div>
+        </div>
+        <div class="wloader" id="loader" hidden>
+            <svg viewBox="0 0 128 128" aria-hidden="true">
+                <circle class="ltrack" cx="64" cy="64" r="52"></circle>
+                <circle class="lspin" cx="64" cy="64" r="52"></circle>
+            </svg>
+            <div class="lbl" id="loaderText">@SharedLocalizer["Parsing…"]</div>
+        </div>
+        <div class="alert alert--fail" id="uploadError" hidden style="margin-top:1.2rem"></div>
+    </div>
+
+    <!-- STEP 2 · Details -->
+    <div class="wpanel" data-step="2">
+        <div class="form-card" style="max-width:560px">
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Title"] <span class="idx">01</span></span>
+                <span class="field__wrap"><input asp-for="Title" class="field__input" id="examTitle" placeholder="@SharedLocalizer["e.g. Professional Practice & Ethics"]" /></span>
+                <span class="field-validation-error" id="titleError"></span>
+            </label>
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Description"] <span class="idx">02</span></span>
+                <span class="field__wrap"><textarea asp-for="Description" class="field__input" placeholder="@SharedLocalizer["A short summary of what this module covers."]"></textarea></span>
+            </label>
+            <label class="check" style="margin-top:0.4rem"><input asp-for="IsActive" /><span class="box"></span> @SharedLocalizer["Active — visible to students"]</label>
+        </div>
+        <div class="wnav">
+            <button type="button" class="btn btn--ghost" data-back>&larr; @SharedLocalizer["Back"]</button>
+            <button type="button" class="btn btn--primary" id="toReview">@SharedLocalizer["Review questions"] <span class="arrow">&rarr;</span></button>
+        </div>
+    </div>
+
+    <!-- STEP 3 · Review -->
+    <div class="wpanel" data-step="3">
+        <div class="wchip" id="summary">
+            <span><b id="cQ">0</b> @SharedLocalizer["questions"]</span>
+            <span><b id="cO">0</b> @SharedLocalizer["options"]</span>
+            <span class="flagged" id="cFlagWrap"><b id="cFlag">0</b> @SharedLocalizer["flagged"]</span>
+        </div>
+        <div id="reviewList"></div>
+        <input type="hidden" asp-for="QuestionsJson" id="questionsJson" />
+        <div class="wnav">
+            <button type="button" class="btn btn--ghost" data-back>&larr; @SharedLocalizer["Back"]</button>
+            <button type="submit" class="btn btn--primary" id="createBtn" disabled>@SharedLocalizer["Create exam"] <span class="arrow">&rarr;</span></button>
+        </div>
+    </div>
+</form>
+
+<a class="backlink" asp-page="Index">&larr; @SharedLocalizer["Back to library"]</a>
+
+@section Scripts {
+    <script>window.WIZ = { i18n: @Html.Raw(Json.Serialize(i18n)), parseUrl: '@Url.Page("Import", "Parse")' };</script>
+    <script src="~/js/import-wizard.js" asp-append-version="true"></script>
+}
