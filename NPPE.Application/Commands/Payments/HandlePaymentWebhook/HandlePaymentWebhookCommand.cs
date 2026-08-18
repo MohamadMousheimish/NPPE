@@ -1,7 +1,9 @@
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using NPPE.Application.Repositories;
+using NPPE.Domain.Constants;
 using NPPE.Domain.Entities;
 using NPPE.Domain.Enums;
 using Stripe;
@@ -22,19 +24,22 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     private readonly IConfiguration _configuration;
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly ILogger<HandlePaymentWebhookCommandHandler> _logger;
 
     public HandlePaymentWebhookCommandHandler(
         IPaymentRepository paymentRepository,
         UserManager<AppUser> userManager,
         IConfiguration configuration,
         IUserRepository userRepository,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        ILogger<HandlePaymentWebhookCommandHandler> logger)
     {
         _paymentRepository = paymentRepository;
         _userManager = userManager;
         _configuration = configuration;
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
+        _logger = logger;
     }
 
     public async Task<Unit> Handle(HandlePaymentWebhookCommand request, CancellationToken ct)
@@ -58,6 +63,9 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
                 case "customer.subscription.deleted":
                     await HandleSubscriptionDeleted(stripeEvent);
                     break;
+                case "invoice.payment_succeeded":
+                    await HandleInvoicePaymentSucceeded(stripeEvent);
+                    break;
                 case "invoice.payment_failed":
                     await HandleInvoicePaymentFailed(stripeEvent);
                     break;
@@ -65,7 +73,8 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Webhook error: {ex.Message}");
+            // Rethrow so the endpoint returns non-200 and Stripe retries the delivery.
+            _logger.LogError(ex, "Failed to process Stripe webhook event.");
             throw;
         }
 
@@ -177,6 +186,50 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
             {
                 payment.SubscriptionStatus = SubscriptionStatus.Expired;
                 await _paymentRepository.UpdateAsync(payment);
+            }
+        });
+    }
+
+    private async Task HandleInvoicePaymentSucceeded(Event stripeEvent)
+    {
+        var invoice = stripeEvent.Data.Object as Invoice;
+        var subscriptionId = invoice?.Parent?.SubscriptionDetails?.SubscriptionId;
+        if (invoice == null || subscriptionId == null) return;
+
+        var original = await _paymentRepository.GetBySubscriptionIdAsync(subscriptionId);
+        if (original == null) return; // unknown subscription — nothing to reconcile
+
+        var user = await _userRepository.GetByStripeSubscriptionIdAsync(subscriptionId);
+
+        await _unitOfWork.ExecuteInTransactionAsync(async () =>
+        {
+            // Keep the subscription marked active (recovers from a prior past_due).
+            original.SubscriptionStatus = SubscriptionStatus.Active;
+            await _paymentRepository.UpdateAsync(original);
+
+            if (user != null && !user.IsPremium)
+            {
+                user.IsPremium = true;
+                await _userManager.UpdateAsync(user);
+            }
+
+            // The first invoice (billing_reason "subscription_create") is already
+            // recorded by checkout.session.completed. Record only later renewals
+            // ("subscription_cycle") as their own payment-history rows.
+            if (invoice.BillingReason == "subscription_cycle")
+            {
+                await _paymentRepository.AddAsync(new Payment
+                {
+                    UserId = original.UserId,
+                    Amount = invoice.AmountPaid / 100m,
+                    Currency = invoice.Currency ?? Currencies.Canadian,
+                    Status = PaymentStatus.Succeeded,
+                    PaidAt = DateTime.UtcNow,
+                    PaymentType = PaymentType.Subscription,
+                    StripeSubscriptionId = subscriptionId,
+                    SubscriptionStatus = SubscriptionStatus.Active,
+                    StripeSessionId = string.Empty
+                });
             }
         });
     }

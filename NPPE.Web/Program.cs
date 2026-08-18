@@ -11,8 +11,18 @@ using NPPE.Infrastructure.Persistence;
 using NPPE.Infrastructure.Persistence.Repositories;
 using NPPE.Web.Initializers;
 using NPPE.Web.Resources;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Structured logging. Reads any "Serilog" section from configuration (so a file,
+// Seq, or Application Insights sink can be added without code changes) and always
+// writes to the console.
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console());
 
 // Add services to the container.
 builder.Services.AddRazorPages()
@@ -58,6 +68,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<NPPE.Application.Documents.IExamDocumentParser, NPPE.Infrastructure.Documents.ExamDocumentParser>();
 builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastructure.Email.SmtpEmailSender>();
 
+// Liveness/readiness probe for the host, including a database connectivity check.
+builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();
+
 // Honour X-Forwarded-* from the hosting reverse proxy (Azure, Nginx, etc.) so
 // Request.Scheme is "https". Stripe return URLs and OAuth redirect URIs are built
 // from the scheme, and would otherwise be generated as insecure "http".
@@ -92,6 +105,9 @@ var app = builder.Build();
 // authentication, URL generation).
 app.UseForwardedHeaders();
 
+// Concise per-request log line (method, path, status, elapsed).
+app.UseSerilogRequestLogging();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
@@ -108,6 +124,8 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
+
+app.MapHealthChecks("/healthz");
 
 // Persist the chosen language in a cookie so it sticks across navigation.
 app.MapGet("/set-culture", (string culture, string? returnUrl, HttpContext ctx) =>
