@@ -56,7 +56,7 @@
         {
             <div class="ans correct"><span class="al">@q.CorrectLabel</span> @SharedLocalizer["Correct answer —"] @q.CorrectText</div>
         }
-        <div class="explain" style="white-space:pre-line">@q.FeedbackMessage</div>
+        <div class="explain" style="white-space:pre-line"><strong>@SharedLocalizer[q.IsCorrect ? "That's right." : "Not quite."]</strong> @q.Explanation</div>
     </div>
 }
 

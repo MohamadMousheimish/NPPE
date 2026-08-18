@@ -32,6 +32,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
+.AddErrorDescriber<NPPE.Web.Localization.LocalizedIdentityErrorDescriber>()
 .AddDefaultTokenProviders();
 
 // Google Authentication

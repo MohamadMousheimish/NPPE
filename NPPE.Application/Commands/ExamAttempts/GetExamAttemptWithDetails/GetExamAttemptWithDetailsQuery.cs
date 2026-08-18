@@ -42,9 +42,7 @@ public class GetExamAttemptWithDetailsQueryHandler : IRequestHandler<GetExamAtte
                 CorrectLabel = correctOption.Label,
                 CorrectText = correctOption.Text,
                 IsCorrect = answered.IsCorrect,
-                FeedbackMessage = answered.IsCorrect
-                    ? $"That’s right, the correct answer is {correctOption.Label} “{correctOption.Text}.”\n{question.ExplanationForCorrect}"
-                    : $"Wrong! You selected {selectedOption.Label} “{selectedOption.Text}” but the correct answer is {correctOption.Label} “{correctOption.Text}.”\n{question.ExplanationForIncorrect}"
+                Explanation = (answered.IsCorrect ? question.ExplanationForCorrect : question.ExplanationForIncorrect) ?? string.Empty
             });
         }
 

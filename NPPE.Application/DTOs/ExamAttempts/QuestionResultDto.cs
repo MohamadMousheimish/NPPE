@@ -7,5 +7,8 @@ public record QuestionResultDto
     public char CorrectLabel { get; init; }
     public string CorrectText { get; init; } = string.Empty;
     public bool IsCorrect { get; init; }
-    public string FeedbackMessage { get; init; } = string.Empty;
+
+    // The admin-authored explanation for the answer given (localized wrapper is
+    // composed in the view so this stays free of presentation concerns).
+    public string Explanation { get; init; } = string.Empty;
 }

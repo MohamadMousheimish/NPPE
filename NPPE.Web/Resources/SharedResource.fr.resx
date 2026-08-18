@@ -541,4 +541,19 @@
   <data name="Please select exactly one correct answer." xml:space="preserve"><value>Veuillez sélectionner exactement une bonne réponse.</value></data>
   <data name="Please answer all questions before submitting." xml:space="preserve"><value>Veuillez répondre à toutes les questions avant de soumettre.</value></data>
   <data name="User not found." xml:space="preserve"><value>Utilisateur introuvable.</value></data>
+  <!-- Answer feedback -->
+  <data name="That's right." xml:space="preserve"><value>C'est exact.</value></data>
+  <data name="Not quite." xml:space="preserve"><value>Pas tout à fait.</value></data>
+  <!-- Identity error messages -->
+  <data name="Passwords must be at least {0} characters." xml:space="preserve"><value>Le mot de passe doit contenir au moins {0} caractères.</value></data>
+  <data name="Passwords must have at least one uppercase letter." xml:space="preserve"><value>Le mot de passe doit contenir au moins une lettre majuscule.</value></data>
+  <data name="Passwords must have at least one lowercase letter." xml:space="preserve"><value>Le mot de passe doit contenir au moins une lettre minuscule.</value></data>
+  <data name="Passwords must have at least one digit." xml:space="preserve"><value>Le mot de passe doit contenir au moins un chiffre.</value></data>
+  <data name="Passwords must have at least one non-alphanumeric character." xml:space="preserve"><value>Le mot de passe doit contenir au moins un caractère non alphanumérique.</value></data>
+  <data name="Passwords must use at least {0} different characters." xml:space="preserve"><value>Le mot de passe doit utiliser au moins {0} caractères différents.</value></data>
+  <data name="Incorrect password." xml:space="preserve"><value>Mot de passe incorrect.</value></data>
+  <data name="Email '{0}' is already taken." xml:space="preserve"><value>Le courriel « {0} » est déjà utilisé.</value></data>
+  <data name="Username '{0}' is already taken." xml:space="preserve"><value>Le nom d'utilisateur « {0} » est déjà utilisé.</value></data>
+  <data name="Invalid or expired token." xml:space="preserve"><value>Jeton invalide ou expiré.</value></data>
+  <data name="Email is invalid." xml:space="preserve"><value>Le courriel est invalide.</value></data>
 </root>
