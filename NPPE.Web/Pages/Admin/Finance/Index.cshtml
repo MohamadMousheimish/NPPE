@@ -1,0 +1,254 @@
+@page
+@model NPPE.Web.Pages.Admin.Finance.IndexModel
+@{
+    ViewData["Title"] = SharedLocalizer["Finance"].Value;
+    ViewData["ActiveNav"] = "finance";
+    var t = Model.Threshold;
+    var s = Model.Summary;
+    var fillPct = Model.Pct(t.TaxableRevenue, t.Threshold);
+    var cautionPct = (double)(t.CautionAt / t.Threshold) * 100;
+    var dangerPct = (double)(t.DangerAt / t.Threshold) * 100;
+    var maxMonth = s.OverTime.Select(o => o.Total).DefaultIfEmpty(0m).Max();
+    var maxQuarter = t.Quarters.Select(q => q.Amount).DefaultIfEmpty(0m).Max();
+    var ledgerTotal = s.CostLedger.Sum(l => l.Amount);
+    var grossSplit = s.OneTimeRevenue + s.SubscriptionRevenue;
+    var feePctOfGross = s.GrossRevenue > 0 ? (double)(s.StripeFees / s.GrossRevenue) * 100 : 0;
+    var netMargin = s.GrossRevenue > 0 ? (double)(s.NetProfit / s.GrossRevenue) * 100 : 0;
+    string PeriodPill(string key) => Model.Period == key ? "on" : "";
+}
+
+<div class="phead fin" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Finance"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Financial <em>overview</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Income, costs and profit across any period — plus a live read on the CA$30,000 GST/HST registration threshold."]</p>
+    </div>
+    <a class="btn btn--ghost" asp-page="RecordCost">@SharedLocalizer["Record a cost"] <span class="arrow">&rarr;</span></a>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert--ok" data-reveal>@SharedLocalizer[TempData["SuccessMessage"]!.ToString()!]</div>
+}
+
+<main class="fin">
+    <!-- period filter -->
+    <div class="fin-bar" data-reveal>
+        <div class="seg">
+            <a asp-route-period="q" class="@PeriodPill("q")">@SharedLocalizer["This quarter"]</a>
+            <a asp-route-period="lq" class="@PeriodPill("lq")">@SharedLocalizer["Last quarter"]</a>
+            <a asp-route-period="h" class="@PeriodPill("h")">@SharedLocalizer["Last 6 months"]</a>
+            <a asp-route-period="y" class="@PeriodPill("y")">@SharedLocalizer["This year"]</a>
+            <a asp-route-period="all" class="@PeriodPill("all")">@SharedLocalizer["All time"]</a>
+            <a asp-route-period="custom" class="@PeriodPill("custom")">@SharedLocalizer["Custom"]</a>
+        </div>
+        @if (Model.Period == "custom")
+        {
+            <form method="get" class="range">
+                <input type="hidden" name="period" value="custom" />
+                <input type="date" name="from" value="@(Model.From?.ToString("yyyy-MM-dd"))" />
+                <span>&rarr;</span>
+                <input type="date" name="to" value="@(Model.To?.ToString("yyyy-MM-dd"))" />
+                <button class="btn btn--ghost" type="submit" style="padding:0.4rem 0.7rem">@SharedLocalizer["Apply"]</button>
+            </form>
+        }
+        <span class="asof">@SharedLocalizer[s.PeriodLabel] · @SharedLocalizer["updated"] @Model.AsOf.ToString("yyyy-MM-dd HH:mm")</span>
+    </div>
+
+    <!-- GST/HST threshold gauge -->
+    <div class="gauge-card" data-reveal>
+        <span class="reg tl">+ FIN-01</span><span class="reg tr">CRA · GST/HST</span>
+        <div class="gauge-head">
+            <span class="lbl">@SharedLocalizer["GST/HST registration threshold"]</span>
+            <button class="info-btn" id="taxInfo" type="button" aria-label="@SharedLocalizer["What is this?"]">i</button>
+            <span class="status-pill @Model.ZoneClass">
+                @switch (t.Zone)
+                {
+                    case NPPE.Domain.Enums.ThresholdZone.RegisterNow: <text>@SharedLocalizer["Register now"]</text> break;
+                    case NPPE.Domain.Enums.ThresholdZone.Approaching: <text>@SharedLocalizer["Approaching"]</text> break;
+                    default: <text>@SharedLocalizer["Safe"]</text> break;
+                }
+                · @(((int)Math.Round(t.Percent * 100)))%
+            </span>
+        </div>
+        <div class="gauge-figs">
+            <span class="big">@Model.MoneyK(t.TaxableRevenue)</span>
+            <span class="of">@SharedLocalizer["of"] @Model.MoneyK(t.Threshold)</span>
+        </div>
+        <div class="gauge">
+            <div class="gauge__fill @Model.ZoneClass" style="width:@fillPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
+            <div class="gauge__tick" style="left:@cautionPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
+            <div class="gauge__tick" style="left:@dangerPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
+            <div class="gauge__caret" style="left:@fillPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
+        </div>
+        <div class="gauge-scale">
+            <span style="left:0">@Model.MoneyK(0)</span>
+            <span style="left:@cautionPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%">@Model.MoneyK(t.CautionAt)</span>
+            <span style="left:@dangerPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%">@Model.MoneyK(t.DangerAt)</span>
+            <span style="left:100%">@Model.MoneyK(t.Threshold)</span>
+        </div>
+        <p class="gauge-sub"><b>@Model.MoneyK(t.Remaining)</b> @SharedLocalizer["until you must register · measured over the last 4 quarters (rolling), independent of the filter above."]</p>
+        <div class="gauge-legend">
+            <span><i style="background:rgba(46,125,91,0.6)"></i>@SharedLocalizer["Safe"] &lt; @Model.MoneyK(t.CautionAt)</span>
+            <span><i style="background:var(--signal)"></i>@SharedLocalizer["Approaching"] @Model.MoneyK(t.CautionAt)–@Model.MoneyK(t.DangerAt)</span>
+            <span><i style="background:var(--fail)"></i>@SharedLocalizer["Register now"] &gt; @Model.MoneyK(t.DangerAt)</span>
+        </div>
+        <div class="qstrip">
+            @foreach (var q in t.Quarters)
+            {
+                var h = maxQuarter > 0 ? (double)(q.Amount / maxQuarter) * 100 : 0;
+                <div class="q">
+                    <div class="qb"><i style="height:@h.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
+                    <div class="qv">@Model.MoneyK(q.Amount)</div>
+                    <div class="ql">@q.Label</div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- KPIs -->
+    <div class="kpi-grid" data-reveal>
+        <div class="kpi"><div class="k">@SharedLocalizer["Gross revenue"]</div><div class="v">@Model.Money(s.GrossRevenue)</div><div class="d">@SharedLocalizer[s.PeriodLabel]</div></div>
+        <div class="kpi neg"><div class="k">@SharedLocalizer["Stripe fees"]</div><div class="v">@Model.Money(-s.StripeFees)</div><div class="d">@feePctOfGross.ToString("N1")% @SharedLocalizer["of gross"]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Net after fees"]</div><div class="v">@Model.Money(s.NetAfterFees)</div><div class="d">@SharedLocalizer["after processing"]</div></div>
+        <div class="kpi neg"><div class="k">@SharedLocalizer["Infra & tooling"]</div><div class="v">@Model.Money(-s.InfraCosts)</div><div class="d">@SharedLocalizer["recorded costs"]</div></div>
+        <div class="kpi profit"><div class="k">@SharedLocalizer["Net profit"]</div><div class="v">@Model.Money(s.NetProfit)</div><div class="d">@netMargin.ToString("N1")% @SharedLocalizer["margin"]</div></div>
+    </div>
+
+    <div class="kpi-grid four" data-reveal>
+        <div class="kpi"><div class="k">@SharedLocalizer["MRR"]</div><div class="v">@Model.Money(s.Mrr)</div><div class="d">@s.ActiveSubscribers × CA$9.99</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Active subscribers"]</div><div class="v">@s.ActiveSubscribers</div><div class="d">@SharedLocalizer["recurring"]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["One-time buyers"]</div><div class="v">@s.OneTimeBuyers</div><div class="d">@SharedLocalizer["lifetime access"]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Net margin"]</div><div class="v">@netMargin.ToString("N1")%</div><div class="d">@SharedLocalizer[s.PeriodLabel]</div></div>
+    </div>
+
+    <!-- income + cost -->
+    <div class="fin-cols">
+        <div class="panel" data-reveal>
+            <h3>@SharedLocalizer["Income by product"]</h3>
+            <div class="psub">@SharedLocalizer[s.PeriodLabel] · @SharedLocalizer["Gross"]</div>
+            <div class="split">
+                <div class="row"><span>@SharedLocalizer["One-time — Full Access"] (CA$29)</span><span class="amt">@Model.Money(s.OneTimeRevenue) · @s.OneTimeCount</span></div>
+                <div class="track"><i class="one" style="width:@Model.Pct(s.OneTimeRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
+            </div>
+            <div class="split">
+                <div class="row"><span>@SharedLocalizer["Subscription — Monthly"] (CA$9.99)</span><span class="amt">@Model.Money(s.SubscriptionRevenue) · @s.ActiveSubscribers @SharedLocalizer["active"]</span></div>
+                <div class="track"><i class="sub" style="width:@Model.Pct(s.SubscriptionRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
+            </div>
+            <div class="split" style="margin-top:1.2rem;padding-top:1rem;border-top:1.5px solid var(--ink)">
+                <div class="row" style="font-weight:600"><span>@SharedLocalizer["Total gross"]</span><span class="amt">@Model.Money(s.GrossRevenue)</span></div>
+            </div>
+        </div>
+
+        <div class="panel" data-reveal>
+            <h3>@SharedLocalizer["Cost ledger"]</h3>
+            <div class="psub">@SharedLocalizer[s.PeriodLabel] · @SharedLocalizer["costs & fees"]</div>
+            @if (s.CostLedger.Any())
+            {
+                <table class="ledger">
+                    @foreach (var line in s.CostLedger)
+                    {
+                        <tr>
+                            <td>
+                                <div class="prov"><span class="dot" style="background:@(line.IsComputed ? "var(--signal)" : "var(--slate-2)")"></span>@line.Provider</div>
+                                <div class="cat">@SharedLocalizer[line.Category]</div>
+                            </td>
+                            <td class="amt">@Model.Money(line.Amount)</td>
+                        </tr>
+                    }
+                    <tfoot><tr><td>@SharedLocalizer["Total costs"]</td><td class="amt">@Model.Money(ledgerTotal)</td></tr></tfoot>
+                </table>
+            }
+            else
+            {
+                <p class="sub" style="font-size:0.9rem">@SharedLocalizer["No costs recorded for this period yet."]</p>
+            }
+            <a class="addcost" asp-page="RecordCost">+ @SharedLocalizer["Record a cost / import provider invoice"]</a>
+        </div>
+    </div>
+
+    <!-- revenue over time -->
+    <div class="chart" data-reveal>
+        <h3 style="font-size:1.05rem">@SharedLocalizer["Revenue over time"]</h3>
+        <div class="psub">@SharedLocalizer["Monthly gross"] · <span style="color:var(--ink)">▮ @SharedLocalizer["one-time"]</span> &nbsp; <span style="color:var(--signal)">▮ @SharedLocalizer["subscription"]</span></div>
+        @if (s.OverTime.Any())
+        {
+            <div class="bars">
+                @foreach (var o in s.OverTime)
+                {
+                    var h = maxMonth > 0 ? (double)(o.Total / maxMonth) * 100 : 0;
+                    var onePct = o.Total > 0 ? (double)(o.OneTime / o.Total) * 100 : 0;
+                    var subPct = o.Total > 0 ? (double)(o.Subscription / o.Total) * 100 : 0;
+                    <div class="bar">
+                        <div class="stack" style="height:@h.ToString(System.Globalization.CultureInfo.InvariantCulture)%">
+                            <div class="s-one" style="height:@onePct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                            <div class="s-sub" style="height:@subPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
+                        </div>
+                        <span class="m">@o.Label</span>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="sub" style="font-size:0.9rem;margin-top:1rem">@SharedLocalizer["No revenue in this period yet."]</p>
+        }
+    </div>
+
+    <!-- recent activity -->
+    <div class="panel" data-reveal>
+        <h3>@SharedLocalizer["Recent activity"]</h3>
+        <div class="psub">@SharedLocalizer["Latest payments"]</div>
+        @if (s.Recent.Any())
+        {
+            <table class="txn">
+                <thead><tr><th>@SharedLocalizer["Date"]</th><th>@SharedLocalizer["Customer"]</th><th>@SharedLocalizer["Product"]</th><th class="r">@SharedLocalizer["Gross"]</th><th class="r">@SharedLocalizer["Fee"]</th><th class="r">@SharedLocalizer["Net"]</th><th>@SharedLocalizer["Type"]</th></tr></thead>
+                <tbody>
+                    @foreach (var r in s.Recent)
+                    {
+                        <tr>
+                            <td>@r.Date.ToString("dd MMM")</td>
+                            <td>@r.Email</td>
+                            <td>@(r.IsSubscription ? SharedLocalizer["Monthly"] : SharedLocalizer["Full Access"])</td>
+                            <td class="r">@Model.Money(r.Gross)</td>
+                            <td class="r">−@r.Fee.ToString("N2")</td>
+                            <td class="r">@r.Net.ToString("N2")</td>
+                            <td><span class="pill @(r.IsSubscription ? "sub" : "ok")">@(r.IsSubscription ? SharedLocalizer["Subscription"] : SharedLocalizer["One-time"])</span></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p class="sub" style="font-size:0.9rem">@SharedLocalizer["No payments yet."]</p>
+        }
+    </div>
+
+    <a class="backlink" asp-page="/Admin/Exams/Index">&larr; @SharedLocalizer["Back to admin"]</a>
+</main>
+
+<!-- GST/HST explainer modal -->
+<div class="modal-wrap" id="taxModal">
+    <div class="modal">
+        <div class="mh">
+            <span class="eyebrow eyebrow--signal">CRA · GST/HST</span>
+            <button class="mx" id="taxClose" type="button" aria-label="@SharedLocalizer["Close"]">&times;</button>
+        </div>
+        <h2>@Html.Raw(SharedLocalizer["The CA$30,000 <em>threshold</em>"])</h2>
+        <p>@Html.Raw(SharedLocalizer["You're a “small supplier” — no need to register for or charge GST/HST — until your taxable revenue passes CA$30,000, measured either in a single calendar quarter or over the last four consecutive quarters (rolling). This gauge tracks that rolling total so nothing sneaks up on you."])</p>
+        <div class="callout">@Html.Raw(SharedLocalizer["If you cross CA$30,000 without registering, you can owe the tax out of pocket, retroactively — so we flag orange at CA$20k and red at CA$25k to give you runway."])</div>
+        <p style="margin-top:0.9rem"><b>@SharedLocalizer["When it turns red, here's the play:"]</b></p>
+        <ul class="steps">
+            <li data-n="1">@Html.Raw(SharedLocalizer["Register with the CRA for a Business Number + GST/HST account (free, online). Add QST separately if you sell into Quebec."])</li>
+            <li data-n="2">@Html.Raw(SharedLocalizer["Charge the customer's provincial rate — 5% GST in most of the West, 13% HST in Ontario, 14–15% in the Atlantic provinces. Sales outside Canada are zero-rated."])</li>
+            <li data-n="3">@Html.Raw(SharedLocalizer["Decide pricing — add tax on top of CA$29 / CA$9.99, or treat the price as tax-inclusive."])</li>
+            <li data-n="4">@Html.Raw(SharedLocalizer["Turn on Stripe Tax so the right rate is applied automatically by province, then file & remit on the CRA's schedule."])</li>
+        </ul>
+        <p class="fineprint">@SharedLocalizer["Not tax advice — confirm timing and rates with a CPA and the CRA."]</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/finance.js" asp-append-version="true"></script>
+}

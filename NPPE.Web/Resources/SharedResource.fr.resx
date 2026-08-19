@@ -582,4 +582,86 @@
   <!-- Emails -->
   <data name="We received a request to reset your password." xml:space="preserve"><value>Nous avons reçu une demande de réinitialisation de votre mot de passe.</value></data>
   <data name="If you didn't request this, you can safely ignore this email." xml:space="preserve"><value>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer ce courriel en toute sécurité.</value></data>
+  <!-- Admin: finance dashboard -->
+  <data name="Finance" xml:space="preserve"><value>Finances</value></data>
+  <data name="Admin · Finance" xml:space="preserve"><value>Admin · Finances</value></data>
+  <data name="Financial &lt;em&gt;overview&lt;/em&gt;" xml:space="preserve"><value>Aperçu &lt;em&gt;financier&lt;/em&gt;</value></data>
+  <data name="Income, costs and profit across any period — plus a live read on the CA$30,000 GST/HST registration threshold." xml:space="preserve"><value>Revenus, coûts et profits sur n'importe quelle période — avec un suivi en direct du seuil d'inscription à la TPS/TVH de 30 000 $ CA.</value></data>
+  <data name="Record a cost" xml:space="preserve"><value>Enregistrer un coût</value></data>
+  <data name="This quarter" xml:space="preserve"><value>Ce trimestre</value></data>
+  <data name="Last quarter" xml:space="preserve"><value>Le trimestre dernier</value></data>
+  <data name="Last 6 months" xml:space="preserve"><value>6 derniers mois</value></data>
+  <data name="This year" xml:space="preserve"><value>Cette année</value></data>
+  <data name="All time" xml:space="preserve"><value>Depuis le début</value></data>
+  <data name="Custom" xml:space="preserve"><value>Personnalisé</value></data>
+  <data name="Custom range" xml:space="preserve"><value>Période personnalisée</value></data>
+  <data name="Apply" xml:space="preserve"><value>Appliquer</value></data>
+  <data name="updated" xml:space="preserve"><value>mis à jour</value></data>
+  <data name="GST/HST registration threshold" xml:space="preserve"><value>Seuil d'inscription à la TPS/TVH</value></data>
+  <data name="What is this?" xml:space="preserve"><value>Qu'est-ce que c'est ?</value></data>
+  <data name="Register now" xml:space="preserve"><value>Inscrivez-vous</value></data>
+  <data name="Approaching" xml:space="preserve"><value>Proche du seuil</value></data>
+  <data name="Safe" xml:space="preserve"><value>Sûr</value></data>
+  <data name="until you must register · measured over the last 4 quarters (rolling), independent of the filter above." xml:space="preserve"><value>avant l'inscription obligatoire · mesuré sur les 4 derniers trimestres (glissants), indépendamment du filtre ci-dessus.</value></data>
+  <data name="Gross revenue" xml:space="preserve"><value>Revenu brut</value></data>
+  <data name="Stripe fees" xml:space="preserve"><value>Frais Stripe</value></data>
+  <data name="of gross" xml:space="preserve"><value>du brut</value></data>
+  <data name="Net after fees" xml:space="preserve"><value>Net après frais</value></data>
+  <data name="after processing" xml:space="preserve"><value>après traitement</value></data>
+  <data name="Infra &amp; tooling" xml:space="preserve"><value>Infra et outils</value></data>
+  <data name="recorded costs" xml:space="preserve"><value>coûts enregistrés</value></data>
+  <data name="Net profit" xml:space="preserve"><value>Profit net</value></data>
+  <data name="margin" xml:space="preserve"><value>marge</value></data>
+  <data name="Active subscribers" xml:space="preserve"><value>Abonnés actifs</value></data>
+  <data name="recurring" xml:space="preserve"><value>récurrent</value></data>
+  <data name="One-time buyers" xml:space="preserve"><value>Acheteurs uniques</value></data>
+  <data name="lifetime access" xml:space="preserve"><value>accès à vie</value></data>
+  <data name="Net margin" xml:space="preserve"><value>Marge nette</value></data>
+  <data name="Income by product" xml:space="preserve"><value>Revenu par produit</value></data>
+  <data name="Gross" xml:space="preserve"><value>Brut</value></data>
+  <data name="One-time — Full Access" xml:space="preserve"><value>Paiement unique — Accès complet</value></data>
+  <data name="Subscription — Monthly" xml:space="preserve"><value>Abonnement — Mensuel</value></data>
+  <data name="Total gross" xml:space="preserve"><value>Total brut</value></data>
+  <data name="Cost ledger" xml:space="preserve"><value>Registre des coûts</value></data>
+  <data name="costs &amp; fees" xml:space="preserve"><value>coûts et frais</value></data>
+  <data name="Total costs" xml:space="preserve"><value>Total des coûts</value></data>
+  <data name="No costs recorded for this period yet." xml:space="preserve"><value>Aucun coût enregistré pour cette période.</value></data>
+  <data name="Record a cost / import provider invoice" xml:space="preserve"><value>Enregistrer un coût / importer une facture</value></data>
+  <data name="Revenue over time" xml:space="preserve"><value>Revenu dans le temps</value></data>
+  <data name="Monthly gross" xml:space="preserve"><value>Brut mensuel</value></data>
+  <data name="No revenue in this period yet." xml:space="preserve"><value>Aucun revenu pour cette période.</value></data>
+  <data name="Recent activity" xml:space="preserve"><value>Activité récente</value></data>
+  <data name="Latest payments" xml:space="preserve"><value>Derniers paiements</value></data>
+  <data name="Customer" xml:space="preserve"><value>Client</value></data>
+  <data name="Product" xml:space="preserve"><value>Produit</value></data>
+  <data name="Fee" xml:space="preserve"><value>Frais</value></data>
+  <data name="Full Access" xml:space="preserve"><value>Accès complet</value></data>
+  <data name="Back to admin" xml:space="preserve"><value>Retour à l'admin</value></data>
+  <data name="The CA$30,000 &lt;em&gt;threshold&lt;/em&gt;" xml:space="preserve"><value>Le &lt;em&gt;seuil&lt;/em&gt; de 30 000 $ CA</value></data>
+  <data name="When it turns red, here's the play:" xml:space="preserve"><value>Quand la jauge passe au rouge, voici la marche à suivre :</value></data>
+  <data name="Register with the CRA for a Business Number + GST/HST account (free, online). Add QST separately if you sell into Quebec." xml:space="preserve"><value>Inscrivez-vous auprès de l'ARC pour obtenir un numéro d'entreprise et un compte TPS/TVH (gratuit, en ligne). Ajoutez la TVQ séparément si vous vendez au Québec.</value></data>
+  <data name="Decide pricing — add tax on top of CA$29 / CA$9.99, or treat the price as tax-inclusive." xml:space="preserve"><value>Choisissez la tarification — ajoutez la taxe au 29 $ / 9,99 $ CA, ou considérez le prix comme taxe incluse.</value></data>
+  <data name="Turn on Stripe Tax so the right rate is applied automatically by province, then file &amp; remit on the CRA's schedule." xml:space="preserve"><value>Activez Stripe Tax pour appliquer automatiquement le bon taux par province, puis produisez et versez selon le calendrier de l'ARC.</value></data>
+  <data name="Not tax advice — confirm timing and rates with a CPA and the CRA." xml:space="preserve"><value>Ceci n'est pas un conseil fiscal — confirmez les délais et les taux avec un comptable et l'ARC.</value></data>
+  <data name="Close" xml:space="preserve"><value>Fermer</value></data>
+  <data name="Record a &lt;em&gt;cost&lt;/em&gt;" xml:space="preserve"><value>Enregistrer un &lt;em&gt;coût&lt;/em&gt;</value></data>
+  <data name="Log a hosting, domain or tooling cost so it flows into the profit and cost ledger." xml:space="preserve"><value>Enregistrez un coût d'hébergement, de domaine ou d'outils pour qu'il alimente le profit et le registre des coûts.</value></data>
+  <data name="Provider" xml:space="preserve"><value>Fournisseur</value></data>
+  <data name="e.g. Azure, GoDaddy" xml:space="preserve"><value>p. ex. Azure, GoDaddy</value></data>
+  <data name="Category" xml:space="preserve"><value>Catégorie</value></data>
+  <data name="Amount (CA$)" xml:space="preserve"><value>Montant (CA$)</value></data>
+  <data name="Date incurred" xml:space="preserve"><value>Date engagée</value></data>
+  <data name="Recurring cost" xml:space="preserve"><value>Coût récurrent</value></data>
+  <data name="Optional — e.g. App Service B1, annual renewal" xml:space="preserve"><value>Optionnel — p. ex. App Service B1, renouvellement annuel</value></data>
+  <data name="Save cost" xml:space="preserve"><value>Enregistrer le coût</value></data>
+  <data name="Back to finance" xml:space="preserve"><value>Retour aux finances</value></data>
+  <data name="Cost recorded." xml:space="preserve"><value>Coût enregistré.</value></data>
+  <data name="Provider is required." xml:space="preserve"><value>Le fournisseur est requis.</value></data>
+  <data name="Amount must be greater than zero." xml:space="preserve"><value>Le montant doit être supérieur à zéro.</value></data>
+  <data name="Hosting" xml:space="preserve"><value>Hébergement</value></data>
+  <data name="Database" xml:space="preserve"><value>Base de données</value></data>
+  <data name="Domain" xml:space="preserve"><value>Domaine</value></data>
+  <data name="Tooling" xml:space="preserve"><value>Outils</value></data>
+  <data name="Payments" xml:space="preserve"><value>Paiements</value></data>
+  <data name="Other" xml:space="preserve"><value>Autre</value></data>
 </root>

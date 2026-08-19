@@ -37,6 +37,7 @@
                     @if (isAdmin)
                     {
                         <a asp-page="/Admin/Exams/Index" class="@NavCls("admin")">@SharedLocalizer["Manage Exams"]</a>
+                        <a asp-page="/Admin/Finance/Index" class="@NavCls("finance")">@SharedLocalizer["Finance"]</a>
                     }
                     else
                     {

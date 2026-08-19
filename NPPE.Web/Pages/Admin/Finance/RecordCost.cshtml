@@ -1,0 +1,73 @@
+@page
+@model NPPE.Web.Pages.Admin.Finance.RecordCostModel
+@using NPPE.Domain.Enums
+@{
+    ViewData["Title"] = SharedLocalizer["Record a cost"].Value;
+    ViewData["ActiveNav"] = "finance";
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Finance"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Record a <em>cost</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Log a hosting, domain or tooling cost so it flows into the profit and cost ledger."]</p>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert--fail" data-reveal>@Model.ErrorMessage</div>
+}
+
+<div class="form-card" data-reveal style="max-width:620px">
+    <form method="post">
+        <div asp-validation-summary="All"></div>
+
+        <label class="field">
+            <span class="field__label">@SharedLocalizer["Provider"] <span class="idx">01</span></span>
+            <span class="field__wrap"><input asp-for="Input.Provider" class="field__input" placeholder="@SharedLocalizer["e.g. Azure, GoDaddy"]" /></span>
+            <span asp-validation-for="Input.Provider" class="field-validation-error"></span>
+        </label>
+
+        <div class="row-2">
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Category"] <span class="idx">02</span></span>
+                <span class="field__wrap">
+                    <select asp-for="Input.Category" class="field__input">
+                        @foreach (var c in Enum.GetValues<CostCategory>())
+                        {
+                            <option value="@c">@SharedLocalizer[c.ToString()]</option>
+                        }
+                    </select>
+                </span>
+            </label>
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Amount (CA$)"] <span class="idx">03</span></span>
+                <span class="field__wrap"><input asp-for="Input.Amount" type="number" step="0.01" min="0" class="field__input" placeholder="0.00" /></span>
+                <span asp-validation-for="Input.Amount" class="field-validation-error"></span>
+            </label>
+        </div>
+
+        <div class="row-2">
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Date incurred"] <span class="idx">04</span></span>
+                <span class="field__wrap"><input asp-for="Input.IncurredOn" type="date" class="field__input" /></span>
+            </label>
+            <label class="check" style="align-self:end;margin-bottom:0.8rem"><input asp-for="Input.IsRecurring" /><span class="box"></span> @SharedLocalizer["Recurring cost"]</label>
+        </div>
+
+        <label class="field">
+            <span class="field__label">@SharedLocalizer["Note"] <span class="idx">05</span></span>
+            <span class="field__wrap"><textarea asp-for="Input.Note" class="field__input" placeholder="@SharedLocalizer["Optional — e.g. App Service B1, annual renewal"]"></textarea></span>
+        </label>
+
+        <div class="form-actions">
+            <button class="btn btn--primary" type="submit">@SharedLocalizer["Save cost"] <span class="arrow">&rarr;</span></button>
+            <a class="btn btn--ghost" asp-page="Index">@SharedLocalizer["Cancel"]</a>
+        </div>
+    </form>
+</div>
+
+<a class="backlink" asp-page="Index">&larr; @SharedLocalizer["Back to finance"]</a>
+
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
