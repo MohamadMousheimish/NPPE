@@ -12,6 +12,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<AttemptedAnswer> AttemptedAnswers => Set<AttemptedAnswer>();
     public DbSet<Payment> Payments { get; set; }
     public DbSet<ProcessedStripeEvent> ProcessedStripeEvents => Set<ProcessedStripeEvent>();
+    public DbSet<Cost> Costs => Set<Cost>();
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -70,6 +71,17 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
             entity.Property(p => p.PaymentType).IsRequired();
             entity.Property(p => p.StripeSubscriptionId).HasMaxLength(255);
             entity.Property(p => p.SubscriptionStatus);
+            entity.Property(p => p.StripeInvoiceId).HasMaxLength(255);
+            entity.Property(p => p.CustomerCountry).HasMaxLength(2);
+        });
+
+        // Business costs (admin-recorded)
+        builder.Entity<Cost>(entity =>
+        {
+            entity.Property(c => c.Provider).IsRequired().HasMaxLength(120);
+            entity.Property(c => c.Amount).HasPrecision(18, 2);
+            entity.Property(c => c.Currency).IsRequired().HasMaxLength(3);
+            entity.Property(c => c.Note).HasMaxLength(500);
         });
 
         // Processed Stripe webhook events (idempotency)

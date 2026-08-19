@@ -18,4 +18,7 @@ public class Payment : BaseEntity
 
     /// <summary>Stripe invoice id for subscription renewals — used to dedupe redelivered webhooks.</summary>
     public string? StripeInvoiceId { get; set; }
+
+    /// <summary>ISO-2 country of the customer (from the Stripe Checkout session); drives the "Canadian sales" tax threshold.</summary>
+    public string? CustomerCountry { get; set; }
 }

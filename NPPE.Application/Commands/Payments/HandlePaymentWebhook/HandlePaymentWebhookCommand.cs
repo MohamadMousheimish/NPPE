@@ -125,6 +125,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         // Mark payment as succeeded
         payment.Status = PaymentStatus.Succeeded;
         payment.PaidAt = DateTime.UtcNow;
+        payment.CustomerCountry = session.CustomerDetails?.Address?.Country;
 
         // Get user
         var userId = session.Metadata?["user_id"] ?? payment.UserId;

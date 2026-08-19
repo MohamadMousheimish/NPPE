@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Finance · NPPE Prep</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="assets/design-system.css" />
+<link rel="stylesheet" href="assets/app.css" />
+<style>
+    /* ===== Finance dashboard (mockup-scoped; migrate to app.css when we build) ===== */
+    .fin { --tnum: "tnum" 1; }
+    .fin b, .fin .fig { font-variant-numeric: tabular-nums; }
+
+    /* period filter */
+    .fin-bar { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.6rem; }
+    .seg { display: inline-flex; border: 1.5px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--card); }
+    .seg button { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; padding: 0.5rem 0.9rem; background: none; border: 0;
+        border-right: 1px solid var(--line); color: var(--slate); cursor: pointer; transition: all 0.15s var(--ease); white-space: nowrap; }
+    .seg button:last-child { border-right: 0; }
+    .seg button:hover { color: var(--ink); background: var(--paper-2); }
+    .seg button.on { background: var(--ink); color: var(--paper); }
+    .fin-bar .asof { font-family: var(--font-mono); font-size: 0.68rem; color: var(--slate-2); margin-left: auto; }
+    .fin-bar .range { display: none; gap: 0.5rem; align-items: center; font-family: var(--font-mono); font-size: 0.7rem; color: var(--slate); }
+    .fin-bar .range input { font-family: var(--font-mono); font-size: 0.72rem; padding: 0.35rem 0.5rem; border: 1.5px solid var(--line);
+        border-radius: 2px; background: var(--card); color: var(--ink); }
+
+    /* threshold gauge — the signature element */
+    .gauge-card { position: relative; background: var(--ink); color: var(--paper); border-radius: var(--radius); padding: 1.6rem 1.8rem 1.8rem;
+        overflow: hidden; margin-bottom: 1.4rem; }
+    .gauge-card .reg { position: absolute; font-family: var(--font-mono); font-size: 0.58rem; color: #5b616d; letter-spacing: 0.1em; }
+    .gauge-card .reg.tl { top: 0.7rem; left: 0.9rem; } .gauge-card .reg.tr { top: 0.7rem; right: 0.9rem; }
+    .gauge-head { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.2rem; }
+    .gauge-head .lbl { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: #9aa1ad; }
+    .info-btn { width: 20px; height: 20px; border: 1px solid #5b616d; color: #9aa1ad; border-radius: 50%; background: none; cursor: pointer;
+        font-family: var(--font-mono); font-size: 0.72rem; font-style: italic; display: grid; place-items: center; line-height: 1; padding: 0; }
+    .info-btn:hover { border-color: var(--signal); color: var(--signal); }
+    .status-pill { margin-left: auto; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+        padding: 0.3rem 0.6rem; border-radius: 2px; }
+    .status-pill.caution { background: rgba(240,82,42,0.18); color: #ffb59e; }
+
+    .gauge-figs { display: flex; align-items: baseline; gap: 0.6rem; margin-bottom: 1.1rem; }
+    .gauge-figs .big { font-family: var(--font-display); font-weight: 600; font-size: clamp(2.1rem, 5vw, 3rem); letter-spacing: -0.02em; }
+    .gauge-figs .of { font-family: var(--font-mono); font-size: 0.9rem; color: #9aa1ad; }
+
+    .gauge { position: relative; height: 18px; border-radius: 3px; margin: 0.4rem 0 0;
+        background: linear-gradient(to right,
+            rgba(46,125,91,0.28) 0 66.67%,
+            rgba(240,82,42,0.28) 66.67% 83.33%,
+            rgba(178,58,46,0.32) 83.33% 100%); }
+    .gauge__fill { position: absolute; inset: 0 auto 0 0; border-radius: 3px 0 0 3px; background: var(--signal);
+        box-shadow: 0 0 12px rgba(240,82,42,0.5); }
+    .gauge__tick { position: absolute; top: -5px; bottom: -5px; width: 1.5px; background: #5b616d; }
+    .gauge__caret { position: absolute; top: -9px; width: 0; height: 0; transform: translateX(-5px);
+        border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 6px solid var(--paper); }
+    .gauge-scale { position: relative; height: 1.4rem; margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.6rem; color: #9aa1ad; }
+    .gauge-scale span { position: absolute; transform: translateX(-50%); }
+    .gauge-sub { margin-top: 1rem; font-size: 0.9rem; color: #c7ccd4; }
+    .gauge-sub b { color: var(--paper); }
+    .gauge-legend { display: flex; gap: 1.2rem; margin-top: 1rem; font-family: var(--font-mono); font-size: 0.62rem; color: #9aa1ad; }
+    .gauge-legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 0.4rem; vertical-align: -1px; }
+
+    /* per-quarter strip */
+    .qstrip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin-top: 1.3rem; padding-top: 1.2rem; border-top: 1px solid var(--line-dark); }
+    .qstrip .q { text-align: center; }
+    .qstrip .q .qb { height: 44px; display: flex; align-items: flex-end; justify-content: center; }
+    .qstrip .q .qb i { width: 60%; background: #3a3f4a; border-radius: 2px 2px 0 0; }
+    .qstrip .q:last-child .qb i { background: var(--signal); }
+    .qstrip .q .qv { font-family: var(--font-mono); font-size: 0.72rem; color: var(--paper); margin-top: 0.4rem; font-variant-numeric: tabular-nums; }
+    .qstrip .q .ql { font-family: var(--font-mono); font-size: 0.58rem; color: #7a828f; letter-spacing: 0.08em; }
+
+    /* KPI cards */
+    .kpi-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.9rem; margin-bottom: 1.4rem; }
+    @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    .kpi { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.1rem 1.2rem; }
+    .kpi .k { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate-2); }
+    .kpi .v { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; letter-spacing: -0.01em; margin: 0.35rem 0 0.15rem; font-variant-numeric: tabular-nums; }
+    .kpi .d { font-family: var(--font-mono); font-size: 0.68rem; }
+    .kpi .d.up { color: var(--pass); } .kpi .d.down { color: var(--fail); } .kpi .d.flat { color: var(--slate-2); }
+    .kpi.neg .v { color: var(--fail); } .kpi.profit { border-color: var(--ink); }
+
+    /* two columns */
+    .fin-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-bottom: 1.4rem; }
+    @media (max-width: 860px) { .fin-cols { grid-template-columns: 1fr; } }
+    .panel { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.4rem; }
+    .panel h3 { font-size: 1.05rem; margin-bottom: 0.2rem; }
+    .panel .psub { font-family: var(--font-mono); font-size: 0.64rem; color: var(--slate-2); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 1.1rem; }
+
+    .split { margin-bottom: 1rem; }
+    .split .row { display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .split .row .amt { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .split .track { height: 8px; background: var(--paper-2); border-radius: 2px; overflow: hidden; }
+    .split .track i { display: block; height: 100%; }
+    .split .track i.one { background: var(--ink); } .split .track i.sub { background: var(--signal); }
+
+    .ledger { width: 100%; border-collapse: collapse; }
+    .ledger td { padding: 0.6rem 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
+    .ledger tr:last-child td { border-bottom: 0; }
+    .ledger .prov { display: flex; align-items: center; gap: 0.6rem; }
+    .ledger .dot { width: 8px; height: 8px; border-radius: 2px; }
+    .ledger .cat { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--slate-2); }
+    .ledger .amt { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .ledger tfoot td { font-weight: 600; border-top: 1.5px solid var(--ink); border-bottom: 0; padding-top: 0.7rem; }
+    .addcost { margin-top: 1rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--signal); background: none; border: 1px dashed var(--line);
+        border-radius: 2px; padding: 0.5rem 0.8rem; cursor: pointer; width: 100%; }
+    .addcost:hover { border-color: var(--signal); }
+
+    /* revenue chart */
+    .chart { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.4rem; margin-bottom: 1.4rem; }
+    .bars { display: grid; grid-template-columns: repeat(12, 1fr); gap: 0.5rem; align-items: end; height: 180px; margin-top: 1.2rem; }
+    .bars .bar { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; height: 100%; justify-content: flex-end; }
+    .bars .bar .col { width: 70%; background: var(--ink); border-radius: 2px 2px 0 0; transition: background 0.15s var(--ease); position: relative; }
+    .bars .bar:hover .col { background: var(--signal); }
+    .bars .bar .stack { width: 70%; border-radius: 2px 2px 0 0; overflow: hidden; display: flex; flex-direction: column-reverse; }
+    .bars .bar .stack .s-sub { background: var(--signal); } .bars .bar .stack .s-one { background: var(--ink); }
+    .bars .bar .m { font-family: var(--font-mono); font-size: 0.56rem; color: var(--slate-2); }
+
+    /* recent activity */
+    .txn { width: 100%; border-collapse: collapse; }
+    .txn th { text-align: left; font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--slate-2); padding: 0 0 0.6rem; border-bottom: 1.5px solid var(--line); }
+    .txn td { padding: 0.7rem 0; border-bottom: 1px solid var(--line); font-size: 0.88rem; }
+    .txn .r { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+    .txn .pill { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.4rem; border-radius: 2px; }
+    .txn .pill.ok { background: var(--pass-wash); color: var(--pass); }
+    .txn .pill.sub { background: var(--signal-wash); color: var(--signal-ink); }
+
+    /* modal */
+    .modal-wrap { position: fixed; inset: 0; background: rgba(23,25,31,0.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 50; padding: 1.5rem; }
+    .modal-wrap.on { display: flex; }
+    .modal { background: var(--paper); border: 1.5px solid var(--line); border-top: 3px solid var(--signal); border-radius: var(--radius);
+        max-width: 640px; width: 100%; max-height: 85vh; overflow-y: auto; padding: 1.8rem; }
+    .modal .mh { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.3rem; }
+    .modal .mh .eyebrow { margin: 0; }
+    .modal .mx { margin-left: auto; background: none; border: 0; font-size: 1.4rem; color: var(--slate); cursor: pointer; line-height: 1; }
+    .modal h2 { font-size: 1.5rem; margin: 0.3rem 0 0.9rem; }
+    .modal h2 em { font-style: normal; color: var(--signal); }
+    .modal p { font-size: 0.92rem; color: var(--slate); margin-bottom: 0.8rem; }
+    .modal .steps { list-style: none; padding: 0; margin: 0 0 0.8rem; }
+    .modal .steps li { position: relative; padding-left: 1.6rem; margin-bottom: 0.6rem; font-size: 0.9rem; }
+    .modal .steps li b { color: var(--ink); }
+    .modal .steps li::before { content: attr(data-n); position: absolute; left: 0; top: 0; font-family: var(--font-mono); font-size: 0.66rem;
+        color: var(--signal); border: 1px solid var(--signal); width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; }
+    .modal .callout { background: var(--signal-wash); border-left: 3px solid var(--signal); border-radius: 2px; padding: 0.7rem 0.9rem; font-size: 0.86rem; color: var(--slate); }
+    .modal .fineprint { font-family: var(--font-mono); font-size: 0.64rem; color: var(--slate-2); margin-top: 1rem; }
+</style>
+</head>
+<body>
+<div data-appbar data-role="admin" data-active="finance" data-name="NPPE Admin" data-email="admin@nppe.ca"></div>
+
+<main class="page fin">
+    <div class="phead" data-reveal>
+        <div>
+            <span class="eyebrow eyebrow--signal">Admin · Finance</span>
+            <h1>Financial <em>overview</em></h1>
+            <p class="sub">Income, costs and profit across any period — plus a live read on the CA$30,000 GST/HST registration threshold.</p>
+        </div>
+        <a class="btn btn--ghost" href="#">Export CSV <span class="arrow">&rarr;</span></a>
+    </div>
+
+    <!-- period filter -->
+    <div class="fin-bar" data-reveal>
+        <div class="seg" id="seg">
+            <button data-p="q">This quarter</button>
+            <button data-p="lq">Last quarter</button>
+            <button data-p="h">Last 6 months</button>
+            <button class="on" data-p="y">This year</button>
+            <button data-p="all">All time</button>
+            <button data-p="custom">Custom</button>
+        </div>
+        <div class="range" id="range">
+            <input type="date" value="2026-01-01" /> <span>&rarr;</span> <input type="date" value="2026-08-19" />
+        </div>
+        <span class="asof">2026 YTD · updated 2026-08-19 09:14</span>
+    </div>
+
+    <!-- GST/HST threshold gauge -->
+    <div class="gauge-card" data-reveal>
+        <span class="reg tl">+ FIN-01</span><span class="reg tr">CRA · GST/HST</span>
+        <div class="gauge-head">
+            <span class="lbl">GST/HST registration threshold</span>
+            <button class="info-btn" id="taxInfo" aria-label="What is this?">i</button>
+            <span class="status-pill caution">Approaching · 72%</span>
+        </div>
+        <div class="gauge-figs">
+            <span class="big">CA$21,450</span>
+            <span class="of">of CA$30,000</span>
+        </div>
+        <div class="gauge">
+            <div class="gauge__fill" style="width:71.5%"></div>
+            <div class="gauge__tick" style="left:66.67%"></div>
+            <div class="gauge__tick" style="left:83.33%"></div>
+            <div class="gauge__caret" style="left:71.5%"></div>
+        </div>
+        <div class="gauge-scale">
+            <span style="left:0">CA$0</span>
+            <span style="left:66.67%">CA$20k</span>
+            <span style="left:83.33%">CA$25k</span>
+            <span style="left:100%">CA$30k</span>
+        </div>
+        <p class="gauge-sub"><b>CA$8,550</b> until you must register · measured over the <b>last 4 quarters (rolling)</b>, independent of the filter above.</p>
+        <div class="gauge-legend">
+            <span><i style="background:rgba(46,125,91,0.6)"></i>Safe &lt; CA$20k</span>
+            <span><i style="background:var(--signal)"></i>Approaching CA$20–25k</span>
+            <span><i style="background:var(--fail)"></i>Register now &gt; CA$25k</span>
+        </div>
+        <!-- rolling quarters -->
+        <div class="qstrip">
+            <div class="q"><div class="qb"><i style="height:58%"></i></div><div class="qv">CA$4,120</div><div class="ql">Q3 '25</div></div>
+            <div class="q"><div class="qb"><i style="height:70%"></i></div><div class="qv">CA$5,010</div><div class="ql">Q4 '25</div></div>
+            <div class="q"><div class="qb"><i style="height:82%"></i></div><div class="qv">CA$5,880</div><div class="ql">Q1 '26</div></div>
+            <div class="q"><div class="qb"><i style="height:92%"></i></div><div class="qv">CA$6,440</div><div class="ql">Q2 '26</div></div>
+        </div>
+    </div>
+
+    <!-- KPIs (reflect the selected period) -->
+    <div class="kpi-grid" data-reveal>
+        <div class="kpi"><div class="k">Gross revenue</div><div class="v">CA$14,720</div><div class="d up">▲ 18.2% vs prior</div></div>
+        <div class="kpi neg"><div class="k">Stripe fees</div><div class="v">−CA$612</div><div class="d flat">4.2% of gross</div></div>
+        <div class="kpi"><div class="k">Net after fees</div><div class="v">CA$14,108</div><div class="d up">▲ 17.9% vs prior</div></div>
+        <div class="kpi neg"><div class="k">Infra &amp; tooling</div><div class="v">−CA$284</div><div class="d down">▲ 6.0% vs prior</div></div>
+        <div class="kpi profit"><div class="k">Net profit</div><div class="v">CA$13,824</div><div class="d up">▲ 18.4% vs prior</div></div>
+    </div>
+
+    <!-- secondary subscription metrics -->
+    <div class="kpi-grid" data-reveal style="grid-template-columns:repeat(4,1fr)">
+        <div class="kpi"><div class="k">MRR</div><div class="v">CA$1,049</div><div class="d up">▲ CA$120 (13 net new)</div></div>
+        <div class="kpi"><div class="k">Active subscribers</div><div class="v">105</div><div class="d up">▲ 13 this period</div></div>
+        <div class="kpi"><div class="k">One-time buyers</div><div class="v">312</div><div class="d up">▲ 47 this period</div></div>
+        <div class="kpi"><div class="k">Monthly churn</div><div class="v">3.1%</div><div class="d down">▲ 0.4 pts</div></div>
+    </div>
+
+    <!-- income + cost -->
+    <div class="fin-cols">
+        <div class="panel" data-reveal>
+            <h3>Income by product</h3>
+            <div class="psub">This year · gross</div>
+            <div class="split">
+                <div class="row"><span>One-time — Full Access (CA$29)</span><span class="amt">CA$9,048 · 312</span></div>
+                <div class="track"><i class="one" style="width:61.5%"></i></div>
+            </div>
+            <div class="split">
+                <div class="row"><span>Subscription — Monthly (CA$9.99)</span><span class="amt">CA$5,672 · 105 active</span></div>
+                <div class="track"><i class="sub" style="width:38.5%"></i></div>
+            </div>
+            <div class="split" style="margin-top:1.2rem;padding-top:1rem;border-top:1.5px solid var(--ink)">
+                <div class="row" style="font-weight:600"><span>Total gross</span><span class="amt">CA$14,720</span></div>
+            </div>
+        </div>
+
+        <div class="panel" data-reveal>
+            <h3>Cost ledger</h3>
+            <div class="psub">This year · costs &amp; fees</div>
+            <table class="ledger">
+                <tr><td><div class="prov"><span class="dot" style="background:#0078D4"></span>Azure — App Service (B1)</div><div class="cat">Hosting</div></td><td class="amt">CA$156.00</td></tr>
+                <tr><td><div class="prov"><span class="dot" style="background:#0063B1"></span>Azure — SQL Database (Basic)</div><div class="cat">Database</div></td><td class="amt">CA$60.00</td></tr>
+                <tr><td><div class="prov"><span class="dot" style="background:#1BDB8A"></span>GoDaddy — domain</div><div class="cat">Domain</div></td><td class="amt">CA$22.00</td></tr>
+                <tr><td><div class="prov"><span class="dot" style="background:var(--slate-2)"></span>Email — transactional</div><div class="cat">Tooling</div></td><td class="amt">CA$0.00</td></tr>
+                <tr><td><div class="prov"><span class="dot" style="background:var(--signal)"></span>Stripe — processing fees</div><div class="cat">Payments</div></td><td class="amt">CA$612.00</td></tr>
+                <tfoot><tr><td>Total costs</td><td class="amt">CA$850.00</td></tr></tfoot>
+            </table>
+            <button class="addcost">+ Record a cost / import provider invoice</button>
+        </div>
+    </div>
+
+    <!-- revenue over time -->
+    <div class="chart" data-reveal>
+        <h3 style="font-size:1.05rem">Revenue over time</h3>
+        <div class="psub" style="font-family:var(--font-mono);font-size:0.64rem;color:var(--slate-2);letter-spacing:0.06em;text-transform:uppercase;margin-top:0.2rem">
+            Monthly gross · <span style="color:var(--ink)">▮ one-time</span> &nbsp; <span style="color:var(--signal)">▮ subscription</span>
+        </div>
+        <div class="bars">
+            <div class="bar"><div class="stack" style="height:34%"><div class="s-one" style="height:70%"></div><div class="s-sub" style="height:30%"></div></div><span class="m">Sep</span></div>
+            <div class="bar"><div class="stack" style="height:41%"><div class="s-one" style="height:66%"></div><div class="s-sub" style="height:34%"></div></div><span class="m">Oct</span></div>
+            <div class="bar"><div class="stack" style="height:38%"><div class="s-one" style="height:64%"></div><div class="s-sub" style="height:36%"></div></div><span class="m">Nov</span></div>
+            <div class="bar"><div class="stack" style="height:47%"><div class="s-one" style="height:62%"></div><div class="s-sub" style="height:38%"></div></div><span class="m">Dec</span></div>
+            <div class="bar"><div class="stack" style="height:55%"><div class="s-one" style="height:60%"></div><div class="s-sub" style="height:40%"></div></div><span class="m">Jan</span></div>
+            <div class="bar"><div class="stack" style="height:52%"><div class="s-one" style="height:58%"></div><div class="s-sub" style="height:42%"></div></div><span class="m">Feb</span></div>
+            <div class="bar"><div class="stack" style="height:63%"><div class="s-one" style="height:60%"></div><div class="s-sub" style="height:40%"></div></div><span class="m">Mar</span></div>
+            <div class="bar"><div class="stack" style="height:68%"><div class="s-one" style="height:58%"></div><div class="s-sub" style="height:42%"></div></div><span class="m">Apr</span></div>
+            <div class="bar"><div class="stack" style="height:74%"><div class="s-one" style="height:56%"></div><div class="s-sub" style="height:44%"></div></div><span class="m">May</span></div>
+            <div class="bar"><div class="stack" style="height:80%"><div class="s-one" style="height:55%"></div><div class="s-sub" style="height:45%"></div></div><span class="m">Jun</span></div>
+            <div class="bar"><div class="stack" style="height:88%"><div class="s-one" style="height:54%"></div><div class="s-sub" style="height:46%"></div></div><span class="m">Jul</span></div>
+            <div class="bar"><div class="stack" style="height:100%"><div class="s-one" style="height:52%"></div><div class="s-sub" style="height:48%"></div></div><span class="m">Aug</span></div>
+        </div>
+    </div>
+
+    <!-- recent activity -->
+    <div class="panel" data-reveal>
+        <h3>Recent activity</h3>
+        <div class="psub">Latest payments</div>
+        <table class="txn">
+            <thead><tr><th>Date</th><th>Customer</th><th>Product</th><th class="r">Gross</th><th class="r">Fee</th><th class="r">Net</th><th>Type</th></tr></thead>
+            <tbody>
+                <tr><td>19 Aug</td><td>k.tremblay@…</td><td>Full Access</td><td class="r">CA$29.00</td><td class="r">−0.84</td><td class="r">28.16</td><td><span class="pill ok">One-time</span></td></tr>
+                <tr><td>19 Aug</td><td>a.singh@…</td><td>Monthly</td><td class="r">CA$9.99</td><td class="r">−0.59</td><td class="r">9.40</td><td><span class="pill sub">Renewal</span></td></tr>
+                <tr><td>18 Aug</td><td>m.oconnor@…</td><td>Monthly</td><td class="r">CA$9.99</td><td class="r">−0.59</td><td class="r">9.40</td><td><span class="pill sub">New sub</span></td></tr>
+                <tr><td>18 Aug</td><td>j.nguyen@…</td><td>Full Access</td><td class="r">CA$29.00</td><td class="r">−0.84</td><td class="r">28.16</td><td><span class="pill ok">One-time</span></td></tr>
+                <tr><td>17 Aug</td><td>s.patel@…</td><td>Full Access</td><td class="r">CA$29.00</td><td class="r">−0.84</td><td class="r">28.16</td><td><span class="pill ok">One-time</span></td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a class="backlink" href="Admin-Exams.html">&larr; Back to admin</a>
+</main>
+
+<!-- GST/HST explainer modal -->
+<div class="modal-wrap" id="taxModal">
+    <div class="modal">
+        <div class="mh">
+            <span class="eyebrow eyebrow--signal">CRA · GST/HST</span>
+            <button class="mx" id="taxClose" aria-label="Close">&times;</button>
+        </div>
+        <h2>The CA$30,000 <em>threshold</em></h2>
+        <p>You're a <b>“small supplier”</b> — no need to register for or charge GST/HST — until your taxable revenue passes <b>CA$30,000</b>, measured either in a <b>single calendar quarter</b> or over the <b>last four consecutive quarters</b> (rolling). This gauge tracks that rolling total so nothing sneaks up on you.</p>
+        <div class="callout">If you cross CA$30,000 without registering, you can owe the tax <b>out of pocket, retroactively</b> — so we flag <b>orange at CA$20k</b> and <b>red at CA$25k</b> to give you runway.</div>
+        <p style="margin-top:0.9rem"><b>When it turns red, here's the play:</b></p>
+        <ul class="steps">
+            <li data-n="1"><b>Register with the CRA</b> for a Business Number + GST/HST account (free, online). Add QST separately if you sell into Quebec.</li>
+            <li data-n="2"><b>Charge the customer's provincial rate</b> — 5% GST in most of the West, 13% HST in Ontario, 14–15% in the Atlantic provinces. Sales outside Canada are zero-rated.</li>
+            <li data-n="3"><b>Decide pricing</b> — add tax on top of CA$29 / CA$9.99, or treat the price as tax-inclusive.</li>
+            <li data-n="4"><b>Turn on Stripe Tax</b> so the right rate is applied automatically by province (one small config change), then <b>file &amp; remit</b> on the CRA's schedule.</li>
+        </ul>
+        <p class="fineprint">Not tax advice — confirm timing and rates with a CPA and the CRA. Sources: canada.ca (when to register) · docs.stripe.com/tax</p>
+    </div>
+</div>
+
+<div data-appfoot data-year="2026"></div>
+<script src="assets/motion.js"></script>
+<script src="assets/app.js"></script>
+<script>
+(function () {
+    // period filter (visual only in the mockup)
+    var seg = document.getElementById('seg');
+    var range = document.getElementById('range');
+    seg.addEventListener('click', function (e) {
+        var b = e.target.closest('button'); if (!b) return;
+        seg.querySelectorAll('button').forEach(function (x) { x.classList.remove('on'); });
+        b.classList.add('on');
+        range.style.display = b.dataset.p === 'custom' ? 'flex' : 'none';
+    });
+    // tax modal
+    var modal = document.getElementById('taxModal');
+    document.getElementById('taxInfo').addEventListener('click', function () { modal.classList.add('on'); });
+    document.getElementById('taxClose').addEventListener('click', function () { modal.classList.remove('on'); });
+    modal.addEventListener('click', function (e) { if (e.target === modal) modal.classList.remove('on'); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') modal.classList.remove('on'); });
+})();
+</script>
+</body>
+</html>
