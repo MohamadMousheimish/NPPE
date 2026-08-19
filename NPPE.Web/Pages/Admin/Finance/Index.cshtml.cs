@@ -20,6 +20,7 @@ namespace NPPE.Web.Pages.Admin.Finance
         [BindProperty(SupportsGet = true)] public DateTime? To { get; set; }
 
         public FinancialSummaryDto Summary { get; private set; } = default!;
+        public FinancialSummaryDto? Prior { get; private set; }
         public ThresholdStatusDto Threshold { get; private set; } = default!;
         public DateTime AsOf { get; private set; }
 
@@ -29,6 +30,14 @@ namespace NPPE.Web.Pages.Admin.Finance
             var (from, to, label) = ResolvePeriod(AsOf);
             Summary = await _mediator.Send(new GetFinancialSummaryQuery(from, to, label));
             Threshold = await _mediator.Send(new GetThresholdStatusQuery(AsOf));
+
+            // Prior equivalent period (same length, immediately before) for deltas.
+            if (from.HasValue)
+            {
+                var length = (to ?? AsOf) - from.Value;
+                Prior = await _mediator.Send(
+                    new GetFinancialSummaryQuery(from.Value - length, from.Value, "prior"));
+            }
         }
 
         private (DateTime? from, DateTime? to, string label) ResolvePeriod(DateTime now)
@@ -55,5 +64,24 @@ namespace NPPE.Web.Pages.Admin.Finance
             _ => "safe"
         };
         public double Pct(decimal amount, decimal of) => of <= 0 ? 0 : Math.Min(100, (double)(amount / of) * 100);
+
+        public record DeltaView(string Css, string Arrow, string Amount, string Kind);
+
+        /// <summary>Percentage change vs the prior period, with good/bad colouring.</summary>
+        public DeltaView Delta(decimal current, decimal? prior, bool higherIsBetter)
+        {
+            if (prior is null) return new("flat", "", "", "none");
+            if (prior.Value == 0m)
+            {
+                if (current == 0m) return new("flat", "", "", "flat");
+                var upNew = current > 0m;
+                return new(upNew == higherIsBetter ? "up" : "down", upNew ? "▲" : "▼", "", "new");
+            }
+            var change = (current - prior.Value) / Math.Abs(prior.Value) * 100m;
+            if (Math.Round(change, 1) == 0m) return new("flat", "", "", "flat");
+            var up = change > 0m;
+            return new(up == higherIsBetter ? "up" : "down", up ? "▲" : "▼",
+                Math.Abs(change).ToString("N1") + "%", "pct");
+        }
     }
 }

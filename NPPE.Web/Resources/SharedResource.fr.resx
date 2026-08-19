@@ -664,4 +664,7 @@
   <data name="Tooling" xml:space="preserve"><value>Outils</value></data>
   <data name="Payments" xml:space="preserve"><value>Paiements</value></data>
   <data name="Other" xml:space="preserve"><value>Autre</value></data>
+  <data name="vs prior" xml:space="preserve"><value>vs préc.</value></data>
+  <data name="new" xml:space="preserve"><value>nouveau</value></data>
+  <data name="no change" xml:space="preserve"><value>stable</value></data>
 </root>

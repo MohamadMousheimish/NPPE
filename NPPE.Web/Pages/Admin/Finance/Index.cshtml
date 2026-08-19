@@ -12,9 +12,21 @@
     var maxQuarter = t.Quarters.Select(q => q.Amount).DefaultIfEmpty(0m).Max();
     var ledgerTotal = s.CostLedger.Sum(l => l.Amount);
     var grossSplit = s.OneTimeRevenue + s.SubscriptionRevenue;
-    var feePctOfGross = s.GrossRevenue > 0 ? (double)(s.StripeFees / s.GrossRevenue) * 100 : 0;
     var netMargin = s.GrossRevenue > 0 ? (double)(s.NetProfit / s.GrossRevenue) * 100 : 0;
     string PeriodPill(string key) => Model.Period == key ? "on" : "";
+
+    var dGross = Model.Delta(s.GrossRevenue, Model.Prior?.GrossRevenue, true);
+    var dFees = Model.Delta(s.StripeFees, Model.Prior?.StripeFees, false);
+    var dNet = Model.Delta(s.NetAfterFees, Model.Prior?.NetAfterFees, true);
+    var dInfra = Model.Delta(s.InfraCosts, Model.Prior?.InfraCosts, false);
+    var dProfit = Model.Delta(s.NetProfit, Model.Prior?.NetProfit, true);
+    Func<NPPE.Web.Pages.Admin.Finance.IndexModel.DeltaView, string> deltaText = d => d.Kind switch
+    {
+        "none" => "—",
+        "flat" => SharedLocalizer["no change"].Value,
+        "new" => $"{d.Arrow} {SharedLocalizer["new"].Value}",
+        _ => $"{d.Arrow} {d.Amount} {SharedLocalizer["vs prior"].Value}"
+    };
 }
 
 <div class="phead fin" data-reveal>
@@ -108,11 +120,11 @@
 
     <!-- KPIs -->
     <div class="kpi-grid" data-reveal>
-        <div class="kpi"><div class="k">@SharedLocalizer["Gross revenue"]</div><div class="v">@Model.Money(s.GrossRevenue)</div><div class="d">@SharedLocalizer[s.PeriodLabel]</div></div>
-        <div class="kpi neg"><div class="k">@SharedLocalizer["Stripe fees"]</div><div class="v">@Model.Money(-s.StripeFees)</div><div class="d">@feePctOfGross.ToString("N1")% @SharedLocalizer["of gross"]</div></div>
-        <div class="kpi"><div class="k">@SharedLocalizer["Net after fees"]</div><div class="v">@Model.Money(s.NetAfterFees)</div><div class="d">@SharedLocalizer["after processing"]</div></div>
-        <div class="kpi neg"><div class="k">@SharedLocalizer["Infra & tooling"]</div><div class="v">@Model.Money(-s.InfraCosts)</div><div class="d">@SharedLocalizer["recorded costs"]</div></div>
-        <div class="kpi profit"><div class="k">@SharedLocalizer["Net profit"]</div><div class="v">@Model.Money(s.NetProfit)</div><div class="d">@netMargin.ToString("N1")% @SharedLocalizer["margin"]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Gross revenue"]</div><div class="v">@Model.Money(s.GrossRevenue)</div><div class="d @dGross.Css">@deltaText(dGross)</div></div>
+        <div class="kpi neg"><div class="k">@SharedLocalizer["Stripe fees"]</div><div class="v">@Model.Money(-s.StripeFees)</div><div class="d @dFees.Css">@deltaText(dFees)</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Net after fees"]</div><div class="v">@Model.Money(s.NetAfterFees)</div><div class="d @dNet.Css">@deltaText(dNet)</div></div>
+        <div class="kpi neg"><div class="k">@SharedLocalizer["Infra & tooling"]</div><div class="v">@Model.Money(-s.InfraCosts)</div><div class="d @dInfra.Css">@deltaText(dInfra)</div></div>
+        <div class="kpi profit"><div class="k">@SharedLocalizer["Net profit"]</div><div class="v">@Model.Money(s.NetProfit)</div><div class="d @dProfit.Css">@deltaText(dProfit)</div></div>
     </div>
 
     <div class="kpi-grid four" data-reveal>
