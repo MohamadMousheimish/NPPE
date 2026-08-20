@@ -23,5 +23,9 @@ jobs:
       - name: Build
         run: dotnet build NPPE.ExamPrep.sln -c Release --no-restore
 
+      # The E2E project drives a real browser; install Chromium (+ OS deps) before testing.
+      - name: Install Playwright browsers
+        run: pwsh NPPE.E2ETests/bin/Release/net9.0/playwright.ps1 install --with-deps chromium
+
       - name: Test
         run: dotnet test NPPE.ExamPrep.sln -c Release --no-build --verbosity normal
