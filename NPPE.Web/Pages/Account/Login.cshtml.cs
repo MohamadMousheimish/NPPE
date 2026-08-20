@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 
 namespace NPPE.Web.Pages.Account
 {
+    [AllowAnonymous]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<AppUser> _signInManager;
@@ -44,7 +46,7 @@ namespace NPPE.Web.Pages.Account
                 Input.Email,
                 Input.Password,
                 Input.RememberMe,
-                lockoutOnFailure: false);
+                lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
@@ -71,6 +73,12 @@ namespace NPPE.Web.Pages.Account
                     return LocalRedirect(returnUrl);
                 else
                     return RedirectToPage("/Index");
+            }
+
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError(string.Empty, _localizer["Too many failed attempts. Please try again in a few minutes."]);
+                return Page();
             }
 
             ModelState.AddModelError(string.Empty, _localizer["Invalid login attempt."]);

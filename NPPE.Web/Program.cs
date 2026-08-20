@@ -1,4 +1,5 @@
 using System.Threading.RateLimiting;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
@@ -32,9 +33,24 @@ builder.Services.AddRazorPages()
                 .AddDataAnnotationsLocalization(options =>
                     options.DataAnnotationLocalizerProvider = (type, factory) => factory.Create(typeof(SharedResource)))
                 .AddRazorPagesOptions(options =>
+                {
                     // Throttle the auth pages (login/register/reset) against brute force.
                     options.Conventions.AddFolderApplicationModelConvention("/Account",
-                        model => model.EndpointMetadata.Add(new EnableRateLimitingAttribute("auth"))));
+                        model => model.EndpointMetadata.Add(new EnableRateLimitingAttribute("auth")));
+
+                    // Public pages that opt out of the default-deny fallback policy.
+                    // (Login opts out via its own [AllowAnonymous]; Profile/ChangePassword
+                    // deliberately stay protected.)
+                    foreach (var page in new[]
+                    {
+                        "/Account/Register", "/Account/ForgotPassword", "/Account/ForgotPasswordConfirmation",
+                        "/Account/ResetPassword", "/Account/ResetPasswordConfirmation", "/Account/ExternalLoginCallback",
+                        "/Privacy", "/Error", "/Payments/Webhook"
+                    })
+                    {
+                        options.Conventions.AllowAnonymousToPage(page);
+                    }
+                });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -47,10 +63,27 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
     options.User.RequireUniqueEmail = true;
+    // Account lockout: throttle brute-force / credential-stuffing at the account level
+    // (complements the per-IP rate limiter, which a rotating-IP attacker can evade).
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    options.Lockout.AllowedForNewUsers = true;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddErrorDescriber<NPPE.Web.Localization.LocalizedIdentityErrorDescriber>()
 .AddDefaultTokenProviders();
+
+// Harden the Identity auth cookie (Secure only enforced in production so the
+// http dev profile still works).
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SameSite = SameSiteMode.Lax;
+    if (!builder.Environment.IsDevelopment())
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+});
 
 // Google Authentication
 builder.Services.AddAuthentication()
@@ -112,7 +145,11 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 // purchase takes effect immediately without requiring the user to re-login.
 builder.Services.AddAuthorizationBuilder()
                 .AddPolicy("AdminOnly", policy => policy.RequireRole(NppeRoles.Admin))
-                .AddPolicy("StudentOnly", policy => policy.RequireRole(NppeRoles.Student));
+                .AddPolicy("StudentOnly", policy => policy.RequireRole(NppeRoles.Student))
+                // Default-deny: every endpoint requires an authenticated user unless it
+                // explicitly opts out with [AllowAnonymous]. Stops a page/endpoint added
+                // without an [Authorize] attribute from being silently public.
+                .SetFallbackPolicy(new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build());
 
 var supportedCultures = new[] { "en", "fr" };
 builder.Services.Configure<RequestLocalizationOptions>(options =>
@@ -174,7 +211,7 @@ app.MapStaticAssets();
 app.MapRazorPages()
    .WithStaticAssets();
 
-app.MapHealthChecks("/healthz");
+app.MapHealthChecks("/healthz").AllowAnonymous();
 
 // Persist the chosen language in a cookie so it sticks across navigation.
 app.MapGet("/set-culture", (string culture, string? returnUrl, HttpContext ctx) =>
@@ -187,7 +224,7 @@ app.MapGet("/set-culture", (string culture, string? returnUrl, HttpContext ctx) 
             new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1), IsEssential = true, Path = "/" });
     }
     return Results.LocalRedirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
-});
+}).AllowAnonymous();
 
 using (var scope = app.Services.CreateScope())
 {

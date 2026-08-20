@@ -667,4 +667,5 @@
   <data name="vs prior" xml:space="preserve"><value>vs préc.</value></data>
   <data name="new" xml:space="preserve"><value>nouveau</value></data>
   <data name="no change" xml:space="preserve"><value>stable</value></data>
+  <data name="Too many failed attempts. Please try again in a few minutes." xml:space="preserve"><value>Trop de tentatives échouées. Veuillez réessayer dans quelques minutes.</value></data>
 </root>

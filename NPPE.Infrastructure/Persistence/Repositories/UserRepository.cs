@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NPPE.Application.Repositories;
+using NPPE.Domain.Constants;
 using NPPE.Domain.Entities;
 
 namespace NPPE.Infrastructure.Persistence.Repositories;
@@ -29,6 +30,15 @@ public class UserRepository : IUserRepository
         if (!result.Succeeded)
         {
             throw new InvalidOperationException(string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+
+        // Self-registered users are students — without this role they'd be locked out
+        // of the entire student area (pricing, exams, results, history) by the
+        // role/fallback authorization policies.
+        var roleResult = await _userManager.AddToRoleAsync(user, NppeRoles.Student);
+        if (!roleResult.Succeeded)
+        {
+            throw new InvalidOperationException(string.Join(", ", roleResult.Errors.Select(e => e.Description)));
         }
     }
 
