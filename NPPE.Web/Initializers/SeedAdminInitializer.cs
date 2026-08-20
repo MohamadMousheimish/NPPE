@@ -6,16 +6,23 @@ namespace NPPE.Web.Initializers;
 
 public static class SeedAdminInitializer
 {
-    public async static Task SeedAsync(WebApplication app)
+    public static Task SeedAsync(WebApplication app) =>
+        SeedAsync(app.Services, app.Environment.IsDevelopment(), app.Configuration);
+
+    /// <summary>
+    /// Seeds roles (all environments) plus demo users (development) or a configured
+    /// admin (otherwise). Overload usable outside the WebApplication (e.g. E2E tests).
+    /// </summary>
+    public static async Task SeedAsync(IServiceProvider services, bool isDevelopment, IConfiguration configuration)
     {
-        using var scope = app.Services.CreateScope();
+        using var scope = services.CreateScope();
         var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
         var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
         // Roles are required in every environment for authorization to work.
         await EnsureRolesAsync(roleManager);
 
-        if (app.Environment.IsDevelopment())
+        if (isDevelopment)
         {
             // Convenient demo accounts for local development only. These use
             // well-known passwords, so they must never be seeded in production.
@@ -26,7 +33,7 @@ public static class SeedAdminInitializer
             // In non-development environments an initial admin is only created
             // when explicit credentials are supplied via configuration/secrets.
             // No default/backdoor admin is ever created.
-            await SeedConfiguredAdminAsync(userManager, app.Configuration);
+            await SeedConfiguredAdminAsync(userManager, configuration);
         }
     }
 

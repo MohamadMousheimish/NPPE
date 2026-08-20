@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPPE.Tests", "NPPE.Tests\NP
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPPE.IntegrationTests", "NPPE.IntegrationTests\NPPE.IntegrationTests.csproj", "{C6891B15-B92F-4427-A3C5-EDCDAEFC5AC9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NPPE.E2ETests", "NPPE.E2ETests\NPPE.E2ETests.csproj", "{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,18 @@ Global
 		{C6891B15-B92F-4427-A3C5-EDCDAEFC5AC9}.Release|x64.Build.0 = Release|Any CPU
 		{C6891B15-B92F-4427-A3C5-EDCDAEFC5AC9}.Release|x86.ActiveCfg = Release|Any CPU
 		{C6891B15-B92F-4427-A3C5-EDCDAEFC5AC9}.Release|x86.Build.0 = Release|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Debug|x64.Build.0 = Debug|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Debug|x86.Build.0 = Debug|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Release|x64.ActiveCfg = Release|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Release|x64.Build.0 = Release|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Release|x86.ActiveCfg = Release|Any CPU
+		{69A37717-D932-4A21-8A77-9ECEB6E7F6BB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

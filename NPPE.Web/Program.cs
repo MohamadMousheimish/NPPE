@@ -226,20 +226,25 @@ app.MapGet("/set-culture", (string culture, string? returnUrl, HttpContext ctx) 
     return Results.LocalRedirect(string.IsNullOrEmpty(returnUrl) ? "/" : returnUrl);
 }).AllowAnonymous();
 
-using (var scope = app.Services.CreateScope())
+// E2E tests run two hosts against one database and initialize the schema/seed data
+// themselves once, so they opt out of startup initialization to avoid a race.
+if (!app.Configuration.GetValue<bool>("Database:SkipStartupInitialization"))
 {
-    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    // SQL Server (prod/dev) applies migrations; test providers (e.g. SQLite) build
-    // the schema from the model instead.
-    if (db.Database.IsSqlServer())
-        db.Database.Migrate();
-    else
-        db.Database.EnsureCreated();
-}
+    using (var scope = app.Services.CreateScope())
+    {
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        // SQL Server (prod/dev) applies migrations; test providers (e.g. SQLite) build
+        // the schema from the model instead.
+        if (db.Database.IsSqlServer())
+            db.Database.Migrate();
+        else
+            db.Database.EnsureCreated();
+    }
 
-// Seed roles (all environments) and users (demo users in Development, or a
-// configuration-provided admin in other environments)
-await SeedAdminInitializer.SeedAsync(app);
+    // Seed roles (all environments) and users (demo users in Development, or a
+    // configuration-provided admin in other environments)
+    await SeedAdminInitializer.SeedAsync(app);
+}
 
 
 
