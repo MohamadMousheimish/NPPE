@@ -123,7 +123,7 @@ builder.Services.AddRateLimiter(options =>
             partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? "unknown",
             factory: _ => new FixedWindowRateLimiterOptions
             {
-                PermitLimit = 30,
+                PermitLimit = builder.Configuration.GetValue<int?>("RateLimiting:AuthPermitLimit") ?? 30,
                 Window = TimeSpan.FromMinutes(1),
                 QueueLimit = 0
             }));
@@ -229,7 +229,12 @@ app.MapGet("/set-culture", (string culture, string? returnUrl, HttpContext ctx) 
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-    db.Database.Migrate();
+    // SQL Server (prod/dev) applies migrations; test providers (e.g. SQLite) build
+    // the schema from the model instead.
+    if (db.Database.IsSqlServer())
+        db.Database.Migrate();
+    else
+        db.Database.EnsureCreated();
 }
 
 // Seed roles (all environments) and users (demo users in Development, or a
@@ -239,3 +244,6 @@ await SeedAdminInitializer.SeedAsync(app);
 
 
 app.Run();
+
+// Exposed so the integration tests can host the app via WebApplicationFactory<Program>.
+public partial class Program { }
