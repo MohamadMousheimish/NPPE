@@ -78,33 +78,42 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     /// </summary>
     internal async Task ProcessEventAsync(Event stripeEvent)
     {
-        // Endpoint-wide idempotency: Stripe can deliver the same event more than
-        // once. If we've already handled a delivery of this event, skip it.
-        if (!string.IsNullOrEmpty(stripeEvent.Id) && await _processedEvents.ExistsAsync(stripeEvent.Id))
+        var hasId = !string.IsNullOrEmpty(stripeEvent.Id);
+
+        // Endpoint-wide idempotency. Stripe fires a burst of events after a checkout
+        // (and retries on failure), so the same event can arrive concurrently. Claim
+        // it atomically up front via the unique index; a duplicate/concurrent
+        // delivery loses the race and skips, so each event is processed exactly once.
+        if (hasId && !await _processedEvents.TryAddAsync(stripeEvent.Id))
             return;
 
-        switch (stripeEvent.Type)
+        try
         {
-            case "checkout.session.completed":
-                await HandleCheckoutSessionCompleted(stripeEvent);
-                break;
-            case "customer.subscription.updated":
-                await HandleSubscriptionUpdated(stripeEvent);
-                break;
-            case "customer.subscription.deleted":
-                await HandleSubscriptionDeleted(stripeEvent);
-                break;
-            case "invoice.payment_succeeded":
-                await HandleInvoicePaymentSucceeded(stripeEvent);
-                break;
-            case "invoice.payment_failed":
-                await HandleInvoicePaymentFailed(stripeEvent);
-                break;
+            switch (stripeEvent.Type)
+            {
+                case "checkout.session.completed":
+                    await HandleCheckoutSessionCompleted(stripeEvent);
+                    break;
+                case "customer.subscription.updated":
+                    await HandleSubscriptionUpdated(stripeEvent);
+                    break;
+                case "customer.subscription.deleted":
+                    await HandleSubscriptionDeleted(stripeEvent);
+                    break;
+                case "invoice.payment_succeeded":
+                    await HandleInvoicePaymentSucceeded(stripeEvent);
+                    break;
+                case "invoice.payment_failed":
+                    await HandleInvoicePaymentFailed(stripeEvent);
+                    break;
+            }
         }
-
-        // Remember this event so a later redelivery is skipped by the guard above.
-        if (!string.IsNullOrEmpty(stripeEvent.Id))
-            await _processedEvents.AddAsync(new ProcessedStripeEvent { StripeEventId = stripeEvent.Id });
+        catch
+        {
+            // Processing failed — release the claim so Stripe's retry reprocesses it.
+            if (hasId) await _processedEvents.RemoveAsync(stripeEvent.Id);
+            throw;
+        }
     }
 
     private async Task HandleCheckoutSessionCompleted(Event stripeEvent)

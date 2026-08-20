@@ -11,9 +11,32 @@ public class ProcessedStripeEventRepository
     {
     }
 
-    public async Task<bool> ExistsAsync(string stripeEventId)
+    public async Task<bool> TryAddAsync(string stripeEventId)
     {
-        return await _context.Set<ProcessedStripeEvent>()
-            .AnyAsync(e => e.StripeEventId == stripeEventId);
+        var entity = new ProcessedStripeEvent { StripeEventId = stripeEventId, CreatedAt = DateTime.UtcNow };
+        _context.Set<ProcessedStripeEvent>().Add(entity);
+        try
+        {
+            await _context.SaveChangesAsync();
+            return true;
+        }
+        catch (DbUpdateException)
+        {
+            // Unique-index violation — another (concurrent or retried) delivery
+            // already recorded this event. Detach so the context stays usable.
+            _context.Entry(entity).State = EntityState.Detached;
+            return false;
+        }
+    }
+
+    public async Task RemoveAsync(string stripeEventId)
+    {
+        var entity = await _context.Set<ProcessedStripeEvent>()
+            .FirstOrDefaultAsync(e => e.StripeEventId == stripeEventId);
+        if (entity != null)
+        {
+            _context.Set<ProcessedStripeEvent>().Remove(entity);
+            await _context.SaveChangesAsync();
+        }
     }
 }

@@ -29,6 +29,8 @@ public class HandlePaymentWebhookCommandHandlerTests
     {
         _uow.Setup(u => u.ExecuteInTransactionAsync(It.IsAny<Func<Task>>(), It.IsAny<CancellationToken>()))
             .Returns<Func<Task>, CancellationToken>((action, _) => action());
+        // By default the event is claimed successfully (not a duplicate).
+        _processedEvents.Setup(p => p.TryAddAsync(It.IsAny<string>())).ReturnsAsync(true);
     }
 
     private static Mock<UserManager<AppUser>> MockUserManager()
@@ -217,15 +219,27 @@ public class HandlePaymentWebhookCommandHandlerTests
     [Fact]
     public async Task Already_processed_event_is_skipped_entirely()
     {
-        _processedEvents.Setup(p => p.ExistsAsync("evt_dup")).ReturnsAsync(true);
+        // A concurrent/duplicate delivery loses the claim race.
+        _processedEvents.Setup(p => p.TryAddAsync("evt_dup")).ReturnsAsync(false);
 
         var evt = Wrap("checkout.session.completed",
             new Session { Id = "cs_9", Mode = "payment", PaymentStatus = "paid" }, "evt_dup");
 
         await CreateHandler().ProcessEventAsync(evt);
 
-        // The whole handler body is short-circuited and the event is not re-recorded.
+        // The whole handler body is short-circuited.
         _payments.Verify(p => p.GetBySessionIdAsync(It.IsAny<string>()), Times.Never);
-        _processedEvents.Verify(p => p.AddAsync(It.IsAny<ProcessedStripeEvent>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Failed_processing_releases_the_claim_so_stripe_can_retry()
+    {
+        _payments.Setup(p => p.GetBySessionIdAsync(It.IsAny<string>())).ThrowsAsync(new InvalidOperationException("db down"));
+
+        var evt = Wrap("checkout.session.completed",
+            new Session { Id = "cs_x", Mode = "payment", PaymentStatus = "paid" }, "evt_fail");
+
+        await Assert.ThrowsAsync<InvalidOperationException>(() => CreateHandler().ProcessEventAsync(evt));
+        _processedEvents.Verify(p => p.RemoveAsync("evt_fail"), Times.Once);
     }
 }
