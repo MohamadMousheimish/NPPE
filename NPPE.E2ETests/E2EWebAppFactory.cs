@@ -53,7 +53,10 @@ public class E2EWebAppFactory : WebApplicationFactory<Program>
                 ["ConnectionStrings:DefaultConnection"] = ConnectionString,
                 ["RateLimiting:AuthPermitLimit"] = "1000000",
                 // Both hosts share one DB; we create the schema and seed once in SeedAsync.
-                ["Database:SkipStartupInitialization"] = "true"
+                ["Database:SkipStartupInitialization"] = "true",
+                // Run without external auth, exactly like CI (no Google secrets configured).
+                ["Authentication:Google:ClientId"] = "",
+                ["Authentication:Google:ClientSecret"] = ""
             });
         });
 

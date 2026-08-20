@@ -33,7 +33,10 @@ public class NppeWebAppFactory : WebApplicationFactory<Program>
                 ["Stripe:PublishableKey"] = "pk_test_dummy",
                 ["Stripe:WebhookSecret"] = WebhookSecret,
                 ["ConnectionStrings:DefaultConnection"] = "DataSource=:memory:", // ignored (DbContext overridden)
-                ["RateLimiting:AuthPermitLimit"] = "1000000" // effectively disable the limiter in tests
+                ["RateLimiting:AuthPermitLimit"] = "1000000", // effectively disable the limiter in tests
+                // Run without external auth, exactly like CI (no Google secrets configured).
+                ["Authentication:Google:ClientId"] = "",
+                ["Authentication:Google:ClientSecret"] = ""
             });
         });
 

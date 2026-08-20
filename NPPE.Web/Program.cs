@@ -85,13 +85,21 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";
 });
 
-// Google Authentication
-builder.Services.AddAuthentication()
-    .AddGoogle(options =>
+// Google Authentication — only registered when actually configured. Registering the
+// Google handler with an empty ClientId/ClientSecret makes OAuthOptions.Validate()
+// throw on every request (it's a request-handler scheme), 500-ing the whole site in
+// any environment that hasn't set the secrets (CI, or a deploy missing them).
+var googleClientId = builder.Configuration["Authentication:Google:ClientId"];
+var googleClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
+var authenticationBuilder = builder.Services.AddAuthentication();
+if (!string.IsNullOrWhiteSpace(googleClientId) && !string.IsNullOrWhiteSpace(googleClientSecret))
+{
+    authenticationBuilder.AddGoogle(options =>
     {
-        options.ClientId = builder.Configuration["Authentication:Google:ClientId"] ?? "";
-        options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"] ?? "";
+        options.ClientId = googleClientId;
+        options.ClientSecret = googleClientSecret;
     });
+}
 
 // MediatR
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllExamsQuery).Assembly));
