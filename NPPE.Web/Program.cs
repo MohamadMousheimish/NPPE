@@ -196,7 +196,9 @@ app.Use(async (context, next) =>
         "connect-src 'self'; " +
         "frame-ancestors 'none'; " +
         "base-uri 'self'; " +
-        "form-action 'self'; " +
+        // Stripe Checkout is a redirect to its hosted page, so the POST that starts
+        // checkout must be allowed to navigate there (otherwise CSP blocks payment).
+        "form-action 'self' https://checkout.stripe.com; " +
         "object-src 'none'";
     await next();
 });
@@ -215,7 +217,10 @@ var localizationOptions = app.Services.GetRequiredService<IOptions<RequestLocali
 app.UseRequestLocalization(localizationOptions);
 
 app.UseAuthorization();
-app.MapStaticAssets();
+// Static assets are mapped as endpoints, so the fallback "require authenticated user"
+// policy would otherwise gate CSS/JS/images behind login — leaving anonymous pages
+// (login, register, privacy) completely unstyled. Static files must be public.
+app.MapStaticAssets().AllowAnonymous();
 app.MapRazorPages()
    .WithStaticAssets();
 
