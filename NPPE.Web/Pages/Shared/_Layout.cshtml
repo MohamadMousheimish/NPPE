@@ -41,6 +41,7 @@
                     }
                     else
                     {
+                        <a asp-page="/Student/Study/Index" class="@NavCls("study")">@SharedLocalizer["Study"]</a>
                         <a asp-page="/Student/Exams/Index" class="@NavCls("exams")">@SharedLocalizer["Practice Exams"]</a>
                         <a asp-page="/Student/History/Index" class="@NavCls("history")">@SharedLocalizer["History"]</a>
                         <a asp-page="/Payments/Billing" class="@NavCls("billing")">@SharedLocalizer["Billing"]</a>

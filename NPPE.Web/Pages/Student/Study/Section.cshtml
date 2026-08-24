@@ -1,0 +1,65 @@
+@page
+@model NPPE.Web.Pages.Student.Study.SectionModel
+@{
+    ViewData["Title"] = Model.Section.Title + " · " + SharedLocalizer["Study Hub"].Value;
+    ViewData["ActiveNav"] = "study";
+    var partial = $"_Section{Model.Section.Number}";
+}
+@section Head {
+    <link rel="stylesheet" href="~/css/study.css" asp-append-version="true" />
+}
+
+<div class="readprog"><i data-readbar></i></div>
+
+<div class="reader-head" data-reveal>
+    <a class="reader-back" asp-page="Index">&larr; @SharedLocalizer["All sections"]</a>
+    <span class="eyebrow eyebrow--signal">@SharedLocalizer["Section"] @Model.Section.Roman · @Model.Section.WeightPercent% @SharedLocalizer["of the exam"]</span>
+    <h1>@SharedLocalizer[Model.Section.Title]</h1>
+    <p class="sub">@SharedLocalizer[Model.Section.Summary]</p>
+    <div class="reader-meta">
+        <span><b>@Model.Section.WeightPercent%</b> @SharedLocalizer["weight"]</span>
+        <span><b>@Model.Section.QuestionRange</b></span>
+        <span class="reader-time" data-readtime>—</span>
+    </div>
+</div>
+
+<div class="reader-shell">
+    <aside class="reader-toc" data-toc-host>
+        <div class="reader-toc__label">@SharedLocalizer["On this page"]</div>
+        <nav data-toc></nav>
+    </aside>
+
+    <article class="reader" data-reader>
+        <partial name="@partial" />
+    </article>
+</div>
+
+<nav class="reader-nav" data-reveal>
+    @if (Model.Previous != null)
+    {
+        <a class="reader-nav__a prev" asp-page="Section" asp-route-n="@Model.Previous.Number">
+            <span class="k">&larr; @SharedLocalizer["Previous"]</span>
+            <span class="t">@Model.Previous.Roman · @SharedLocalizer[Model.Previous.Title]</span>
+        </a>
+    }
+    else { <span></span> }
+
+    @if (Model.Next != null)
+    {
+        <a class="reader-nav__a next" asp-page="Section" asp-route-n="@Model.Next.Number">
+            <span class="k">@SharedLocalizer["Next"] &rarr;</span>
+            <span class="t">@Model.Next.Roman · @SharedLocalizer[Model.Next.Title]</span>
+        </a>
+    }
+    else
+    {
+        <a class="reader-nav__a next" asp-page="/Student/Exams/Index">
+            <span class="k">@SharedLocalizer["Ready?"] &rarr;</span>
+            <span class="t">@SharedLocalizer["Try a practice exam"]</span>
+        </a>
+    }
+</nav>
+
+@section Scripts {
+    <script src="~/js/study.js" asp-append-version="true"></script>
+}
