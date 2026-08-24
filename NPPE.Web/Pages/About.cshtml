@@ -1,0 +1,135 @@
+@page
+@model NPPE.Web.Pages.AboutModel
+@{
+    ViewData["Title"] = SharedLocalizer["About"].Value;
+    var authed = User.Identity?.IsAuthenticated == true;
+}
+@section Head {
+    <link rel="stylesheet" href="~/css/about.css" asp-append-version="true" />
+}
+
+<!-- HERO -->
+<section class="ab-hero">
+    <div class="ab-hero__grid"></div>
+    <span class="ab-hero__mark tl"></span><span class="ab-hero__mark tr"></span>
+    <span class="ab-hero__mark bl"></span><span class="ab-hero__mark br"></span>
+    <div class="ab-hero__in">
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["About NPPE Prep"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Calibrated prep for the <em>NPPE</em>."])</h1>
+        <p class="lede">@SharedLocalizer["We turn the entire National Professional Practice Examination syllabus into a clear, structured path — so you walk in ready, not guessing."]</p>
+        <div class="ab-hero__cta">
+            @if (authed)
+            {
+                <a class="btn btn--primary btn--lg" asp-page="/Student/Study/Index">@SharedLocalizer["Open the Study Hub"] <span class="arrow">&rarr;</span></a>
+            }
+            else
+            {
+                <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
+                <a class="btn btn--ghost btn--lg ab-hero__ghost" asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a>
+            }
+        </div>
+        <a class="ab-hero__watch" href="#watch">
+            <span class="ab-hero__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            @SharedLocalizer["Watch how it works"]
+        </a>
+    </div>
+</section>
+
+<!-- WHAT IS THE NPPE -->
+<section class="ab-band">
+    <div class="ab-band__head">
+        <span class="eyebrow">@SharedLocalizer["The exam"]</span>
+        <h2>@SharedLocalizer["What is the NPPE?"]</h2>
+        <p>@SharedLocalizer["The National Professional Practice Examination confirms your knowledge of professionalism, ethics, and law — the judgment behind the P.Eng. and P.Geo. designations. It is required for licensure across Canada (except Quebec)."]</p>
+    </div>
+    <div class="ab-facts">
+        <div class="ab-fact"><b>110</b><span>@SharedLocalizer["multiple-choice questions"]</span></div>
+        <div class="ab-fact"><b>2½ h</b><span>@SharedLocalizer["closed-book exam"]</span></div>
+        <div class="ab-fact"><b>6</b><span>@SharedLocalizer["weighted syllabus sections"]</span></div>
+        <div class="ab-fact"><b>1</b><span>@SharedLocalizer["licence on the line"]</span></div>
+    </div>
+</section>
+
+<!-- WHAT WE PROVIDE -->
+<section class="ab-provide">
+    <div class="ab-band__head">
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["What you get"]</span>
+        <h2>@SharedLocalizer["Everything you need in one place"]</h2>
+        <p>@SharedLocalizer["No duplication with the textbooks, no guessing what matters. Just the syllabus, made studyable."]</p>
+    </div>
+    <div class="ab-cards">
+        <div class="ab-card">
+            <div class="ab-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h5"/></svg></div>
+            <h3>@SharedLocalizer["The Study Hub"]</h3>
+            <p>@SharedLocalizer["All six syllabus sections, written to be read — clear explanations, worked distinctions, and the exact weight each carries on the exam."]</p>
+        </div>
+        <div class="ab-card">
+            <div class="ab-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+            <h3>@SharedLocalizer["Practice exams"]</h3>
+            <p>@SharedLocalizer["Questions built from real NPPE material, with unlimited attempts and a worked explanation on every single item — so a wrong answer becomes a lesson."]</p>
+        </div>
+        <div class="ab-card">
+            <div class="ab-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+            <h3>@SharedLocalizer["Progress you can measure"]</h3>
+            <p>@SharedLocalizer["Every attempt is scored and tracked, so you can see which sections are solid and where to spend your next study hour."]</p>
+        </div>
+        <div class="ab-card">
+            <div class="ab-card__ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg></div>
+            <h3>@SharedLocalizer["Bilingual & accessible"]</h3>
+            <p>@SharedLocalizer["Study in English or French, on any device. Your prep goes where you go — desk, transit, or the night before."]</p>
+        </div>
+    </div>
+</section>
+
+<!-- SIX SECTIONS -->
+<section class="ab-sections">
+    <div class="ab-band__head">
+        <span class="eyebrow">@SharedLocalizer["The syllabus"]</span>
+        <h2>@SharedLocalizer["Six sections, precisely weighted"]</h2>
+    </div>
+    <div class="ab-sixgrid">
+        @foreach (var s in NPPE.Web.StudyContent.StudyLibrary.Sections)
+        {
+            <div class="ab-sec">
+                <span class="ab-sec__n">@s.Roman</span>
+                <div class="ab-sec__body">
+                    <h4>@SharedLocalizer[s.Title]</h4>
+                    <span class="ab-sec__w">@s.WeightPercent% · @s.QuestionRange</span>
+                </div>
+                <div class="ab-sec__meter"><i style="width:@(s.WeightPercent * 3)%"></i></div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- VIDEO -->
+<section class="ab-watch" id="watch">
+    <div class="ab-band__head">
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["See it in action"]</span>
+        <h2>@SharedLocalizer["A two-minute tour"]</h2>
+        <p>@SharedLocalizer["Who we are, what the exam demands, and exactly how the platform gets you ready."]</p>
+    </div>
+    <div class="ab-video">
+        <video controls preload="metadata" poster="~/media/nppe-intro-poster.jpg" playsinline>
+            <source src="~/media/nppe-intro.mp4" type="video/mp4" />
+            @SharedLocalizer["Your browser does not support the video tag."]
+        </video>
+    </div>
+</section>
+
+<!-- FINAL CTA -->
+<section class="ab-final">
+    <div class="ab-final__in">
+        <h2>@SharedLocalizer["Ready to walk in prepared?"]</h2>
+        <p>@SharedLocalizer["Join the engineers and geoscientists preparing the smart way."]</p>
+        @if (authed)
+        {
+            <a class="btn btn--primary btn--lg" asp-page="/Student/Study/Index">@SharedLocalizer["Start studying"] <span class="arrow">&rarr;</span></a>
+        }
+        else
+        {
+            <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
+        }
+        <p class="ab-final__note">@SharedLocalizer["Built for engineers-in-training · Not affiliated with any regulator"]</p>
+    </div>
+</section>
