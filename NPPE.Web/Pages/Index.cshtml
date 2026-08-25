@@ -1,8 +1,21 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = SharedLocalizer["Dashboard"].Value;
-    ViewData["ActiveNav"] = "dashboard";
+    var authed = User.Identity?.IsAuthenticated == true;
+    ViewData["Title"] = authed ? SharedLocalizer["Dashboard"].Value : SharedLocalizer["NPPE exam prep, made clear"].Value;
+    ViewData["ActiveNav"] = authed ? "dashboard" : "";
+}
+@section Head {
+    @if (!authed)
+    {
+        <link rel="stylesheet" href="~/css/landing.css" asp-append-version="true" />
+    }
+}
+
+@if (!authed)
+{
+    <partial name="_Landing" />
+    return;
 }
 
 <section class="welcome" data-reveal>

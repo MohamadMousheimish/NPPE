@@ -9,7 +9,6 @@ public class AuthorizationTests : IClassFixture<NppeWebAppFactory>
 
     public static IEnumerable<object[]> ProtectedPages() => new[]
     {
-        new object[] { "/" },
         new object[] { "/Admin/Exams/Index" },
         new object[] { "/Admin/Finance" },
         new object[] { "/Student/Exams/Index" },

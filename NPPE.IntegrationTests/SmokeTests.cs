@@ -22,11 +22,12 @@ public class SmokeTests : IClassFixture<NppeWebAppFactory>
     }
 
     [Fact]
-    public async Task Root_requires_authentication()
+    public async Task Root_serves_public_landing_anonymously()
     {
         var res = await WebTest.NewClient(_factory).GetAsync("/");
-        Assert.Equal(HttpStatusCode.Redirect, res.StatusCode);
-        Assert.Contains("/Account/Login", res.Headers.Location!.ToString());
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        var html = await res.Content.ReadAsStringAsync();
+        Assert.Contains("Create your account", html); // landing CTA, not the dashboard
     }
 
     [Fact]

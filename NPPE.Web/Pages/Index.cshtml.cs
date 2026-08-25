@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,6 +10,8 @@ using NPPE.Web.Resources;
 
 namespace NPPE.Web.Pages;
 
+// Anonymous visitors see the public marketing landing; authenticated users get their dashboard.
+[AllowAnonymous]
 public class IndexModel : PageModel
 {
     private readonly ILogger<IndexModel> _logger;
@@ -41,10 +44,9 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        if (User.Identity != null && !User.Identity.IsAuthenticated)
-        {
-            return RedirectToPage("/Account/Login");
-        }
+        // Not signed in → render the public landing page (no dashboard data needed).
+        if (User.Identity?.IsAuthenticated != true)
+            return Page();
 
         var user = await _userManager.GetUserAsync(User);
         if (user != null)

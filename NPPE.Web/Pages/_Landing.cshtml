@@ -1,0 +1,231 @@
+@* Public marketing landing (anonymous visitors at "/"). Graphite & Signal palette. *@
+
+<!-- ===== HERO ===== -->
+<section class="lp-hero">
+    <div class="lp-hero__grid"></div>
+    <span class="lp-mark tl"></span><span class="lp-mark tr"></span><span class="lp-mark bl"></span><span class="lp-mark br"></span>
+    <div class="lp-hero__in" data-reveal>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["National Professional Practice Examination"]</span>
+        <h1>@Html.Raw(SharedLocalizer["The exam between you and your <em>P.Eng.</em>"])</h1>
+        <p class="lp-lede">@SharedLocalizer["NPPE Prep turns the entire syllabus into a clear, structured path — study notes, real practice questions, and worked explanations on every item. Walk in ready, not guessing."]</p>
+        <div class="lp-hero__cta">
+            <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
+            <a class="btn btn--ghost btn--lg lp-hero__ghost" asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a>
+        </div>
+        <a class="lp-watch" href="#watch">
+            <span class="lp-watch__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+            @SharedLocalizer["Watch the 2-minute tour"]
+        </a>
+    </div>
+    <div class="lp-hero__strip" data-reveal>
+        <span>@SharedLocalizer["Full NPPE syllabus"]</span><i></i>
+        <span>@SharedLocalizer["Unlimited practice"]</span><i></i>
+        <span>@SharedLocalizer["English & French"]</span><i></i>
+        <span>@SharedLocalizer["Cancel anytime"]</span>
+    </div>
+</section>
+
+<!-- ===== EXAM FACTS ===== -->
+<section class="lp-band" id="exam">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["The exam"]</span>
+        <h2>@SharedLocalizer["What you're up against"]</h2>
+        <p>@SharedLocalizer["The NPPE confirms your knowledge of professionalism, ethics, and law — the judgment behind the P.Eng. and P.Geo. designations. It's required for licensure across Canada (except Quebec)."]</p>
+    </div>
+    <div class="lp-facts" data-reveal>
+        <div class="lp-fact"><b>110</b><span>@SharedLocalizer["multiple-choice questions"]</span></div>
+        <div class="lp-fact"><b>2½ h</b><span>@SharedLocalizer["closed-book exam"]</span></div>
+        <div class="lp-fact"><b>6</b><span>@SharedLocalizer["weighted syllabus sections"]</span></div>
+        <div class="lp-fact"><b>1</b><span>@SharedLocalizer["licence on the line"]</span></div>
+    </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="lp-how" id="how">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["How it works"]</span>
+        <h2>@SharedLocalizer["Three steps to exam-ready"]</h2>
+    </div>
+    <div class="lp-steps">
+        <div class="lp-step" data-reveal>
+            <span class="lp-step__n">01</span>
+            <h3>@SharedLocalizer["Study"]</h3>
+            <p>@SharedLocalizer["Read the whole syllabus in six clear sections — no textbooks, no guessing what matters."]</p>
+        </div>
+        <div class="lp-step" data-reveal data-reveal-delay="90">
+            <span class="lp-step__n">02</span>
+            <h3>@SharedLocalizer["Practice"]</h3>
+            <p>@SharedLocalizer["Take exams built from real NPPE material, with a worked explanation on every question."]</p>
+        </div>
+        <div class="lp-step" data-reveal data-reveal-delay="180">
+            <span class="lp-step__n">03</span>
+            <h3>@SharedLocalizer["Measure"]</h3>
+            <p>@SharedLocalizer["Track every attempt, see what's solid, and focus your next study hour where it counts."]</p>
+        </div>
+    </div>
+</section>
+
+<!-- ===== WHAT'S INSIDE (alternating) ===== -->
+<section class="lp-inside" id="inside">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["What's inside"]</span>
+        <h2>@SharedLocalizer["Everything you need, nothing you don't"]</h2>
+    </div>
+
+    <div class="lp-row" data-reveal>
+        <div class="lp-row__tx">
+            <span class="lp-row__k">@SharedLocalizer["Study Hub"]</span>
+            <h3>@SharedLocalizer["The syllabus, written to be read"]</h3>
+            <p>@SharedLocalizer["All six weighted sections — professionalism, ethics, professional practice, and law — as clear, structured reading you can actually finish. No duplication with the textbooks."]</p>
+        </div>
+        <div class="lp-row__art">
+            <div class="mock mock--sections">
+                <div class="mock__bar"><span></span><span></span><span></span></div>
+                <div class="mock__list">
+                    <div class="mock__sec"><b>I</b><span>@SharedLocalizer["Professionalism"]</span><i>10%</i></div>
+                    <div class="mock__sec"><b>II</b><span>@SharedLocalizer["Ethics"]</span><i>20%</i></div>
+                    <div class="mock__sec on"><b>III</b><span>@SharedLocalizer["Professional Practice"]</span><i>30%</i></div>
+                    <div class="mock__sec"><b>IV</b><span>@SharedLocalizer["Law for Practice"]</span><i>20%</i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lp-row lp-row--rev" data-reveal>
+        <div class="lp-row__tx">
+            <span class="lp-row__k">@SharedLocalizer["Practice exams"]</span>
+            <h3>@SharedLocalizer["Real questions, worked explanations"]</h3>
+            <p>@SharedLocalizer["Questions modelled on actual NPPE material, with unlimited attempts. Every answer comes with a clear explanation — so a wrong answer becomes a lesson, not a mystery."]</p>
+        </div>
+        <div class="lp-row__art">
+            <div class="mock mock--q">
+                <div class="mock__bar"><span></span><span></span><span></span></div>
+                <p class="mock__qtext">@SharedLocalizer["What is a professional's paramount duty?"]</p>
+                <div class="mock__opt"><i></i> @SharedLocalizer["Protect the employer"]</div>
+                <div class="mock__opt ok"><i>&check;</i> @SharedLocalizer["Hold public safety paramount"]</div>
+                <div class="mock__opt"><i></i> @SharedLocalizer["Maximize project profit"]</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lp-row" data-reveal>
+        <div class="lp-row__tx">
+            <span class="lp-row__k">@SharedLocalizer["Progress"]</span>
+            <h3>@SharedLocalizer["See exactly where you stand"]</h3>
+            <p>@SharedLocalizer["Every attempt is scored and tracked over time, so you always know which sections are solid and where to spend your next study session."]</p>
+        </div>
+        <div class="lp-row__art">
+            <div class="mock mock--prog">
+                <div class="mock__bar"><span></span><span></span><span></span></div>
+                <div class="mock__stat"><span>@SharedLocalizer["Ethics"]</span><div class="mock__meter"><i style="width:86%"></i></div></div>
+                <div class="mock__stat"><span>@SharedLocalizer["Prof. Practice"]</span><div class="mock__meter"><i style="width:72%"></i></div></div>
+                <div class="mock__stat"><span>@SharedLocalizer["Law"]</span><div class="mock__meter"><i style="width:54%"></i></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ===== SIX SECTIONS ===== -->
+<section class="lp-sections" id="sections">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["The syllabus"]</span>
+        <h2>@SharedLocalizer["Six sections, precisely weighted"]</h2>
+    </div>
+    <div class="lp-sixgrid" data-reveal>
+        @foreach (var s in NPPE.Web.StudyContent.StudyLibrary.Sections)
+        {
+            <div class="lp-sec">
+                <span class="lp-sec__n">@s.Roman</span>
+                <div class="lp-sec__body">
+                    <h4>@SharedLocalizer[s.Title]</h4>
+                    <span class="lp-sec__w">@s.WeightPercent% · @s.QuestionRange</span>
+                </div>
+                <div class="lp-sec__meter"><i style="width:@(s.WeightPercent * 3)%"></i></div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- ===== WHY US ===== -->
+<section class="lp-why" id="why">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["Why NPPE Prep"]</span>
+        <h2>@SharedLocalizer["Prepared, not overwhelmed"]</h2>
+    </div>
+    <div class="lp-compare" data-reveal>
+        <div class="lp-compare__col lp-compare__col--us">
+            <div class="lp-compare__h">@SharedLocalizer["With NPPE Prep"]</div>
+            <ul>
+                <li>@SharedLocalizer["The whole syllabus in one structured place"]</li>
+                <li>@SharedLocalizer["An explanation on every practice question"]</li>
+                <li>@SharedLocalizer["Progress tracked section by section"]</li>
+                <li>@SharedLocalizer["Study in English or French, on any device"]</li>
+                <li>@SharedLocalizer["Unlimited attempts, cancel anytime"]</li>
+            </ul>
+        </div>
+        <div class="lp-compare__col">
+            <div class="lp-compare__h">@SharedLocalizer["Going it alone"]</div>
+            <ul>
+                <li>@SharedLocalizer["Four textbooks and no clear plan"]</li>
+                <li>@SharedLocalizer["Wrong answers with no explanation"]</li>
+                <li>@SharedLocalizer["No sense of what you've mastered"]</li>
+                <li>@SharedLocalizer["Hours lost guessing what matters"]</li>
+                <li>@SharedLocalizer["One expensive attempt on the line"]</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ===== VIDEO ===== -->
+<section class="lp-watch-sec" id="watch">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["See it in action"]</span>
+        <h2>@SharedLocalizer["A two-minute tour"]</h2>
+        <p>@SharedLocalizer["Who we are, what the exam demands, and exactly how the platform gets you ready."]</p>
+    </div>
+    <div class="lp-video" data-reveal>
+        <video controls preload="metadata" poster="@Url.Content("~/media/nppe-intro-poster.jpg")" playsinline>
+            <source src="@Url.Content("~/media/nppe-intro.mp4")" type="video/mp4" />
+        </video>
+    </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="lp-faq" id="faq">
+    <div class="lp-head" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["Questions"]</span>
+        <h2>@SharedLocalizer["Good to know"]</h2>
+    </div>
+    <div class="lp-faqlist" data-reveal>
+        <details class="lp-q">
+            <summary>@SharedLocalizer["What is the NPPE?"]<span class="lp-q__ic"></span></summary>
+            <p>@SharedLocalizer["The National Professional Practice Examination is a 2½-hour, closed-book exam of 110 multiple-choice questions on professionalism, ethics, and law. It's required for P.Eng. and P.Geo. licensure across Canada (except Quebec)."]</p>
+        </details>
+        <details class="lp-q">
+            <summary>@SharedLocalizer["Do I need the textbooks too?"]<span class="lp-q__ic"></span></summary>
+            <p>@SharedLocalizer["No. The Study Hub is written and structured directly from the exam syllabus, so it covers what you're tested on without duplicating four textbooks."]</p>
+        </details>
+        <details class="lp-q">
+            <summary>@SharedLocalizer["Is it available in French?"]<span class="lp-q__ic"></span></summary>
+            <p>@SharedLocalizer["Yes — the platform is fully bilingual. Switch between English and French anytime."]</p>
+        </details>
+        <details class="lp-q">
+            <summary>@SharedLocalizer["Can I cancel?"]<span class="lp-q__ic"></span></summary>
+            <p>@SharedLocalizer["Absolutely. Subscriptions cancel in one click and you keep access until the end of your billing period."]</p>
+        </details>
+        <details class="lp-q">
+            <summary>@SharedLocalizer["Are you affiliated with a regulator?"]<span class="lp-q__ic"></span></summary>
+            <p>@SharedLocalizer["No. NPPE Prep is an independent study resource, built for engineers-in-training and not affiliated with any regulator or association."]</p>
+        </details>
+    </div>
+</section>
+
+<!-- ===== FINAL CTA ===== -->
+<section class="lp-final">
+    <div class="lp-final__in" data-reveal>
+        <h2>@SharedLocalizer["Ready to walk in prepared?"]</h2>
+        <p>@SharedLocalizer["Join the engineers and geoscientists preparing the smart way."]</p>
+        <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
+        <p class="lp-final__note">@SharedLocalizer["Built for engineers-in-training · Not affiliated with any regulator"]</p>
+    </div>
+</section>

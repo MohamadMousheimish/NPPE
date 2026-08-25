@@ -77,7 +77,9 @@
             else
             {
                 <nav class="nav">
-                    <a asp-page="/About" class="@NavCls("about")">@SharedLocalizer["About"]</a>
+                    <a href="/#inside">@SharedLocalizer["Features"]</a>
+                    <a href="/#exam">@SharedLocalizer["The exam"]</a>
+                    <a href="/#faq">@SharedLocalizer["FAQ"]</a>
                 </nav>
                 <div class="appbar__right">
                     <div class="lang">
@@ -100,7 +102,7 @@
         <div class="appfoot__in">
             <div class="wm"><span class="mk">N</span><b>NPPE&nbsp;Prep</b></div>
             <nav>
-                <a asp-page="/About">@SharedLocalizer["About"]</a>
+                <a href="/#exam">@SharedLocalizer["About"]</a>
                 <a asp-page="/Privacy">@SharedLocalizer["Privacy"]</a>
                 <a href="#">@SharedLocalizer["Terms"]</a>
                 <a href="#">@SharedLocalizer["Contact"]</a>
