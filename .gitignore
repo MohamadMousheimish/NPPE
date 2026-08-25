@@ -239,3 +239,15 @@ _Pvt_Extensions
 
 # Local planning reports — not for the remote
 Reports/
+
+# Local demo recorder + assets + output (not for git)
+.demo/
+
+# Student prep source materials (not for git)
+nppe/
+
+# Local dev artifacts (screenshots, MCP browser cache, tools, archives)
+/*.png
+/nppe.zip
+.tools/
+.playwright-mcp/
