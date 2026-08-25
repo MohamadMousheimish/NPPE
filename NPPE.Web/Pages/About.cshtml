@@ -110,8 +110,8 @@
         <p>@SharedLocalizer["Who we are, what the exam demands, and exactly how the platform gets you ready."]</p>
     </div>
     <div class="ab-video">
-        <video controls preload="metadata" poster="~/media/nppe-intro-poster.jpg" playsinline>
-            <source src="~/media/nppe-intro.mp4" type="video/mp4" />
+        <video controls preload="metadata" poster="@Url.Content("~/media/nppe-intro-poster.jpg")" playsinline>
+            <source src="@Url.Content("~/media/nppe-intro.mp4")" type="video/mp4" />
             @SharedLocalizer["Your browser does not support the video tag."]
         </video>
     </div>

@@ -9,6 +9,23 @@
     var googleEnabled = await SchemeProvider.GetSchemeAsync("Google") is not null;
 }
 
+@section Head {
+    <style>
+        .watch-trigger { display:inline-flex; align-items:center; gap:.6rem; margin-top:1.5rem; background:none; border:0; padding:0; cursor:pointer; font-family:var(--font-mono); font-size:.8rem; letter-spacing:.03em; color:var(--slate-2); transition:color .2s ease; }
+        .watch-trigger:hover { color:var(--paper); }
+        .wt-play { width:32px; height:32px; display:grid; place-items:center; border-radius:50%; border:1px solid var(--signal); color:var(--signal); transition:background .2s ease, color .2s ease; }
+        .watch-trigger:hover .wt-play { background:var(--signal); color:#fff; }
+        .wt-play svg { width:13px; height:13px; margin-left:2px; }
+        .vmodal { position:fixed; inset:0; z-index:120; display:none; align-items:center; justify-content:center; padding:28px; background:rgba(8,10,12,.88); backdrop-filter:blur(4px); }
+        .vmodal.open { display:flex; }
+        .vmodal__box { position:relative; width:min(1040px, 94vw); border:1px solid var(--line-dark); border-radius:4px; overflow:hidden; box-shadow:0 30px 80px -20px rgba(0,0,0,.7); }
+        .vmodal__box video { display:block; width:100%; height:auto; aspect-ratio:16/9; background:#000; }
+        .vmodal__close { position:absolute; top:-40px; right:0; background:none; border:0; cursor:pointer; color:var(--paper); font-family:var(--font-mono); font-size:.78rem; letter-spacing:.03em; display:flex; align-items:center; gap:.4rem; }
+        .vmodal__close:hover { color:var(--signal); }
+        .vmodal__close svg { width:18px; height:18px; }
+    </style>
+}
+
 <main class="auth">
     <section class="brand panel--dark reg">
         <span class="reg-mark tl"></span><span class="reg-mark tr"></span>
@@ -34,6 +51,10 @@
             <span class="eyebrow eyebrow--signal">@SharedLocalizer["Professional Practice Exam"]</span>
             <h1>@SharedLocalizer["Calibrated prep for your"] <em>P.Eng.</em></h1>
             <p>@SharedLocalizer["Timed practice modules, worked explanations, and progress you can actually measure — built for engineers-in-training."]</p>
+            <button type="button" class="watch-trigger" data-watch>
+                <span class="wt-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
+                @SharedLocalizer["Watch how it works"]
+            </button>
         </div>
 
         <div class="titleblock">
@@ -101,6 +122,31 @@
     </section>
 </main>
 
+<div class="vmodal" data-vmodal aria-hidden="true">
+    <div class="vmodal__box">
+        <button type="button" class="vmodal__close" data-vclose>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            @SharedLocalizer["Close"]
+        </button>
+        <video controls playsinline preload="none" poster="@Url.Content("~/media/nppe-intro-poster.jpg")">
+            <source src="@Url.Content("~/media/nppe-intro.mp4")" type="video/mp4" />
+        </video>
+    </div>
+</div>
+
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        (function () {
+            var modal = document.querySelector("[data-vmodal]");
+            if (!modal) return;
+            var video = modal.querySelector("video");
+            function open() { modal.classList.add("open"); modal.setAttribute("aria-hidden", "false"); var p = video.play(); if (p && p.catch) p.catch(function () {}); }
+            function close() { modal.classList.remove("open"); modal.setAttribute("aria-hidden", "true"); video.pause(); }
+            document.querySelectorAll("[data-watch]").forEach(function (b) { b.addEventListener("click", open); });
+            modal.querySelector("[data-vclose]").addEventListener("click", close);
+            modal.addEventListener("click", function (e) { if (e.target === modal) close(); });
+            document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
+        })();
+    </script>
 }
