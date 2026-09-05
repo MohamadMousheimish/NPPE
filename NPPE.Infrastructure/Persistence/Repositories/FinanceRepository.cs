@@ -37,6 +37,15 @@ public class FinanceRepository : IFinanceRepository
             .CountAsync();
     }
 
+    public async Task<int> GetExamPackBuyerCountAsync()
+    {
+        return await _context.Payments
+            .Where(p => p.PaymentType == PaymentType.ExamPack && p.Status == PaymentStatus.Succeeded)
+            .Select(p => p.UserId)
+            .Distinct()
+            .CountAsync();
+    }
+
     public async Task<List<RecentActivityDto>> GetRecentActivityAsync(int take)
     {
         var rows = await (
@@ -52,9 +61,7 @@ public class FinanceRepository : IFinanceRepository
         return rows.Select(r =>
         {
             var fee = StripeFees.Estimate(r.Amount);
-            var isSub = r.PaymentType == PaymentType.Subscription;
-            return new RecentActivityDto(r.PaidAt, r.Email ?? "—",
-                isSub ? "Monthly" : "Full Access", r.Amount, fee, r.Amount - fee, isSub);
+            return new RecentActivityDto(r.PaidAt, r.Email ?? "—", r.Amount, fee, r.Amount - fee, r.PaymentType);
         }).ToList();
     }
 }

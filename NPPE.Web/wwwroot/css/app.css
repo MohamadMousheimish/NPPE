@@ -565,7 +565,7 @@
 .split .row .amt { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .split .track { height: 8px; background: var(--paper-2); border-radius: 2px; overflow: hidden; }
 .split .track i { display: block; height: 100%; }
-.split .track i.one { background: var(--ink); } .split .track i.sub { background: var(--signal); }
+.split .track i.pack { background: var(--signal); } .split .track i.one { background: var(--ink); } .split .track i.sub { background: var(--slate-2); }
 .ledger { width: 100%; border-collapse: collapse; }
 .ledger td { padding: 0.6rem 0; border-bottom: 1px solid var(--line); font-size: 0.9rem; }
 .ledger tr:last-child td { border-bottom: 0; }
@@ -581,7 +581,7 @@
 .bars { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 0.5rem; align-items: end; height: 180px; margin-top: 1.2rem; }
 .bars .bar { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; height: 100%; justify-content: flex-end; }
 .bars .bar .stack { width: 70%; border-radius: 2px 2px 0 0; overflow: hidden; display: flex; flex-direction: column-reverse; min-height: 2px; }
-.bars .bar .stack .s-sub { background: var(--signal); } .bars .bar .stack .s-one { background: var(--ink); }
+.bars .bar .stack .s-pack { background: var(--signal); } .bars .bar .stack .s-sub { background: var(--slate-2); } .bars .bar .stack .s-one { background: var(--ink); }
 .bars .bar:hover .stack { opacity: 0.85; }
 .bars .bar .m { font-family: var(--font-mono); font-size: 0.56rem; color: var(--slate-2); }
 
@@ -592,7 +592,8 @@
 .txn .r { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .txn .pill { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.06em; text-transform: uppercase; padding: 0.15rem 0.4rem; border-radius: 2px; }
 .txn .pill.ok { background: var(--pass-wash); color: var(--pass); }
-.txn .pill.sub { background: var(--signal-wash); color: var(--signal-ink); }
+.txn .pill.pack { background: var(--signal-wash); color: var(--signal-ink); }
+.txn .pill.sub { background: var(--paper-2); color: var(--slate); }
 
 .modal-wrap { position: fixed; inset: 0; background: rgba(23,25,31,0.6); backdrop-filter: blur(3px); display: none; align-items: center; justify-content: center; z-index: 50; padding: 1.5rem; }
 .modal-wrap.on { display: flex; }

@@ -11,7 +11,7 @@
     var maxMonth = s.OverTime.Select(o => o.Total).DefaultIfEmpty(0m).Max();
     var maxQuarter = t.Quarters.Select(q => q.Amount).DefaultIfEmpty(0m).Max();
     var ledgerTotal = s.CostLedger.Sum(l => l.Amount);
-    var grossSplit = s.OneTimeRevenue + s.SubscriptionRevenue;
+    var grossSplit = s.ExamPackRevenue + s.OneTimeRevenue + s.SubscriptionRevenue;
     var netMargin = s.GrossRevenue > 0 ? (double)(s.NetProfit / s.GrossRevenue) * 100 : 0;
     string PeriodPill(string key) => Model.Period == key ? "on" : "";
 
@@ -128,9 +128,9 @@
     </div>
 
     <div class="kpi-grid four" data-reveal>
-        <div class="kpi"><div class="k">@SharedLocalizer["MRR"]</div><div class="v">@Model.Money(s.Mrr)</div><div class="d">@s.ActiveSubscribers × CA$9.99</div></div>
-        <div class="kpi"><div class="k">@SharedLocalizer["Active subscribers"]</div><div class="v">@s.ActiveSubscribers</div><div class="d">@SharedLocalizer["recurring"]</div></div>
-        <div class="kpi"><div class="k">@SharedLocalizer["One-time buyers"]</div><div class="v">@s.OneTimeBuyers</div><div class="d">@SharedLocalizer["lifetime access"]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Exam packs sold"]</div><div class="v">@s.ExamPackCount</div><div class="d">@SharedLocalizer[s.PeriodLabel]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Exams unlocked"]</div><div class="v">@s.ExamsSold</div><div class="d">@SharedLocalizer["across sold packs"]</div></div>
+        <div class="kpi"><div class="k">@SharedLocalizer["Pack buyers"]</div><div class="v">@s.ExamPackBuyers</div><div class="d">@SharedLocalizer["all time"]</div></div>
         <div class="kpi"><div class="k">@SharedLocalizer["Net margin"]</div><div class="v">@netMargin.ToString("N1")%</div><div class="d">@SharedLocalizer[s.PeriodLabel]</div></div>
     </div>
 
@@ -140,13 +140,23 @@
             <h3>@SharedLocalizer["Income by product"]</h3>
             <div class="psub">@SharedLocalizer[s.PeriodLabel] · @SharedLocalizer["Gross"]</div>
             <div class="split">
-                <div class="row"><span>@SharedLocalizer["One-time — Full Access"] (CA$29)</span><span class="amt">@Model.Money(s.OneTimeRevenue) · @s.OneTimeCount</span></div>
-                <div class="track"><i class="one" style="width:@Model.Pct(s.OneTimeRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
+                <div class="row"><span>@SharedLocalizer["Exam packs"]</span><span class="amt">@Model.Money(s.ExamPackRevenue) · @s.ExamPackCount</span></div>
+                <div class="track"><i class="pack" style="width:@Model.Pct(s.ExamPackRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
             </div>
-            <div class="split">
-                <div class="row"><span>@SharedLocalizer["Subscription — Monthly"] (CA$9.99)</span><span class="amt">@Model.Money(s.SubscriptionRevenue) · @s.ActiveSubscribers @SharedLocalizer["active"]</span></div>
-                <div class="track"><i class="sub" style="width:@Model.Pct(s.SubscriptionRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
-            </div>
+            @if (s.OneTimeRevenue > 0)
+            {
+                <div class="split">
+                    <div class="row"><span>@SharedLocalizer["One-time — Full Access"] <span class="anno">@SharedLocalizer["(legacy)"]</span></span><span class="amt">@Model.Money(s.OneTimeRevenue) · @s.OneTimeCount</span></div>
+                    <div class="track"><i class="one" style="width:@Model.Pct(s.OneTimeRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
+                </div>
+            }
+            @if (s.SubscriptionRevenue > 0)
+            {
+                <div class="split">
+                    <div class="row"><span>@SharedLocalizer["Subscription — Monthly"] <span class="anno">@SharedLocalizer["(legacy)"]</span></span><span class="amt">@Model.Money(s.SubscriptionRevenue) · @s.ActiveSubscribers @SharedLocalizer["active"]</span></div>
+                    <div class="track"><i class="sub" style="width:@Model.Pct(s.SubscriptionRevenue, grossSplit).ToString(System.Globalization.CultureInfo.InvariantCulture)%"></i></div>
+                </div>
+            }
             <div class="split" style="margin-top:1.2rem;padding-top:1rem;border-top:1.5px solid var(--ink)">
                 <div class="row" style="font-weight:600"><span>@SharedLocalizer["Total gross"]</span><span class="amt">@Model.Money(s.GrossRevenue)</span></div>
             </div>
@@ -182,17 +192,19 @@
     <!-- revenue over time -->
     <div class="chart" data-reveal>
         <h3 style="font-size:1.05rem">@SharedLocalizer["Revenue over time"]</h3>
-        <div class="psub">@SharedLocalizer["Monthly gross"] · <span style="color:var(--ink)">▮ @SharedLocalizer["one-time"]</span> &nbsp; <span style="color:var(--signal)">▮ @SharedLocalizer["subscription"]</span></div>
+        <div class="psub">@SharedLocalizer["Monthly gross"] · <span style="color:var(--signal)">▮ @SharedLocalizer["exam packs"]</span>@if (s.OneTimeRevenue > 0 || s.SubscriptionRevenue > 0) {<text> &nbsp; <span style="color:var(--ink)">▮ @SharedLocalizer["one-time"]</span> &nbsp; <span style="color:var(--slate-2)">▮ @SharedLocalizer["subscription"]</span></text>}</div>
         @if (s.OverTime.Any())
         {
             <div class="bars">
                 @foreach (var o in s.OverTime)
                 {
                     var h = maxMonth > 0 ? (double)(o.Total / maxMonth) * 100 : 0;
+                    var packPct = o.Total > 0 ? (double)(o.ExamPack / o.Total) * 100 : 0;
                     var onePct = o.Total > 0 ? (double)(o.OneTime / o.Total) * 100 : 0;
                     var subPct = o.Total > 0 ? (double)(o.Subscription / o.Total) * 100 : 0;
                     <div class="bar">
                         <div class="stack" style="height:@h.ToString(System.Globalization.CultureInfo.InvariantCulture)%">
+                            <div class="s-pack" style="height:@packPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
                             <div class="s-one" style="height:@onePct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
                             <div class="s-sub" style="height:@subPct.ToString(System.Globalization.CultureInfo.InvariantCulture)%"></div>
                         </div>
@@ -218,14 +230,26 @@
                 <tbody>
                     @foreach (var r in s.Recent)
                     {
+                        var product = r.Type switch
+                        {
+                            NPPE.Domain.Enums.PaymentType.ExamPack => SharedLocalizer["Exam pack"].Value,
+                            NPPE.Domain.Enums.PaymentType.Subscription => SharedLocalizer["Monthly"].Value,
+                            _ => SharedLocalizer["Full Access"].Value
+                        };
+                        var pillCss = r.Type switch
+                        {
+                            NPPE.Domain.Enums.PaymentType.ExamPack => "pack",
+                            NPPE.Domain.Enums.PaymentType.Subscription => "sub",
+                            _ => "ok"
+                        };
                         <tr>
                             <td>@r.Date.ToString("dd MMM")</td>
                             <td>@r.Email</td>
-                            <td>@(r.IsSubscription ? SharedLocalizer["Monthly"] : SharedLocalizer["Full Access"])</td>
+                            <td>@product</td>
                             <td class="r">@Model.Money(r.Gross)</td>
                             <td class="r">−@r.Fee.ToString("N2")</td>
                             <td class="r">@r.Net.ToString("N2")</td>
-                            <td><span class="pill @(r.IsSubscription ? "sub" : "ok")">@(r.IsSubscription ? SharedLocalizer["Subscription"] : SharedLocalizer["One-time"])</span></td>
+                            <td><span class="pill @pillCss">@product</span></td>
                         </tr>
                     }
                 </tbody>

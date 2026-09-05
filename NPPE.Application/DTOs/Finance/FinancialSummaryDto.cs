@@ -1,3 +1,5 @@
+using NPPE.Domain.Enums;
+
 namespace NPPE.Application.DTOs.Finance;
 
 public record FinancialSummaryDto
@@ -11,26 +13,30 @@ public record FinancialSummaryDto
     public decimal InfraCosts { get; init; }   // manually recorded costs (excludes Stripe fees)
     public decimal NetProfit { get; init; }     // net after fees minus infra costs
 
-    // Product split
-    public decimal OneTimeRevenue { get; init; }
+    // Product split (period)
+    public decimal ExamPackRevenue { get; init; }
+    public int ExamPackCount { get; init; }     // number of pack purchases in the period
+    public int ExamsSold { get; init; }         // total exams unlocked across those packs
+    public decimal OneTimeRevenue { get; init; }   // legacy (retired lifetime product)
     public int OneTimeCount { get; init; }
-    public decimal SubscriptionRevenue { get; init; }
+    public decimal SubscriptionRevenue { get; init; }  // legacy (retired subscription)
 
-    // Subscription health (point-in-time, not period-bound)
-    public decimal Mrr { get; init; }
-    public int ActiveSubscribers { get; init; }
-    public int OneTimeBuyers { get; init; }
+    // Buyer counts (point-in-time, not period-bound)
+    public int ExamPackBuyers { get; init; }
+    public decimal Mrr { get; init; }              // legacy — 0 once subscriptions are gone
+    public int ActiveSubscribers { get; init; }    // legacy
+    public int OneTimeBuyers { get; init; }        // legacy
 
     public List<MonthlyRevenuePoint> OverTime { get; init; } = new();
     public List<CostLineDto> CostLedger { get; init; } = new();  // manual costs + a computed Stripe-fees line
     public List<RecentActivityDto> Recent { get; init; } = new();
 }
 
-public record MonthlyRevenuePoint(string Label, decimal OneTime, decimal Subscription)
+public record MonthlyRevenuePoint(string Label, decimal ExamPack, decimal OneTime, decimal Subscription)
 {
-    public decimal Total => OneTime + Subscription;
+    public decimal Total => ExamPack + OneTime + Subscription;
 }
 
 public record CostLineDto(string Provider, string Category, decimal Amount, string Currency, bool IsComputed);
 
-public record RecentActivityDto(DateTime Date, string Email, string Product, decimal Gross, decimal Fee, decimal Net, bool IsSubscription);
+public record RecentActivityDto(DateTime Date, string Email, decimal Gross, decimal Fee, decimal Net, PaymentType Type);

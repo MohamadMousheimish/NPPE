@@ -12,8 +12,11 @@ public interface IFinanceRepository
     /// <summary>Users with an active Stripe subscription (non-null id, not past its end date).</summary>
     Task<int> GetActiveSubscriberCountAsync();
 
-    /// <summary>Distinct users with at least one succeeded one-time payment.</summary>
+    /// <summary>Distinct users with at least one succeeded one-time (legacy lifetime) payment.</summary>
     Task<int> GetOneTimeBuyerCountAsync();
+
+    /// <summary>Distinct users with at least one succeeded exam-pack payment.</summary>
+    Task<int> GetExamPackBuyerCountAsync();
 
     /// <summary>Most recent succeeded payments joined to the customer email.</summary>
     Task<List<RecentActivityDto>> GetRecentActivityAsync(int take);

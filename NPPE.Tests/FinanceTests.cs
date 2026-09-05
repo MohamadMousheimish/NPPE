@@ -78,24 +78,30 @@ public class GetFinancialSummaryQueryHandlerTests
         finance.Setup(f => f.GetSucceededPaymentsAsync(It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
             .ReturnsAsync(new List<Payment>
             {
-                Pay(29m, d, PaymentType.OneTime),
-                Pay(29m, d, PaymentType.OneTime),
-                Pay(9.99m, d, PaymentType.Subscription)
+                new() { Amount = 80m, Status = PaymentStatus.Succeeded, PaidAt = d, PaymentType = PaymentType.ExamPack, ExamsPurchased = 2 },
+                Pay(29m, d, PaymentType.OneTime),      // legacy
+                Pay(29m, d, PaymentType.OneTime),      // legacy
+                Pay(9.99m, d, PaymentType.Subscription) // legacy
             });
         costs.Setup(c => c.GetBetweenAsync(It.IsAny<DateTime?>(), It.IsAny<DateTime?>()))
             .ReturnsAsync(new List<Cost> { new() { Provider = "Azure", Category = CostCategory.Hosting, Amount = 156m, IncurredOn = d } });
         finance.Setup(f => f.GetActiveSubscriberCountAsync()).ReturnsAsync(1);
         finance.Setup(f => f.GetOneTimeBuyerCountAsync()).ReturnsAsync(2);
+        finance.Setup(f => f.GetExamPackBuyerCountAsync()).ReturnsAsync(1);
         finance.Setup(f => f.GetRecentActivityAsync(It.IsAny<int>())).ReturnsAsync(new List<RecentActivityDto>());
 
         var r = await new GetFinancialSummaryQueryHandler(finance.Object, costs.Object)
             .Handle(new GetFinancialSummaryQuery(null, null, "All time"), default);
 
-        Assert.Equal(67.99m, r.GrossRevenue);        // 29 + 29 + 9.99
-        Assert.Equal(2.87m, r.StripeFees);           // 1.14 + 1.14 + 0.59
-        Assert.Equal(65.12m, r.NetAfterFees);        // 67.99 - 2.87
+        Assert.Equal(147.99m, r.GrossRevenue);       // 80 + 29 + 29 + 9.99
+        Assert.Equal(5.49m, r.StripeFees);           // 2.62 + 1.14 + 1.14 + 0.59
+        Assert.Equal(142.50m, r.NetAfterFees);       // 147.99 - 5.49
         Assert.Equal(156m, r.InfraCosts);
-        Assert.Equal(-90.88m, r.NetProfit);          // net after fees minus infra
+        Assert.Equal(-13.50m, r.NetProfit);          // net after fees minus infra
+        Assert.Equal(80m, r.ExamPackRevenue);
+        Assert.Equal(1, r.ExamPackCount);
+        Assert.Equal(2, r.ExamsSold);
+        Assert.Equal(1, r.ExamPackBuyers);
         Assert.Equal(2, r.OneTimeCount);
         Assert.Equal(58m, r.OneTimeRevenue);
         Assert.Equal(9.99m, r.SubscriptionRevenue);

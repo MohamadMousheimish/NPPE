@@ -31,6 +31,7 @@ public class GetFinancialSummaryQueryHandler
         var infra = costs.Sum(c => c.Amount);
         var netAfterFees = gross - fees;
 
+        var examPacks = payments.Where(p => p.PaymentType == PaymentType.ExamPack).ToList();
         var oneTime = payments.Where(p => p.PaymentType == PaymentType.OneTime).ToList();
         var subs = payments.Where(p => p.PaymentType == PaymentType.Subscription).ToList();
 
@@ -40,6 +41,7 @@ public class GetFinancialSummaryQueryHandler
             .OrderBy(g => g.Key.Year).ThenBy(g => g.Key.Month)
             .Select(g => new MonthlyRevenuePoint(
                 new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"),
+                g.Where(p => p.PaymentType == PaymentType.ExamPack).Sum(p => p.Amount),
                 g.Where(p => p.PaymentType == PaymentType.OneTime).Sum(p => p.Amount),
                 g.Where(p => p.PaymentType == PaymentType.Subscription).Sum(p => p.Amount)))
             .ToList();
@@ -56,6 +58,7 @@ public class GetFinancialSummaryQueryHandler
 
         var activeSubs = await _finance.GetActiveSubscriberCountAsync();
         var oneTimeBuyers = await _finance.GetOneTimeBuyerCountAsync();
+        var examPackBuyers = await _finance.GetExamPackBuyerCountAsync();
         var recent = await _finance.GetRecentActivityAsync(8);
 
         return new FinancialSummaryDto
@@ -66,9 +69,13 @@ public class GetFinancialSummaryQueryHandler
             NetAfterFees = netAfterFees,
             InfraCosts = infra,
             NetProfit = netAfterFees - infra,
+            ExamPackRevenue = examPacks.Sum(p => p.Amount),
+            ExamPackCount = examPacks.Count,
+            ExamsSold = examPacks.Sum(p => p.ExamsPurchased),
             OneTimeRevenue = oneTime.Sum(p => p.Amount),
             OneTimeCount = oneTime.Count,
             SubscriptionRevenue = subs.Sum(p => p.Amount),
+            ExamPackBuyers = examPackBuyers,
             Mrr = activeSubs * PricingPlans.MonthlyPrice,
             ActiveSubscribers = activeSubs,
             OneTimeBuyers = oneTimeBuyers,
