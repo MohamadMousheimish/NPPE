@@ -251,3 +251,9 @@ nppe/
 /nppe.zip
 .tools/
 .playwright-mcp/
+
+# Private cost/revenue tracker (never pushed)
+FINANCES.md
+
+# Local dev config/secrets (not pushed)
+appsettings.Development.json
