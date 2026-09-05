@@ -81,6 +81,13 @@
                 <input type="hidden" asp-for="ReturnUrl" />
                 <div asp-validation-summary="All"></div>
 
+                @if (Model.NeedsEmailConfirmation)
+                {
+                    <p class="foot" style="margin:-.4rem 0 .6rem">
+                        <a asp-page="/Account/RegisterConfirmation" asp-route-email="@Model.Input.Email">@SharedLocalizer["Resend confirmation link"] &rarr;</a>
+                    </p>
+                }
+
                 <label class="field">
                     <span class="field__label">@SharedLocalizer["Email"] <span class="idx">01</span></span>
                     <span class="field__wrap">

@@ -19,7 +19,10 @@ public class AccountFlowTests : IClassFixture<NppeWebAppFactory>
             ["Input.Password"] = "Passw0rd!",
             ["Input.ConfirmPassword"] = "Passw0rd!"
         });
-        Assert.Equal(HttpStatusCode.Redirect, register.StatusCode); // -> /Account/Login
+        Assert.Equal(HttpStatusCode.Redirect, register.StatusCode); // -> /Account/RegisterConfirmation
+
+        // Sign-in now requires a confirmed email; simulate clicking the link.
+        await _factory.ConfirmEmailAsync("newstudent@test.ca");
 
         var authed = await WebTest.LoggedInAsync(_factory, "newstudent@test.ca", "Passw0rd!");
 
@@ -28,6 +31,43 @@ public class AccountFlowTests : IClassFixture<NppeWebAppFactory>
         Assert.Equal(HttpStatusCode.OK, pricing.StatusCode);
         var exams = await authed.GetAsync("/Student/Exams/Index");
         Assert.Equal(HttpStatusCode.OK, exams.StatusCode);
+    }
+
+    [Fact]
+    public async Task Unconfirmed_user_cannot_sign_in()
+    {
+        var client = WebTest.NewClient(_factory);
+        await WebTest.PostFormAsync(client, "/Account/Register", "/Account/Register", new()
+        {
+            ["Input.FirstName"] = "Unconfirmed",
+            ["Input.LastName"] = "User",
+            ["Input.Email"] = "unconfirmed@test.ca",
+            ["Input.Password"] = "Passw0rd!",
+            ["Input.ConfirmPassword"] = "Passw0rd!"
+        });
+
+        // Correct credentials, but the email isn't confirmed — sign-in is blocked, so
+        // the page re-renders (200) instead of redirecting in.
+        var login = await WebTest.LoginAsync(WebTest.NewClient(_factory), "unconfirmed@test.ca", "Passw0rd!");
+        Assert.Equal(HttpStatusCode.OK, login.StatusCode);
+    }
+
+    [Fact]
+    public async Task Registration_with_reserved_company_domain_is_rejected()
+    {
+        var client = WebTest.NewClient(_factory);
+        var res = await WebTest.PostFormAsync(client, "/Account/Register", "/Account/Register", new()
+        {
+            ["Input.FirstName"] = "Brand",
+            ["Input.LastName"] = "Squatter",
+            ["Input.Email"] = "someone@nppeacademy.com", // reserved company domain
+            ["Input.Password"] = "Passw0rd!",
+            ["Input.ConfirmPassword"] = "Passw0rd!"
+        });
+
+        // Re-renders the page with a validation error (200), does not create the account.
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+        Assert.Null(await _factory.FindUserAsync("someone@nppeacademy.com"));
     }
 
     [Fact]

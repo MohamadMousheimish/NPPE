@@ -30,6 +30,10 @@ namespace NPPE.Web.Pages.Account
 
         public string? ReturnUrl { get; set; }
 
+        /// <summary>Set when sign-in was blocked because the email isn't confirmed yet,
+        /// so the view can offer a "resend confirmation" link.</summary>
+        public bool NeedsEmailConfirmation { get; private set; }
+
         public void OnGet(string? returnUrl = null)
         {
             ReturnUrl = returnUrl;
@@ -78,6 +82,14 @@ namespace NPPE.Web.Pages.Account
             if (result.IsLockedOut)
             {
                 ModelState.AddModelError(string.Empty, _localizer["Too many failed attempts. Please try again in a few minutes."]);
+                return Page();
+            }
+
+            if (result.IsNotAllowed)
+            {
+                // The password was correct but the account isn't confirmed yet.
+                NeedsEmailConfirmation = true;
+                ModelState.AddModelError(string.Empty, _localizer["Please confirm your email before signing in."]);
                 return Page();
             }
 

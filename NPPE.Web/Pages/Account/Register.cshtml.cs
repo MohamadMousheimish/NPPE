@@ -2,9 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using NPPE.Application.Email;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
 using NPPE.Web.Resources;
+using NPPE.Web.Services;
 using System.ComponentModel.DataAnnotations;
 
 namespace NPPE.Web.Pages.Account
@@ -12,13 +14,25 @@ namespace NPPE.Web.Pages.Account
     public class RegisterModel : PageModel
     {
         private readonly IUserRepository _userRepository;
+        private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
+        private readonly IEmailSender _emailSender;
+        private readonly RegistrationDomainPolicy _domainPolicy;
         private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public RegisterModel(IUserRepository userRepository, SignInManager<AppUser> signInManager, IStringLocalizer<SharedResource> localizer)
+        public RegisterModel(
+            IUserRepository userRepository,
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            IEmailSender emailSender,
+            RegistrationDomainPolicy domainPolicy,
+            IStringLocalizer<SharedResource> localizer)
         {
             _userRepository = userRepository;
+            _userManager = userManager;
             _signInManager = signInManager;
+            _emailSender = emailSender;
+            _domainPolicy = domainPolicy;
             _localizer = localizer;
         }
 
@@ -33,6 +47,15 @@ namespace NPPE.Web.Pages.Account
         {
             if (!ModelState.IsValid)
                 return Page();
+
+            // Reserve the company's own domain — the public can't self-register under our
+            // brand; those accounts are provisioned by the admin instead.
+            if (_domainPolicy.IsReserved(Input.Email))
+            {
+                ModelState.AddModelError("Input.Email",
+                    _localizer["This email domain is reserved. Please use a personal email address."]);
+                return Page();
+            }
 
             var existingUser = await _userRepository.GetUserByEmailAsync(Input.Email);
             if (existingUser != null)
@@ -52,14 +75,30 @@ namespace NPPE.Web.Pages.Account
             try
             {
                 await _userRepository.CreateAsync(user, Input.Password);
-                // Auto-login can be added later; for now, redirect to login
-                return RedirectToPage("/Account/Login");
             }
             catch (InvalidOperationException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
                 return Page();
             }
+
+            // Email confirmation is required before sign-in — send the verification link
+            // and land the user on a "check your email" page (no auto-login).
+            await SendConfirmationLinkAsync(user);
+
+            return RedirectToPage("/Account/RegisterConfirmation", new { email = user.Email });
+        }
+
+        private async Task SendConfirmationLinkAsync(AppUser user)
+        {
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                null,
+                new { userId = user.Id, code },
+                protocol: Request.Scheme)!;
+
+            await ConfirmationEmail.SendAsync(_emailSender, _localizer, user.Email!, callbackUrl);
         }
 
         public IActionResult OnPostGoogleSignup()

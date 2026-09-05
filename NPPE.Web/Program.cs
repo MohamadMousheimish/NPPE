@@ -58,7 +58,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Identity
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false; // Set to true later if email confirmation needed
+    options.SignIn.RequireConfirmedAccount = true; // Email must be confirmed before first sign-in
     options.Password.RequiredLength = 8;
     options.Password.RequireNonAlphanumeric = false;
     options.Password.RequireUppercase = true;
@@ -119,6 +119,9 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<NPPE.Application.Documents.IExamDocumentParser, NPPE.Infrastructure.Documents.ExamDocumentParser>();
 builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastructure.Email.SmtpEmailSender>();
 builder.Services.AddScoped<NPPE.Application.Services.IExamPackGranter, NPPE.Application.Services.ExamPackGranter>();
+
+// Blocks public self-registration under the company's reserved email domain(s).
+builder.Services.AddSingleton<NPPE.Web.Services.RegistrationDomainPolicy>();
 
 // Liveness/readiness probe for the host, including a database connectivity check.
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();

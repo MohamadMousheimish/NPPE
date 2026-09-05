@@ -36,7 +36,12 @@ public class NppeWebAppFactory : WebApplicationFactory<Program>
                 ["RateLimiting:AuthPermitLimit"] = "1000000", // effectively disable the limiter in tests
                 // Run without external auth, exactly like CI (no Google secrets configured).
                 ["Authentication:Google:ClientId"] = "",
-                ["Authentication:Google:ClientSecret"] = ""
+                ["Authentication:Google:ClientSecret"] = "",
+                // Reserve the company domain so the reserved-domain test is deterministic.
+                ["Registration:ReservedEmailDomains:0"] = "nppeacademy.com",
+                // No real SMTP in tests — blanking the host makes the sender log instead of send.
+                ["Email:Host"] = "",
+                ["Email:From"] = ""
             });
         });
 

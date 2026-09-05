@@ -1,0 +1,65 @@
+@page
+@model NPPE.Web.Pages.Account.ConfirmEmailModel
+@{
+    ViewData["Title"] = SharedLocalizer["Email confirmation"].Value;
+    Layout = "_AuthLayout";
+}
+
+<main class="auth">
+    <section class="brand panel--dark reg">
+        <span class="reg-mark tl"></span><span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span><span class="reg-mark br"></span>
+        <div class="brand__grid grid-bg--dark"></div>
+
+        <svg class="gauge" viewBox="0 0 128 128" aria-hidden="true">
+            <circle cx="64" cy="64" r="60" stroke="var(--line-dark)" stroke-width="1"></circle>
+            <circle cx="64" cy="64" r="52" stroke="var(--line-dark)" stroke-width="6" stroke-dasharray="1 7.6"></circle>
+            <circle class="arc" cx="64" cy="64" r="44"></circle>
+            <text class="lbl" x="64" y="63">NPPE</text>
+            <text class="sub" x="64" y="76">@(Model.Succeeded ? "READY" : "CHECK")</text>
+        </svg>
+
+        <div class="wordmark">
+            <span class="mark">N</span>
+            <div class="stack"><b>NPPE&nbsp;Prep</b><span>@SharedLocalizer["Exam Preparation"]</span></div>
+        </div>
+
+        <div class="hero">
+            <span class="eyebrow eyebrow--signal">@SharedLocalizer["Account activation"]</span>
+            @if (Model.Succeeded)
+            {
+                <h1>@SharedLocalizer["You're"] <em>@SharedLocalizer["verified."]</em></h1>
+                <p>@SharedLocalizer["Your email is confirmed. Sign in to pick an exam pack and get started."]</p>
+            }
+            else
+            {
+                <h1>@SharedLocalizer["Link"] <em>@SharedLocalizer["not valid."]</em></h1>
+                <p>@SharedLocalizer["This confirmation link is invalid or has already been used. Request a fresh one and try again."]</p>
+            }
+        </div>
+    </section>
+
+    <section class="formside" data-study-field data-study-count="22">
+        <div class="formcard frame seq tc">
+            @if (Model.Succeeded)
+            {
+                <span class="icon-badge icon-badge--lg" style="--i:0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12.5l4 4 10-10"/></svg>
+                </span>
+                <h2 style="--i:1">@SharedLocalizer["Email confirmed"]</h2>
+                <p class="sub" style="--i:2">@SharedLocalizer["Your account is now active."]</p>
+                <a class="btn btn--primary btn--block btn--lg" asp-page="/Account/Login" style="--i:3">@SharedLocalizer["Sign in"] <span class="arrow">&rarr;</span></a>
+            }
+            else
+            {
+                <span class="icon-badge icon-badge--lg" style="--i:0">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>
+                </span>
+                <h2 style="--i:1">@SharedLocalizer["Couldn't confirm your email"]</h2>
+                <p class="sub" style="--i:2">@SharedLocalizer["The link may have expired. We can send you a new one."]</p>
+                <a class="btn btn--primary btn--block btn--lg" asp-page="/Account/RegisterConfirmation" asp-route-email="@Model.Email" style="--i:3">@SharedLocalizer["Get a new link"] <span class="arrow">&rarr;</span></a>
+                <p class="foot" style="--i:4"><a asp-page="/Account/Login">@SharedLocalizer["Back to sign in"]</a></p>
+            }
+        </div>
+    </section>
+</main>

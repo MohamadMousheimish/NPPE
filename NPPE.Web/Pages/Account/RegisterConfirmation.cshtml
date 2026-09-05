@@ -1,0 +1,79 @@
+@page
+@model NPPE.Web.Pages.Account.RegisterConfirmationModel
+@{
+    ViewData["Title"] = SharedLocalizer["Confirm your email"].Value;
+    Layout = "_AuthLayout";
+}
+
+<main class="auth">
+    <section class="brand panel--dark reg">
+        <span class="reg-mark tl"></span><span class="reg-mark tr"></span>
+        <span class="reg-mark bl"></span><span class="reg-mark br"></span>
+        <div class="brand__grid grid-bg--dark"></div>
+
+        <svg class="gauge" viewBox="0 0 128 128" aria-hidden="true">
+            <circle cx="64" cy="64" r="60" stroke="var(--line-dark)" stroke-width="1"></circle>
+            <circle cx="64" cy="64" r="52" stroke="var(--line-dark)" stroke-width="6" stroke-dasharray="1 7.6"></circle>
+            <circle class="arc" cx="64" cy="64" r="44"></circle>
+            <text class="lbl" x="64" y="63">NPPE</text>
+            <text class="sub" x="64" y="76">SENT</text>
+        </svg>
+
+        <div class="wordmark">
+            <span class="mark">N</span>
+            <div class="stack"><b>NPPE&nbsp;Prep</b><span>@SharedLocalizer["Exam Preparation"]</span></div>
+        </div>
+
+        <div class="hero">
+            <span class="eyebrow eyebrow--signal">@SharedLocalizer["One last step"]</span>
+            <h1>@SharedLocalizer["Confirm"] <em>@SharedLocalizer["your email."]</em></h1>
+            <p>@SharedLocalizer["We've sent a confirmation link to activate your account. You'll be able to sign in once it's verified."]</p>
+        </div>
+
+        <div class="titleblock">
+            <div class="row">
+                <div class="cell"><span class="k">@SharedLocalizer["Process"]</span><span class="v">SIGN&nbsp;UP</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Step"]</span><span class="v">02 / 02</span></div>
+                <div class="cell"><span class="k">@SharedLocalizer["Channel"]</span><span class="v">EMAIL</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="formside" data-study-field data-study-count="22">
+        <div class="formcard frame seq tc">
+            <span class="icon-badge icon-badge--lg" style="--i:0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M4 7l8 6 8-6"/></svg>
+            </span>
+            <h2 style="--i:1">@SharedLocalizer["Check your email"]</h2>
+            <p class="sub" style="--i:2">
+                @if (!string.IsNullOrEmpty(Model.Email))
+                {
+                    @Html.Raw(SharedLocalizer["We sent a confirmation link to <strong>{0}</strong>. Click it to activate your account.", Model.Email])
+                }
+                else
+                {
+                    @SharedLocalizer["We sent you a confirmation link. Click it to activate your account."]
+                }
+            </p>
+
+            @if (!string.IsNullOrEmpty(Model.StatusMessage))
+            {
+                <div class="alert alert--info" style="--i:3">@Model.StatusMessage</div>
+            }
+
+            <div class="note" style="--i:3; text-align:left">
+                <span class="anno"><strong>@SharedLocalizer["Didn't get it?"]</strong></span>
+                <ul>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Check your spam or junk folder"]</li>
+                    <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Give it a couple of minutes to arrive"]</li>
+                </ul>
+            </div>
+
+            <form method="post" asp-page-handler="Resend" style="--i:4">
+                <input type="hidden" asp-for="Email" />
+                <button class="btn btn--primary btn--block btn--lg" type="submit">@SharedLocalizer["Resend confirmation link"] <span class="arrow">&rarr;</span></button>
+            </form>
+            <p class="foot" style="--i:5">@SharedLocalizer["Already confirmed?"] <a asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a></p>
+        </div>
+    </section>
+</main>

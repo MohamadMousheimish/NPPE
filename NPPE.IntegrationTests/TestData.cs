@@ -39,6 +39,26 @@ public static class TestData
         return exam.Id;
     }
 
+    /// <summary>Looks up a user by email (null if not created).</summary>
+    public static async Task<AppUser?> FindUserAsync(this NppeWebAppFactory factory, string email)
+    {
+        using var scope = factory.Services.CreateScope();
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+        return await users.FindByEmailAsync(email);
+    }
+
+    /// <summary>Confirms a user's email (mirrors clicking the confirmation link).</summary>
+    public static async Task ConfirmEmailAsync(this NppeWebAppFactory factory, string email)
+    {
+        using var scope = factory.Services.CreateScope();
+        var users = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+        var user = await users.FindByEmailAsync(email)
+            ?? throw new InvalidOperationException($"User {email} not found.");
+
+        var token = await users.GenerateEmailConfirmationTokenAsync(user);
+        await users.ConfirmEmailAsync(user, token);
+    }
+
     /// <summary>Unlocks a specific exam for a user (mirrors what buying an exam pack does).</summary>
     public static async Task UnlockExamAsync(this NppeWebAppFactory factory, string email, Guid examId)
     {
