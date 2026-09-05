@@ -2,8 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NPPE.Application.Commands.Payments.CreateCheckoutSession;
-using NPPE.Application.Commands.Payments.CreateSubscriptionCheckoutSession;
+using NPPE.Application.Commands.Payments.CreateExamPackCheckoutSession;
 
 namespace NPPE.Web.Pages.Payments;
 
@@ -22,7 +21,7 @@ public class PricingModel : PageModel
 
     public void OnGet() { }
 
-    public async Task<IActionResult> OnPostAsync(string planType)
+    public async Task<IActionResult> OnPostAsync(string packId)
     {
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
                      ?? throw new InvalidOperationException("User ID not found.");
@@ -30,26 +29,13 @@ public class PricingModel : PageModel
         var successUrl = Url.Page("/Payments/Success", null, null, Request.Scheme)!;
         var cancelUrl = Url.Page("/Payments/Cancel", null, null, Request.Scheme)!;
 
-        string checkoutUrl;
-
-        if (planType == "subscription")
+        var checkoutUrl = await _mediator.Send(new CreateExamPackCheckoutSessionCommand
         {
-            checkoutUrl = await _mediator.Send(new CreateSubscriptionCheckoutSessionCommand
-            {
-                UserId = userId,
-                SuccessUrl = successUrl,
-                CancelUrl = cancelUrl
-            });
-        }
-        else
-        {
-            checkoutUrl = await _mediator.Send(new CreateCheckoutSessionCommand
-            {
-                UserId = userId,
-                SuccessUrl = successUrl,
-                CancelUrl = cancelUrl
-            });
-        }
+            UserId = userId,
+            PackId = packId,
+            SuccessUrl = successUrl,
+            CancelUrl = cancelUrl
+        });
 
         return Redirect(checkoutUrl);
     }

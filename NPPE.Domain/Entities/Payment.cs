@@ -21,4 +21,7 @@ public class Payment : BaseEntity
 
     /// <summary>ISO-2 country of the customer (from the Stripe Checkout session); drives the "Canadian sales" tax threshold.</summary>
     public string? CustomerCountry { get; set; }
+
+    /// <summary>For an exam-pack purchase: how many exams this payment unlocked.</summary>
+    public int ExamsPurchased { get; set; }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using NPPE.Application.Repositories;
+using NPPE.Application.Services;
 using NPPE.Domain.Constants;
 using NPPE.Domain.Entities;
 using NPPE.Domain.Enums;
@@ -25,6 +26,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
     private readonly IUserRepository _userRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IProcessedStripeEventRepository _processedEvents;
+    private readonly IExamPackGranter _granter;
     private readonly ILogger<HandlePaymentWebhookCommandHandler> _logger;
 
     public HandlePaymentWebhookCommandHandler(
@@ -34,6 +36,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         IUserRepository userRepository,
         IUnitOfWork unitOfWork,
         IProcessedStripeEventRepository processedEvents,
+        IExamPackGranter granter,
         ILogger<HandlePaymentWebhookCommandHandler> logger)
     {
         _paymentRepository = paymentRepository;
@@ -42,6 +45,7 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         _userRepository = userRepository;
         _unitOfWork = unitOfWork;
         _processedEvents = processedEvents;
+        _granter = granter;
         _logger = logger;
     }
 
@@ -121,41 +125,39 @@ public class HandlePaymentWebhookCommandHandler : IRequestHandler<HandlePaymentW
         var session = stripeEvent.Data.Object as Session;
         if (session == null) return;
 
-        // For subscription mode, PaymentStatus may be "unpaid" initially
-        // but the subscription is still created
-        var isPaid = session.PaymentStatus == "paid";
-        var isSubscription = session.Mode == "subscription";
+        // Exam-pack purchase (one-time payment) — the live model. Granting is idempotent,
+        // so it's safe even though the success page also confirms the same session.
+        if (session.Mode == "payment")
+        {
+            if (session.PaymentStatus == "paid")
+                await _granter.GrantAsync(session.Id, session.CustomerDetails?.Address?.Country);
+            return;
+        }
 
-        if (!isPaid && !isSubscription) return;
+        // Subscription mode (legacy/dormant — no longer offered, kept for existing records).
+        if (session.Mode != "subscription") return;
 
         var payment = await _paymentRepository.GetBySessionIdAsync(session.Id);
         if (payment == null || payment.Status != PaymentStatus.Pending) return;
 
-        // Mark payment as succeeded
         payment.Status = PaymentStatus.Succeeded;
         payment.PaidAt = DateTime.UtcNow;
         payment.CustomerCountry = session.CustomerDetails?.Address?.Country;
 
-        // Get user
         var userId = session.Metadata?["user_id"] ?? payment.UserId;
         var user = await _userManager.FindByIdAsync(userId);
         if (user == null) return;
 
-        if (isSubscription && session.SubscriptionId != null)
+        if (session.SubscriptionId != null)
         {
-            // Subscription payment: store subscription ID
             payment.StripeSubscriptionId = session.SubscriptionId;
             payment.SubscriptionStatus = SubscriptionStatus.Active;
-
             user.StripeSubscriptionId = session.SubscriptionId;
             user.StripeCustomerId ??= session.CustomerId;
         }
 
         user.IsPremium = true;
 
-        // Commit payment + user together: a partial failure here would otherwise
-        // leave a paid user without premium, and the "already not Pending" guard
-        // above would prevent Stripe retries from ever fixing it.
         await _unitOfWork.ExecuteInTransactionAsync(async () =>
         {
             await _paymentRepository.UpdateAsync(payment);

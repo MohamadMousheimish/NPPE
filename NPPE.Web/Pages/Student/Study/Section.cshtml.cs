@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NPPE.Domain.Entities;
+using NPPE.Application.Repositories;
 using NPPE.Web.StudyContent;
 
 namespace NPPE.Web.Pages.Student.Study
@@ -10,9 +9,9 @@ namespace NPPE.Web.Pages.Student.Study
     [Authorize(Policy = "StudentOnly")]
     public class SectionModel : PageModel
     {
-        private readonly UserManager<AppUser> _userManager;
+        private readonly IExamUnlockRepository _examUnlocks;
 
-        public SectionModel(UserManager<AppUser> userManager) => _userManager = userManager;
+        public SectionModel(IExamUnlockRepository examUnlocks) => _examUnlocks = examUnlocks;
 
         public StudySection Section { get; private set; } = null!;
         public StudySection? Previous { get; private set; }
@@ -24,10 +23,10 @@ namespace NPPE.Web.Pages.Student.Study
             if (section == null)
                 return RedirectToPage("Index");
 
-            // Study Hub content is premium-only; send non-premium students to pricing.
+            // Full reading is premium — requires at least one exam-pack purchase.
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-            var user = userId == null ? null : await _userManager.FindByIdAsync(userId);
-            if (user is null || !user.IsPremium)
+            var hasAccess = userId != null && (await _examUnlocks.GetUnlockedExamIdsAsync(userId)).Count > 0;
+            if (!hasAccess)
                 return RedirectToPage("/Payments/Pricing", new { returnUrl = $"/Student/Study/Section?n={n}" });
 
             Section = section;

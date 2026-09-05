@@ -1,12 +1,13 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Localization;
 using NPPE.Application.Commands.ExamAttempts.SubmitExamAttempt;
 using NPPE.Application.DTOs.Exams;
 using NPPE.Application.Queries.Exams.GetExamWithQuestions;
-using NPPE.Domain.Entities;
+using NPPE.Application.Repositories;
+using NPPE.Web.Resources;
 
 namespace NPPE.Web.Pages.Student.Exams
 {
@@ -14,13 +15,19 @@ namespace NPPE.Web.Pages.Student.Exams
     public class TakeModel : PageModel
     {
         private readonly IMediator _mediator;
-        private readonly UserManager<AppUser> _userManager;
-        private readonly Microsoft.Extensions.Localization.IStringLocalizer<NPPE.Web.Resources.SharedResource> _localizer;
+        private readonly IExamUnlockRepository _examUnlocks;
+        private readonly IExamAttemptRepository _examAttempts;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public TakeModel(IMediator mediator, UserManager<AppUser> userManager, Microsoft.Extensions.Localization.IStringLocalizer<NPPE.Web.Resources.SharedResource> localizer)
+        public TakeModel(
+            IMediator mediator,
+            IExamUnlockRepository examUnlocks,
+            IExamAttemptRepository examAttempts,
+            IStringLocalizer<SharedResource> localizer)
         {
             _mediator = mediator;
-            _userManager = userManager;
+            _examUnlocks = examUnlocks;
+            _examAttempts = examAttempts;
             _localizer = localizer;
         }
 
@@ -29,9 +36,12 @@ namespace NPPE.Web.Pages.Student.Exams
 
         // Maps each QuestionId to the selected AnswerOptionId.
         [BindProperty] public Dictionary<Guid, Guid> Answers { get; set; } = new();
+
+        public int AttemptsRemaining { get; set; }
+
         public async Task<IActionResult> OnGetAsync(Guid id)
         {
-            if (await RequirePremiumAsync(id) is { } redirect)
+            if (await RequireAccessAsync(id) is { } redirect)
                 return redirect;
 
             var exam = await _mediator.Send(new GetExamWithQuestionsQuery(id));
@@ -48,13 +58,11 @@ namespace NPPE.Web.Pages.Student.Exams
             var studentId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
                             ?? throw new InvalidOperationException("User ID not found.");
 
-            // Premium can lapse between rendering the exam and submitting it, so
-            // re-check before accepting the attempt.
-            if (await RequirePremiumAsync(ExamId) is { } redirect)
+            // Access (unlock + remaining attempts) can change between rendering and
+            // submitting, so re-check before accepting the attempt.
+            if (await RequireAccessAsync(ExamId) is { } redirect)
                 return redirect;
 
-            // Re-load the exam so we can validate every question was answered
-            // before attempting to submit (also repopulates the view on error).
             var exam = await _mediator.Send(new GetExamWithQuestionsQuery(ExamId));
             if (exam == null)
                 return NotFound();
@@ -68,27 +76,29 @@ namespace NPPE.Web.Pages.Student.Exams
                 return Page();
             }
 
-            var attemptId = await _mediator.Send(new SubmitExamAttemptCommand
-            (
-                studentId,
-                ExamId,
-                Answers
-            ));
-
+            var attemptId = await _mediator.Send(new SubmitExamAttemptCommand(studentId, ExamId, Answers));
             return RedirectToPage("Results", new { id = attemptId });
         }
 
-        // Returns a redirect to the pricing page when the current user is not a
-        // premium member, or null when access is allowed.
-        private async Task<IActionResult?> RequirePremiumAsync(Guid examId)
+        // Returns a redirect when the student may not take this exam:
+        //  - no unlock  -> pricing page
+        //  - out of attempts -> exams list with a message
+        // Otherwise returns null and sets AttemptsRemaining.
+        private async Task<IActionResult?> RequireAccessAsync(Guid examId)
         {
             var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
                          ?? throw new InvalidOperationException("User ID not found.");
 
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null || !user.IsPremium)
-            {
+            var unlock = await _examUnlocks.GetAsync(userId, examId);
+            if (unlock == null)
                 return RedirectToPage("/Payments/Pricing", new { returnUrl = $"/Student/Exams/Take?id={examId}" });
+
+            var used = await _examAttempts.CountAttemptsAsync(userId, examId);
+            AttemptsRemaining = Math.Max(0, unlock.AttemptsAllowed - used);
+            if (AttemptsRemaining <= 0)
+            {
+                TempData["ExamMessage"] = _localizer["You've used all your attempts for this exam."].Value;
+                return RedirectToPage("/Student/Exams/Index");
             }
 
             return null;

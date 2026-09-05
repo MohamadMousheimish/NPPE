@@ -44,4 +44,18 @@ public class PaymentRepository : GenericRepository<Payment>, IPaymentRepository
         return await _context.Payments
             .AnyAsync(p => p.StripeInvoiceId == invoiceId);
     }
+
+    public async Task<bool> TryClaimForGrantAsync(string sessionId)
+    {
+        // Single atomic UPDATE (translated by EF for both SQL Server and SQLite):
+        // only one concurrent caller can flip Pending → Succeeded, so it returns true once.
+        var affected = await _context.Payments
+            .Where(p => p.StripeSessionId == sessionId
+                        && p.Status == Domain.Enums.PaymentStatus.Pending)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(p => p.Status, Domain.Enums.PaymentStatus.Succeeded)
+                .SetProperty(p => p.PaidAt, DateTime.UtcNow)
+                .SetProperty(p => p.UpdatedAt, DateTime.UtcNow));
+        return affected > 0;
+    }
 }

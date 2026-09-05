@@ -13,6 +13,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Payment> Payments { get; set; }
     public DbSet<ProcessedStripeEvent> ProcessedStripeEvents => Set<ProcessedStripeEvent>();
     public DbSet<Cost> Costs => Set<Cost>();
+    public DbSet<ExamUnlock> ExamUnlocks => Set<ExamUnlock>();
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -89,6 +90,20 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
         {
             entity.Property(e => e.StripeEventId).IsRequired().HasMaxLength(255);
             entity.HasIndex(e => e.StripeEventId).IsUnique();
+        });
+
+        // Exam unlocks (granted by exam-pack purchases). One row per (user, exam).
+        builder.Entity<ExamUnlock>(entity =>
+        {
+            entity.HasIndex(u => new { u.UserId, u.ExamId }).IsUnique();
+            entity.HasOne(u => u.Exam)
+                  .WithMany()
+                  .HasForeignKey(u => u.ExamId)
+                  .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(u => u.User)
+                  .WithMany()
+                  .HasForeignKey(u => u.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

@@ -1,53 +1,39 @@
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using NPPE.Application.Commands.Payments.CancelSubscription;
-using NPPE.Application.DTOs.Payments;
-using NPPE.Application.Queries.Payments.GetSubscriptionStatus;
+using NPPE.Application.Repositories;
 
 namespace NPPE.Web.Pages.Payments;
 
 [Authorize(Roles = "Student")]
 public class BillingModel : PageModel
 {
-    private readonly IMediator _mediator;
+    private readonly IExamUnlockRepository _examUnlocks;
+    private readonly IExamAttemptRepository _examAttempts;
 
-    public BillingModel(IMediator mediator)
+    public BillingModel(IExamUnlockRepository examUnlocks, IExamAttemptRepository examAttempts)
     {
-        _mediator = mediator;
+        _examUnlocks = examUnlocks;
+        _examAttempts = examAttempts;
     }
 
-    public SubscriptionStatusDto? SubscriptionStatus { get; set; }
-    public string? Message { get; set; }
+    public record UnlockedExam(string Title, DateTime UnlockedAt, int AttemptsRemaining, int AttemptsAllowed);
+
+    public List<UnlockedExam> Exams { get; set; } = new();
 
     public async Task OnGetAsync()
     {
-        var userId = GetUserId();
-        SubscriptionStatus = await _mediator.Send(new GetSubscriptionStatusQuery(userId));
-    }
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                     ?? throw new InvalidOperationException("User ID not found.");
 
-    public async Task<IActionResult> OnPostCancelAsync()
-    {
-        var userId = GetUserId();
-
-        var result = await _mediator.Send(new CancelSubscriptionCommand(userId));
-        if (result)
+        var unlocks = await _examUnlocks.GetForUserAsync(userId);
+        foreach (var u in unlocks.Where(u => u.Exam != null))
         {
-            Message = "Your subscription has been cancelled. You will retain access until the end of your billing period.";
+            var used = await _examAttempts.CountAttemptsAsync(userId, u.ExamId);
+            Exams.Add(new UnlockedExam(
+                u.Exam.Title,
+                u.UnlockedAt,
+                Math.Max(0, u.AttemptsAllowed - used),
+                u.AttemptsAllowed));
         }
-        else
-        {
-            Message = "Unable to cancel subscription. Please try again or contact support.";
-        }
-
-        SubscriptionStatus = await _mediator.Send(new GetSubscriptionStatusQuery(userId));
-        return Page();
-    }
-
-    private string GetUserId()
-    {
-        return User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-               ?? throw new InvalidOperationException("User ID not found.");
     }
 }

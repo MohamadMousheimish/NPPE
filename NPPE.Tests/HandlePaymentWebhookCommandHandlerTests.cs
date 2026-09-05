@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using NPPE.Application.Commands.Payments.HandlePaymentWebhook;
 using NPPE.Application.Repositories;
+using NPPE.Application.Services;
 using NPPE.Domain.Entities;
 using NPPE.Domain.Enums;
 using Stripe;
@@ -23,6 +24,7 @@ public class HandlePaymentWebhookCommandHandlerTests
     private readonly Mock<IUserRepository> _users = new();
     private readonly Mock<IUnitOfWork> _uow = new();
     private readonly Mock<IProcessedStripeEventRepository> _processedEvents = new();
+    private readonly Mock<IExamPackGranter> _granter = new();
     private readonly Mock<UserManager<AppUser>> _userManager = MockUserManager();
 
     public HandlePaymentWebhookCommandHandlerTests()
@@ -31,6 +33,8 @@ public class HandlePaymentWebhookCommandHandlerTests
             .Returns<Func<Task>, CancellationToken>((action, _) => action());
         // By default the event is claimed successfully (not a duplicate).
         _processedEvents.Setup(p => p.TryAddAsync(It.IsAny<string>())).ReturnsAsync(true);
+        // By default the exam-pack grant succeeds (idempotency lives inside the granter).
+        _granter.Setup(g => g.GrantAsync(It.IsAny<string>(), It.IsAny<string?>())).ReturnsAsync(true);
     }
 
     private static Mock<UserManager<AppUser>> MockUserManager()
@@ -44,7 +48,7 @@ public class HandlePaymentWebhookCommandHandlerTests
 
     private HandlePaymentWebhookCommandHandler CreateHandler() =>
         new(_payments.Object, _userManager.Object, new Mock<IConfiguration>().Object,
-            _users.Object, _uow.Object, _processedEvents.Object,
+            _users.Object, _uow.Object, _processedEvents.Object, _granter.Object,
             NullLogger<HandlePaymentWebhookCommandHandler>.Instance);
 
     private static Event Wrap(string type, IHasObject payload, string id = "evt_test") =>
@@ -81,38 +85,49 @@ public class HandlePaymentWebhookCommandHandlerTests
     }
 
     [Fact]
-    public async Task Checkout_completed_one_time_grants_premium_without_subscription()
+    public async Task Checkout_completed_payment_mode_grants_exam_pack()
     {
-        var user = NewUser();
-        var payment = new Payment { UserId = user.Id, Status = PaymentStatus.Pending, PaymentType = PaymentType.OneTime };
-        _payments.Setup(p => p.GetBySessionIdAsync("cs_2")).ReturnsAsync(payment);
-        _userManager.Setup(m => m.FindByIdAsync(user.Id)).ReturnsAsync(user);
-
         var evt = Wrap("checkout.session.completed", new Session
         {
             Id = "cs_2",
             Mode = "payment",
             PaymentStatus = "paid",
-            Metadata = new Dictionary<string, string> { ["user_id"] = user.Id }
+            CustomerDetails = new SessionCustomerDetails { Address = new Address { Country = "CA" } },
+            Metadata = new Dictionary<string, string> { ["user_id"] = "user_1" }
         });
 
         await CreateHandler().ProcessEventAsync(evt);
 
-        Assert.True(user.IsPremium);
-        Assert.Null(user.StripeSubscriptionId);
-        Assert.Equal(PaymentStatus.Succeeded, payment.Status);
+        // Exam-pack grant is delegated to the granter (idempotent); no premium flag involved.
+        _granter.Verify(g => g.GrantAsync("cs_2", "CA"), Times.Once);
     }
 
     [Fact]
-    public async Task Checkout_completed_is_ignored_when_payment_already_processed()
+    public async Task Checkout_completed_payment_mode_does_not_grant_when_unpaid()
     {
-        var payment = new Payment { UserId = "user_1", Status = PaymentStatus.Succeeded };
-        _payments.Setup(p => p.GetBySessionIdAsync("cs_3")).ReturnsAsync(payment);
-
         var evt = Wrap("checkout.session.completed", new Session
         {
             Id = "cs_3",
             Mode = "payment",
+            PaymentStatus = "unpaid",
+            Metadata = new Dictionary<string, string> { ["user_id"] = "user_1" }
+        });
+
+        await CreateHandler().ProcessEventAsync(evt);
+
+        _granter.Verify(g => g.GrantAsync(It.IsAny<string>(), It.IsAny<string?>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task Checkout_completed_subscription_is_ignored_when_already_processed()
+    {
+        var payment = new Payment { UserId = "user_1", Status = PaymentStatus.Succeeded, PaymentType = PaymentType.Subscription };
+        _payments.Setup(p => p.GetBySessionIdAsync("cs_4")).ReturnsAsync(payment);
+
+        var evt = Wrap("checkout.session.completed", new Session
+        {
+            Id = "cs_4",
+            Mode = "subscription",
             PaymentStatus = "paid"
         });
 
@@ -228,13 +243,14 @@ public class HandlePaymentWebhookCommandHandlerTests
         await CreateHandler().ProcessEventAsync(evt);
 
         // The whole handler body is short-circuited.
-        _payments.Verify(p => p.GetBySessionIdAsync(It.IsAny<string>()), Times.Never);
+        _granter.Verify(g => g.GrantAsync(It.IsAny<string>(), It.IsAny<string?>()), Times.Never);
     }
 
     [Fact]
     public async Task Failed_processing_releases_the_claim_so_stripe_can_retry()
     {
-        _payments.Setup(p => p.GetBySessionIdAsync(It.IsAny<string>())).ThrowsAsync(new InvalidOperationException("db down"));
+        _granter.Setup(g => g.GrantAsync(It.IsAny<string>(), It.IsAny<string?>()))
+            .ThrowsAsync(new InvalidOperationException("db down"));
 
         var evt = Wrap("checkout.session.completed",
             new Session { Id = "cs_x", Mode = "payment", PaymentStatus = "paid" }, "evt_fail");

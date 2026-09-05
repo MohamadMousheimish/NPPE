@@ -49,14 +49,14 @@ public class FeatureFlowTests : IClassFixture<NppeWebAppFactory>
     }
 
     [Fact]
-    public async Task Premium_student_can_take_an_exam_and_see_a_scored_result()
+    public async Task Unlocked_student_can_take_an_exam_and_see_a_scored_result()
     {
         var examId = await _factory.SeedExamAsync("Integration Take Exam", questions: 3);
-        await _factory.SetPremiumAsync(WebTest.StudentEmail);
+        await _factory.UnlockExamAsync(WebTest.StudentEmail, examId);
 
         var student = await WebTest.LoggedInAsync(_factory, WebTest.StudentEmail, WebTest.StudentPassword);
 
-        // Load the exam (premium passes the gate) and answer every question.
+        // Load the exam (the unlock passes the gate) and answer every question.
         var takeHtml = await student.GetStringAsync($"/Student/Exams/Take?id={examId}");
         var token = Regex.Match(takeHtml, "name=\"__RequestVerificationToken\"[^>]*value=\"([^\"]+)\"").Groups[1].Value;
 

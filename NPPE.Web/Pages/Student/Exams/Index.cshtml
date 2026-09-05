@@ -7,12 +7,25 @@
 
 <div class="phead" data-reveal>
     <div>
-        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Module library"]</span>
-        <h1>@Html.Raw(SharedLocalizer["Practice <em>exams</em>"])</h1>
-        <p class="sub">@SharedLocalizer["Each module mirrors the real NPPE format — multiple choice with worked explanations on every item."]</p>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Your library"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Your <em>exams</em>"])</h1>
+        <p class="sub">@SharedLocalizer["The exams unlocked with your pack — each mirrors the real NPPE format, with worked explanations on every item."]</p>
     </div>
-    <span class="count-chip"><span class="live-dot"></span>@SharedLocalizer["{0} modules", Model.Exams.Count]</span>
+    @if (Model.Exams.Any())
+    {
+        <span class="count-chip"><span class="live-dot"></span>@SharedLocalizer["{0} unlocked", Model.Exams.Count]</span>
+    }
 </div>
+
+@if (TempData["ExamMessage"] is string examMessage)
+{
+    <div class="lockbar" data-reveal>
+        <div class="lockbar__ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 8v5M12 16h.01"/><circle cx="12" cy="12" r="9"/></svg>
+        </div>
+        <div class="lockbar__tx"><b>@examMessage</b></div>
+    </div>
+}
 
 @if (Model.Exams.Any())
 {
@@ -21,25 +34,41 @@
         @foreach (var exam in Model.Exams)
         {
             i++;
-            <a class="exam-card" asp-page="Take" asp-route-id="@exam.Id" data-reveal data-reveal-delay="@(((i - 1) % 3) * 60)">
-                <div class="exam-card__top"><span class="code">MOD @i.ToString("D2")</span><span class="tag tag--pass">@SharedLocalizer["Active"]</span></div>
-                <div class="exam-card__body">
-                    <h3>@exam.Title</h3>
-                    <p>@exam.Description</p>
-                    <div class="exam-card__meta"><span>@SharedLocalizer["MULTIPLE CHOICE"]</span><span>@exam.CreatedAt.ToString("MMM yyyy")</span></div>
-                    <span class="btn btn--primary btn--block">@SharedLocalizer["Start module"] <span class="arrow">&rarr;</span></span>
+            var outOfAttempts = exam.AttemptsRemaining <= 0;
+            if (outOfAttempts)
+            {
+                <div class="exam-card is-locked" data-reveal data-reveal-delay="@(((i - 1) % 3) * 60)">
+                    <div class="exam-card__top"><span class="code">EXAM @i.ToString("D2")</span><span class="tag">@SharedLocalizer["No attempts left"]</span></div>
+                    <div class="exam-card__body">
+                        <h3>@exam.Title</h3>
+                        <p>@exam.Description</p>
+                        <div class="exam-card__meta"><span>@SharedLocalizer["{0} of {1} attempts used", exam.AttemptsAllowed, exam.AttemptsAllowed]</span><span>@exam.CreatedAt.ToString("MMM yyyy")</span></div>
+                        <span class="btn btn--ghost btn--block" style="pointer-events:none;opacity:.6">@SharedLocalizer["Attempts exhausted"]</span>
+                    </div>
                 </div>
-            </a>
+            }
+            else
+            {
+                <a class="exam-card" asp-page="Take" asp-route-id="@exam.Id" data-reveal data-reveal-delay="@(((i - 1) % 3) * 60)">
+                    <div class="exam-card__top"><span class="code">EXAM @i.ToString("D2")</span><span class="tag tag--pass">@SharedLocalizer["{0} attempts left", exam.AttemptsRemaining]</span></div>
+                    <div class="exam-card__body">
+                        <h3>@exam.Title</h3>
+                        <p>@exam.Description</p>
+                        <div class="exam-card__meta"><span>@SharedLocalizer["MULTIPLE CHOICE"]</span><span>@exam.CreatedAt.ToString("MMM yyyy")</span></div>
+                        <span class="btn btn--primary btn--block">@SharedLocalizer["Start exam"] <span class="arrow">&rarr;</span></span>
+                    </div>
+                </a>
+            }
         }
     </div>
 }
 else
 {
     <div class="empty" data-reveal>
-        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 4h11l3 3v13H5z"/><path d="M8 9h8M8 13h8"/></svg></div>
-        <h3>@SharedLocalizer["No exams available yet"]</h3>
-        <p>@SharedLocalizer["Check back soon — new practice modules are on the way."]</p>
-        <a class="btn btn--primary" asp-page="/Index">@SharedLocalizer["Back to dashboard"] <span class="arrow">&rarr;</span></a>
+        <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+        <h3>@SharedLocalizer["You haven't unlocked any exams yet"]</h3>
+        <p>@SharedLocalizer["Pick an exam pack to unlock full practice exams and the complete Study Hub."]</p>
+        <a class="btn btn--primary" asp-page="/Payments/Pricing">@SharedLocalizer["View exam packs"] <span class="arrow">&rarr;</span></a>
     </div>
 }
 

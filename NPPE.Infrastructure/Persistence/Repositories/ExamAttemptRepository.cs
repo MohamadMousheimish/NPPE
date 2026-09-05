@@ -28,4 +28,10 @@ public class ExamAttemptRepository : GenericRepository<ExamAttempt>, IExamAttemp
             .OrderByDescending(a => a.TakenAt)
             .ToListAsync();
     }
+
+    public async Task<int> CountAttemptsAsync(string userId, Guid examId)
+    {
+        return await _context.ExamAttempts
+            .CountAsync(a => a.UserId == userId && a.ExamId == examId);
+    }
 }

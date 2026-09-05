@@ -39,13 +39,17 @@ public static class TestData
         return exam.Id;
     }
 
-    public static async Task SetPremiumAsync(this NppeWebAppFactory factory, string email)
+    /// <summary>Unlocks a specific exam for a user (mirrors what buying an exam pack does).</summary>
+    public static async Task UnlockExamAsync(this NppeWebAppFactory factory, string email, Guid examId)
     {
         using var scope = factory.Services.CreateScope();
         var users = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
+        var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
         var user = await users.FindByEmailAsync(email)
             ?? throw new InvalidOperationException($"User {email} not found.");
-        user.IsPremium = true;
-        await users.UpdateAsync(user);
+
+        db.ExamUnlocks.Add(new ExamUnlock { UserId = user.Id, ExamId = examId });
+        await db.SaveChangesAsync();
     }
 }

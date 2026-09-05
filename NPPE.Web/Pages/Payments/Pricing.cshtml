@@ -1,4 +1,5 @@
 @page
+@using NPPE.Domain.Constants
 @model NPPE.Web.Pages.Payments.PricingModel
 @{
     ViewData["Title"] = SharedLocalizer["Pricing"].Value;
@@ -8,43 +9,37 @@
 <div class="phead" data-reveal style="justify-content:center; text-align:center; flex-direction:column; align-items:center">
     <div>
         <span class="eyebrow eyebrow--signal">@SharedLocalizer["Unlock full access"]</span>
-        <h1>@Html.Raw(SharedLocalizer["Choose your <em>plan</em>"])</h1>
-        <p class="sub" style="margin-inline:auto">@SharedLocalizer["One price, everything included — all modules, unlimited attempts, and every worked explanation."]</p>
+        <h1>@Html.Raw(SharedLocalizer["Choose your <em>exam pack</em>"])</h1>
+        <p class="sub" style="margin-inline:auto">@SharedLocalizer["Buy once, no subscription. Each pack unlocks a set of full practice exams plus the complete Study Hub."]</p>
     </div>
 </div>
 
 <div class="plans">
-    <form method="post" class="plan" data-reveal>
-        <input type="hidden" name="planType" value="onetime" />
-        <input type="hidden" asp-for="ReturnUrl" />
-        <span class="eyebrow">@SharedLocalizer["One-time"]</span>
-        <div class="price"><span class="cur">CA$</span>29</div>
-        <p class="plan-sub">@SharedLocalizer["Pay once. Access forever."]</p>
-        <ul class="feat-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Unlimited exam attempts"]</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["All practice modules"]</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Worked explanations on every item"]</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["No subscription, no renewals"]</li>
-        </ul>
-        <button class="btn btn--ghost btn--block" type="submit">@SharedLocalizer["Pay CA$29 once"] <span class="arrow">&rarr;</span></button>
-    </form>
-
-    <form method="post" class="plan feat" data-reveal data-reveal-delay="80">
-        <input type="hidden" name="planType" value="subscription" />
-        <input type="hidden" asp-for="ReturnUrl" />
-        <span class="badge">@SharedLocalizer["Most flexible"]</span>
-        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Monthly"]</span>
-        <div class="price"><span class="cur">CA$</span>9.99<small>@SharedLocalizer["/mo"]</small></div>
-        <p class="plan-sub">@SharedLocalizer["Cancel anytime, keep access to period end."]</p>
-        <ul class="feat-list">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Unlimited exam attempts"]</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["All practice modules"]</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Worked explanations on every item"]</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Cancel in one click, anytime"]</li>
-        </ul>
-        <button class="btn btn--primary btn--block" type="submit">@SharedLocalizer["Subscribe for CA$9.99/mo"] <span class="arrow">&rarr;</span></button>
-    </form>
+    @{ var featured = PricingPlans.Packs.OrderByDescending(p => p.ExamCount).FirstOrDefault(); }
+    @foreach (var pack in PricingPlans.Packs)
+    {
+        var isFeatured = featured != null && pack.Id == featured.Id;
+        var dollars = (pack.PriceCents / 100).ToString();
+        <form method="post" class="plan @(isFeatured ? "feat" : "")" data-reveal>
+            <input type="hidden" name="packId" value="@pack.Id" />
+            <input type="hidden" asp-for="ReturnUrl" />
+            @if (isFeatured)
+            {
+                <span class="badge">@SharedLocalizer["Best value"]</span>
+            }
+            <span class="eyebrow @(isFeatured ? "eyebrow--signal" : "")">@SharedLocalizer[pack.Name]</span>
+            <div class="price"><span class="cur">CA$</span>@dollars</div>
+            <p class="plan-sub">@SharedLocalizer["{0} full practice exams · {1} attempts each", pack.ExamCount, PricingPlans.AttemptsPerExam]</p>
+            <ul class="feat-list">
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["{0} full-length NPPE practice exams", pack.ExamCount]</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["{0} attempts on every exam", PricingPlans.AttemptsPerExam]</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Full Study Hub — all six weighted sections"]</li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Worked explanations on every question"]</li>
+            </ul>
+            <button class="btn @(isFeatured ? "btn--primary" : "btn--ghost") btn--block" type="submit">@SharedLocalizer["Get the {0}", pack.Name] <span class="arrow">&rarr;</span></button>
+        </form>
+    }
 </div>
 
-<p class="anno" style="text-align:center; margin-top:1.6rem">@SharedLocalizer["Secure checkout by Stripe · Cancel or refund per our terms"]</p>
+<p class="anno" style="text-align:center; margin-top:1.6rem">@SharedLocalizer["Fresh exams are added regularly — your pack always unlocks our newest material. Secure checkout by Stripe."]</p>
 <div style="text-align:center"><a class="backlink" asp-page="/Student/Exams/Index">&larr; @SharedLocalizer["Back to exams"]</a></div>

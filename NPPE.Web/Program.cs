@@ -111,12 +111,14 @@ builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
 builder.Services.AddScoped<IExamAttemptRepository, ExamAttemptRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IExamUnlockRepository, ExamUnlockRepository>();
 builder.Services.AddScoped<IProcessedStripeEventRepository, ProcessedStripeEventRepository>();
 builder.Services.AddScoped<ICostRepository, CostRepository>();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<NPPE.Application.Documents.IExamDocumentParser, NPPE.Infrastructure.Documents.ExamDocumentParser>();
 builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastructure.Email.SmtpEmailSender>();
+builder.Services.AddScoped<NPPE.Application.Services.IExamPackGranter, NPPE.Application.Services.ExamPackGranter>();
 
 // Liveness/readiness probe for the host, including a database connectivity check.
 builder.Services.AddHealthChecks().AddDbContextCheck<ApplicationDbContext>();

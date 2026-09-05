@@ -95,7 +95,7 @@ public class E2EWebAppFactory : WebApplicationFactory<Program>
 
     /// <summary>
     /// Runs once (from the fixture) with no host contending: builds the schema, seeds
-    /// the app's roles + demo admin/student, then a premium student and a takeable exam.
+    /// the app's roles + demo admin/student, then a takeable exam unlocked for that student.
     /// </summary>
     public async Task SeedAsync()
     {
@@ -116,8 +116,7 @@ public class E2EWebAppFactory : WebApplicationFactory<Program>
                 Email = StudentEmail,
                 EmailConfirmed = true,
                 FirstName = "E2E",
-                LastName = "Student",
-                IsPremium = true
+                LastName = "Student"
             };
             await users.CreateAsync(student, StudentPassword);
             await users.AddToRoleAsync(student, NppeRoles.Student);
@@ -149,6 +148,14 @@ public class E2EWebAppFactory : WebApplicationFactory<Program>
         }
 
         ExamId = (await db.Exams.FirstAsync(e => e.Title == ExamTitle)).Id;
+
+        // Unlock the seeded exam for the demo student (mirrors an exam-pack purchase).
+        var studentUser = await users.FindByEmailAsync(StudentEmail);
+        if (studentUser != null && !await db.ExamUnlocks.AnyAsync(u => u.UserId == studentUser.Id && u.ExamId == ExamId))
+        {
+            db.ExamUnlocks.Add(new ExamUnlock { UserId = studentUser.Id, ExamId = ExamId });
+            await db.SaveChangesAsync();
+        }
     }
 
     protected override void Dispose(bool disposing)

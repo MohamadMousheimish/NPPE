@@ -17,7 +17,7 @@
     <a class="btn btn--ghost" asp-page="/Student/Exams/Index">@SharedLocalizer["Practice exams"] <span class="arrow">&rarr;</span></a>
 </div>
 
-@if (!Model.IsPremium)
+@if (!Model.HasAccess)
 {
     <div class="lockbar" data-reveal>
         <div class="lockbar__ic">
@@ -25,7 +25,7 @@
         </div>
         <div class="lockbar__tx">
             <b>@SharedLocalizer["The Study Hub is part of premium access."]</b>
-            <span>@SharedLocalizer["Unlock all six sections, unlimited practice exams, and worked explanations."]</span>
+            <span>@SharedLocalizer["Buy an exam pack to unlock all six sections and every worked explanation."]</span>
         </div>
         <a class="btn btn--primary" asp-page="/Payments/Pricing">@SharedLocalizer["Unlock access"] <span class="arrow">&rarr;</span></a>
     </div>
@@ -34,12 +34,12 @@
 <div class="sec-grid" data-reveal>
     @foreach (var s in Model.Sections)
     {
-        <a class="sec-card @(Model.IsPremium ? "" : "is-locked")"
-           href="@(Model.IsPremium ? Url.Page("Section", new { n = s.Number }) : Url.Page("/Payments/Pricing"))">
+        <a class="sec-card @(Model.HasAccess ? "" : "is-locked")"
+           href="@(Model.HasAccess ? Url.Page("Section", new { n = s.Number }) : Url.Page("/Payments/Pricing"))">
             <div class="sec-card__top">
                 <span class="sec-card__num">@s.Roman</span>
                 <span class="sec-card__weight">@s.WeightPercent% · @s.QuestionRange</span>
-                @if (!Model.IsPremium)
+                @if (!Model.HasAccess)
                 {
                     <span class="sec-card__lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="1.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
                 }
@@ -53,7 +53,7 @@
                 }
             </ul>
             <span class="sec-card__go">
-                @(Model.IsPremium ? SharedLocalizer["Start reading"] : SharedLocalizer["Unlock to read"])
+                @(Model.HasAccess ? SharedLocalizer["Start reading"] : SharedLocalizer["Unlock to read"])
                 <span class="arrow">&rarr;</span>
             </span>
             <div class="sec-card__meter"><i style="width:@(s.WeightPercent)%"></i></div>
