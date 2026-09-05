@@ -1,0 +1,60 @@
+name: CD
+
+# Deploys the web app to Azure App Service after a push to master.
+#
+# SKELETON — inert until the Azure resources from Phase 3 exist and these are set:
+#   Repository variables:
+#     AZURE_WEBAPP_NAME        - the App Service (Web App) name
+#   Repository secrets (OIDC federated credentials, no publish profile / password):
+#     AZURE_CLIENT_ID          - app registration (service principal) client id
+#     AZURE_TENANT_ID          - Entra tenant id
+#     AZURE_SUBSCRIPTION_ID    - target subscription id
+#
+# Until AZURE_WEBAPP_NAME is set, the deploy job is skipped, so merging this is safe.
+# The `production` environment provides the manual approval gate (configure required
+# reviewers on it in GitHub → Settings → Environments).
+
+on:
+  push:
+    branches: [ master ]
+  workflow_dispatch:
+
+concurrency:
+  group: cd-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Inert until the target Web App is configured.
+    if: ${{ vars.AZURE_WEBAPP_NAME != '' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.webapp-url }}
+    permissions:
+      id-token: write   # required for azure/login OIDC
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Publish
+        run: dotnet publish NPPE.Web/NPPE.Web.csproj -c Release -o ./publish
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy to Azure Web App
+        id: deploy
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ vars.AZURE_WEBAPP_NAME }}
+          package: ./publish
