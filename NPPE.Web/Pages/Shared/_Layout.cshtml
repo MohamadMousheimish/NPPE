@@ -104,8 +104,9 @@
             <nav>
                 <a href="/#exam">@SharedLocalizer["About"]</a>
                 <a asp-page="/Privacy">@SharedLocalizer["Privacy"]</a>
-                <a href="#">@SharedLocalizer["Terms"]</a>
-                <a href="#">@SharedLocalizer["Contact"]</a>
+                <a asp-page="/Terms">@SharedLocalizer["Terms"]</a>
+                <a asp-page="/Refund">@SharedLocalizer["Refund"]</a>
+                <a href="mailto:info@nppeacademy.com">@SharedLocalizer["Contact"]</a>
             </nav>
             <div class="copy">© @DateTime.Now.Year NPPE Prep — @SharedLocalizer["Built for engineers-in-training · Not affiliated with any regulator"]</div>
         </div>

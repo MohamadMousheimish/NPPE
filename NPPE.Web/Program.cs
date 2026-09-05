@@ -45,7 +45,8 @@ builder.Services.AddRazorPages()
                     {
                         "/Account/Register", "/Account/ForgotPassword", "/Account/ForgotPasswordConfirmation",
                         "/Account/ResetPassword", "/Account/ResetPasswordConfirmation", "/Account/ExternalLoginCallback",
-                        "/Privacy", "/Error", "/Payments/Webhook"
+                        "/Account/RegisterConfirmation", "/Account/ConfirmEmail",
+                        "/Privacy", "/Terms", "/Refund", "/Error", "/Payments/Webhook"
                     })
                     {
                         options.Conventions.AllowAnonymousToPage(page);

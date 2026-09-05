@@ -1,0 +1,52 @@
+@page
+@model TermsModel
+@{
+    ViewData["Title"] = SharedLocalizer["Terms of Service"].Value;
+}
+
+<style>
+    .prose { max-width: 68ch; }
+    .prose h2 { font-size: 1.2rem; margin: 2rem 0 0.6rem; }
+    .prose p { color: var(--slate); margin-bottom: 0.8rem; }
+    .prose ul { color: var(--slate); margin: 0 0 0.8rem 1.1rem; }
+    .prose li { margin-bottom: 0.4rem; }
+</style>
+
+<div class="phead" data-reveal>
+    <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Legal"]</span><h1>@Html.Raw(SharedLocalizer["Terms of <em>service</em>"])</h1><p class="sub">@SharedLocalizer["The agreement between you and NPPE Prep."]</p></div>
+</div>
+
+<div class="prose" data-reveal>
+    <p>@SharedLocalizer["By creating an account or purchasing an exam pack, you agree to these terms. Please read them together with our Privacy and Refund policies."]</p>
+
+    <h2>@SharedLocalizer["What NPPE Prep is"]</h2>
+    <p>@SharedLocalizer["NPPE Prep is an independent study resource for the National Professional Practice Examination. We are not affiliated with, endorsed by, or connected to any regulator or association, and we do not administer the actual exam."]</p>
+
+    <h2>@SharedLocalizer["Your account"]</h2>
+    <p>@SharedLocalizer["You need an account to use the platform, and you must confirm your email before signing in. Keep your login details secure — you're responsible for activity under your account. Provide accurate information when you register."]</p>
+
+    <h2>@SharedLocalizer["Exam packs and access"]</h2>
+    <ul>
+        <li>@SharedLocalizer["Exam packs are a one-time purchase — there is no subscription and nothing to cancel."]</li>
+        <li>@SharedLocalizer["Buying a pack unlocks a set number of full practice exams and the complete Study Hub."]</li>
+        <li>@SharedLocalizer["Each unlocked exam may be attempted up to two times."]</li>
+        <li>@SharedLocalizer["Access is personal to you and may not be shared, resold, or transferred."]</li>
+    </ul>
+
+    <h2>@SharedLocalizer["Payments"]</h2>
+    <p>@SharedLocalizer["Payments are processed securely by Stripe. Prices are shown in Canadian dollars. We never see or store your full card details."]</p>
+
+    <h2>@SharedLocalizer["Acceptable use"]</h2>
+    <p>@SharedLocalizer["Don't copy, redistribute, scrape, or republish our questions, explanations, or study materials. Don't attempt to disrupt or gain unauthorized access to the platform. We may suspend accounts that breach these terms."]</p>
+
+    <h2>@SharedLocalizer["Study material disclaimer"]</h2>
+    <p>@SharedLocalizer["Our content is provided for study purposes to help you prepare. We work to keep it accurate and current, but we can't guarantee a particular exam result. Passing the NPPE depends on many factors beyond this platform."]</p>
+
+    <h2>@SharedLocalizer["Changes and availability"]</h2>
+    <p>@SharedLocalizer["We may update the platform, its content, and these terms from time to time. We aim to keep the service available but can't guarantee uninterrupted access."]</p>
+
+    <h2>@SharedLocalizer["Contact"]</h2>
+    <p>@Html.Raw(SharedLocalizer["Questions about these terms? Email us at <a href=\"mailto:info@nppeacademy.com\">info@nppeacademy.com</a>."])</p>
+</div>
+
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

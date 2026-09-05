@@ -1,0 +1,41 @@
+@page
+@model RefundModel
+@{
+    ViewData["Title"] = SharedLocalizer["Refund Policy"].Value;
+}
+
+<style>
+    .prose { max-width: 68ch; }
+    .prose h2 { font-size: 1.2rem; margin: 2rem 0 0.6rem; }
+    .prose p { color: var(--slate); margin-bottom: 0.8rem; }
+    .prose ul { color: var(--slate); margin: 0 0 0.8rem 1.1rem; }
+    .prose li { margin-bottom: 0.4rem; }
+</style>
+
+<div class="phead" data-reveal>
+    <div><span class="eyebrow eyebrow--signal">@SharedLocalizer["Legal"]</span><h1>@Html.Raw(SharedLocalizer["Refund <em>policy</em>"])</h1><p class="sub">@SharedLocalizer["When you can get your money back."]</p></div>
+</div>
+
+<div class="prose" data-reveal>
+    <p>@SharedLocalizer["Exam packs are digital products that unlock immediately, so we keep our refund policy simple and fair."]</p>
+
+    <h2>@SharedLocalizer["When you're eligible"]</h2>
+    <p>@SharedLocalizer["You can request a full refund within 7 days of purchase, as long as you haven't started any of the exams unlocked by that pack. If every unlocked exam still shows both attempts available, you're eligible."]</p>
+
+    <h2>@SharedLocalizer["When we can't refund"]</h2>
+    <ul>
+        <li>@SharedLocalizer["Once you've started (used an attempt on) any exam unlocked by the pack."]</li>
+        <li>@SharedLocalizer["More than 7 days after the purchase date."]</li>
+    </ul>
+
+    <h2>@SharedLocalizer["Technical problems"]</h2>
+    <p>@SharedLocalizer["If something on our side stops you from accessing what you paid for, contact us and we'll make it right — either by fixing the issue or issuing a refund, even outside the window above."]</p>
+
+    <h2>@SharedLocalizer["Duplicate or accidental charges"]</h2>
+    <p>@SharedLocalizer["If you were charged twice or bought the wrong pack by mistake, email us and we'll sort it out."]</p>
+
+    <h2>@SharedLocalizer["How to request a refund"]</h2>
+    <p>@Html.Raw(SharedLocalizer["Email <a href=\"mailto:info@nppeacademy.com\">info@nppeacademy.com</a> from the address on your account, with your purchase date. Approved refunds are returned to your original payment method through Stripe, usually within 5–10 business days."])</p>
+</div>
+
+<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>

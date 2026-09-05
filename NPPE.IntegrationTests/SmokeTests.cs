@@ -30,6 +30,16 @@ public class SmokeTests : IClassFixture<NppeWebAppFactory>
         Assert.Contains("Create your account", html); // landing CTA, not the dashboard
     }
 
+    [Theory]
+    [InlineData("/Privacy")]
+    [InlineData("/Terms")]
+    [InlineData("/Refund")]
+    public async Task Legal_pages_are_public(string path)
+    {
+        var res = await WebTest.NewClient(_factory).GetAsync(path);
+        Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+    }
+
     [Fact]
     public async Task Seeded_student_can_log_in()
     {
