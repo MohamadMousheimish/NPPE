@@ -668,4 +668,670 @@
   <data name="new" xml:space="preserve"><value>nouveau</value></data>
   <data name="no change" xml:space="preserve"><value>stable</value></data>
   <data name="Too many failed attempts. Please try again in a few minutes." xml:space="preserve"><value>Trop de tentatives échouées. Veuillez réessayer dans quelques minutes.</value></data>
+  <data name="(legacy)" xml:space="preserve">
+    <value>(hérité)</value>
+  </data>
+  <data name="A two-minute tour" xml:space="preserve">
+    <value>Une visite de deux minutes</value>
+  </data>
+  <data name="Acceptable use" xml:space="preserve">
+    <value>Utilisation acceptable</value>
+  </data>
+  <data name="Access &amp;amp; &lt;em&gt;attempts&lt;/em&gt;" xml:space="preserve">
+    <value>Accès &amp;amp; &lt;em&gt;tentatives&lt;/em&gt;</value>
+  </data>
+  <data name="Access is personal to you and may not be shared, resold, or transferred." xml:space="preserve">
+    <value>L'accès vous est personnel et ne peut être partagé, revendu ni transféré.</value>
+  </data>
+  <data name="Account activation" xml:space="preserve">
+    <value>Activation du compte</value>
+  </data>
+  <data name="All sections" xml:space="preserve">
+    <value>Toutes les sections</value>
+  </data>
+  <data name="All six weighted sections — professionalism, ethics, professional practice, and law — as clear, structured reading you can actually finish. No duplication with the textbooks." xml:space="preserve">
+    <value>Les six sections pondérées — professionnalisme, éthique, pratique professionnelle et droit — sous forme de lecture claire et structurée que vous pouvez réellement terminer. Aucun doublon avec les manuels.</value>
+  </data>
+  <data name="Already confirmed?" xml:space="preserve">
+    <value>Déjà confirmé ?</value>
+  </data>
+  <data name="An explanation on every practice question" xml:space="preserve">
+    <value>Une explication pour chaque question pratique</value>
+  </data>
+  <data name="Are you affiliated with a regulator?" xml:space="preserve">
+    <value>Êtes-vous affilié à un organisme de réglementation ?</value>
+  </data>
+  <data name="Attempts exhausted" xml:space="preserve">
+    <value>Tentatives épuisées</value>
+  </data>
+  <data name="Best value" xml:space="preserve">
+    <value>Meilleur rapport qualité-prix</value>
+  </data>
+  <data name="Buy an exam pack to unlock all six sections and every worked explanation." xml:space="preserve">
+    <value>Achetez un forfait d'examens pour débloquer les six sections et chaque explication détaillée.</value>
+  </data>
+  <data name="Buy an exam pack to unlock full practice exams and the complete Study Hub." xml:space="preserve">
+    <value>Achetez un forfait d'examens pour débloquer les examens pratiques complets et tout le Study Hub.</value>
+  </data>
+  <data name="Buy another pack" xml:space="preserve">
+    <value>Acheter un autre forfait</value>
+  </data>
+  <data name="Buy once — full exams and study materials, no subscription" xml:space="preserve">
+    <value>Payez une fois — examens complets et matériel d'étude, sans abonnement</value>
+  </data>
+  <data name="Buy once, no subscription. Each pack unlocks a set of full practice exams plus the complete Study Hub." xml:space="preserve">
+    <value>Payez une fois, sans abonnement. Chaque forfait débloque un ensemble d'examens pratiques complets ainsi que tout le Study Hub.</value>
+  </data>
+  <data name="Buying a pack unlocks a set number of full practice exams and the complete Study Hub." xml:space="preserve">
+    <value>L'achat d'un forfait débloque un nombre défini d'examens pratiques complets et tout le Study Hub.</value>
+  </data>
+  <data name="By creating an account or purchasing an exam pack, you agree to these terms. Please read them together with our Privacy and Refund policies." xml:space="preserve">
+    <value>En créant un compte ou en achetant un forfait d'examens, vous acceptez ces conditions. Veuillez les lire conjointement avec nos politiques de confidentialité et de remboursement.</value>
+  </data>
+  <data name="Cancel anytime" xml:space="preserve">
+    <value>Annulez à tout moment</value>
+  </data>
+  <data name="Changes and availability" xml:space="preserve">
+    <value>Modifications et disponibilité</value>
+  </data>
+  <data name="Charge the customer's provincial rate — 5% GST in most of the West, 13% HST in Ontario, 14–15% in the Atlantic provinces. Sales outside Canada are zero-rated." xml:space="preserve">
+    <value>Facturez le taux provincial du client — 5 % de TPS dans la plupart de l'Ouest, 13 % de TVH en Ontario, 14–15 % dans les provinces de l'Atlantique. Les ventes hors du Canada sont détaxées.</value>
+  </data>
+  <data name="Choose your &lt;em&gt;exam pack&lt;/em&gt;" xml:space="preserve">
+    <value>Choisissez votre &lt;em&gt;forfait d'examens&lt;/em&gt;</value>
+  </data>
+  <data name="Confirm" xml:space="preserve">
+    <value>Confirmer</value>
+  </data>
+  <data name="Confirm my email" xml:space="preserve">
+    <value>Confirmer mon courriel</value>
+  </data>
+  <data name="Confirm your email" xml:space="preserve">
+    <value>Confirmez votre courriel</value>
+  </data>
+  <data name="Couldn't confirm your email" xml:space="preserve">
+    <value>Impossible de confirmer votre courriel</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Delete exam" xml:space="preserve">
+    <value>Supprimer l'examen</value>
+  </data>
+  <data name="Delete question" xml:space="preserve">
+    <value>Supprimer la question</value>
+  </data>
+  <data name="Do I need the textbooks too?" xml:space="preserve">
+    <value>Ai-je aussi besoin des manuels ?</value>
+  </data>
+  <data name="Don't copy, redistribute, scrape, or republish our questions, explanations, or study materials. Don't attempt to disrupt or gain unauthorized access to the platform. We may suspend accounts that breach these terms." xml:space="preserve">
+    <value>Ne copiez pas, ne redistribuez pas, n'extrayez pas et ne republiez pas nos questions, explications ou matériel d'étude. N'essayez pas de perturber la plateforme ni d'y accéder sans autorisation. Nous pouvons suspendre les comptes qui enfreignent ces conditions.</value>
+  </data>
+  <data name="Duplicate or accidental charges" xml:space="preserve">
+    <value>Frais en double ou accidentels</value>
+  </data>
+  <data name="Each unlocked exam may be attempted up to two times." xml:space="preserve">
+    <value>Chaque examen débloqué peut être tenté jusqu'à deux fois.</value>
+  </data>
+  <data name="Edit question" xml:space="preserve">
+    <value>Modifier la question</value>
+  </data>
+  <data name="Email &lt;a href=&quot;mailto:info@nppeacademy.com&quot;&gt;info@nppeacademy.com&lt;/a&gt; from the address on your account, with your purchase date. Approved refunds are returned to your original payment method through Stripe, usually within 5–10 business days." xml:space="preserve">
+    <value>Écrivez à &lt;a href="mailto:info@nppeacademy.com"&gt;info@nppeacademy.com&lt;/a&gt; depuis l'adresse liée à votre compte, en indiquant votre date d'achat. Les remboursements approuvés sont retournés à votre mode de paiement d'origine via Stripe, généralement dans un délai de 5 à 10 jours ouvrables.</value>
+  </data>
+  <data name="Email confirmation" xml:space="preserve">
+    <value>Confirmation du courriel</value>
+  </data>
+  <data name="Email confirmed" xml:space="preserve">
+    <value>Courriel confirmé</value>
+  </data>
+  <data name="English &amp; French" xml:space="preserve">
+    <value>Anglais et français</value>
+  </data>
+  <data name="Ethics" xml:space="preserve">
+    <value>Éthique</value>
+  </data>
+  <data name="Every attempt is scored and tracked over time, so you always know which sections are solid and where to spend your next study session." xml:space="preserve">
+    <value>Chaque tentative est notée et suivie dans le temps, pour que vous sachiez toujours quelles sections sont solides et où consacrer votre prochaine séance d'étude.</value>
+  </data>
+  <data name="Everything on the NPPE syllabus, organised into the six weighted sections — written to be read, not skimmed." xml:space="preserve">
+    <value>Tout le programme du NPPE, organisé en six sections pondérées — rédigé pour être lu, pas survolé.</value>
+  </data>
+  <data name="Everything you need, nothing you don't" xml:space="preserve">
+    <value>Tout ce dont vous avez besoin, rien de superflu</value>
+  </data>
+  <data name="Exam pack" xml:space="preserve">
+    <value>Forfait d'examens</value>
+  </data>
+  <data name="Exam packs" xml:space="preserve">
+    <value>Forfaits d'examens</value>
+  </data>
+  <data name="Exam packs and access" xml:space="preserve">
+    <value>Forfaits d'examens et accès</value>
+  </data>
+  <data name="Exam packs are a one-time purchase — there is no subscription and nothing to cancel." xml:space="preserve">
+    <value>Les forfaits d'examens sont un achat unique — il n'y a aucun abonnement ni rien à annuler.</value>
+  </data>
+  <data name="Exam packs are digital products that unlock immediately, so we keep our refund policy simple and fair." xml:space="preserve">
+    <value>Les forfaits d'examens sont des produits numériques débloqués immédiatement, c'est pourquoi nous gardons notre politique de remboursement simple et équitable.</value>
+  </data>
+  <data name="Exam packs sold" xml:space="preserve">
+    <value>Forfaits d'examens vendus</value>
+  </data>
+  <data name="Exams unlocked" xml:space="preserve">
+    <value>Examens débloqués</value>
+  </data>
+  <data name="FAQ" xml:space="preserve">
+    <value>FAQ</value>
+  </data>
+  <data name="Features" xml:space="preserve">
+    <value>Fonctionnalités</value>
+  </data>
+  <data name="Four textbooks and no clear plan" xml:space="preserve">
+    <value>Quatre manuels et aucun plan clair</value>
+  </data>
+  <data name="Fresh exams are added regularly — your pack always unlocks our newest material. Secure checkout by Stripe." xml:space="preserve">
+    <value>De nouveaux examens sont ajoutés régulièrement — votre forfait débloque toujours notre matériel le plus récent. Paiement sécurisé par Stripe.</value>
+  </data>
+  <data name="Full NPPE syllabus" xml:space="preserve">
+    <value>Programme complet du NPPE</value>
+  </data>
+  <data name="Full Study Hub — all six weighted sections" xml:space="preserve">
+    <value>Study Hub complet — les six sections pondérées</value>
+  </data>
+  <data name="Full practice exams" xml:space="preserve">
+    <value>Examens pratiques complets</value>
+  </data>
+  <data name="Get a new link" xml:space="preserve">
+    <value>Obtenir un nouveau lien</value>
+  </data>
+  <data name="Get the {0}" xml:space="preserve">
+    <value>Obtenez le {0}</value>
+  </data>
+  <data name="Going it alone" xml:space="preserve">
+    <value>Se débrouiller seul</value>
+  </data>
+  <data name="Good to know" xml:space="preserve">
+    <value>Bon à savoir</value>
+  </data>
+  <data name="Hold public safety paramount" xml:space="preserve">
+    <value>Placer la sécurité du public au premier plan</value>
+  </data>
+  <data name="Hours lost guessing what matters" xml:space="preserve">
+    <value>Des heures perdues à deviner ce qui compte</value>
+  </data>
+  <data name="How does pricing work?" xml:space="preserve">
+    <value>Comment fonctionne la tarification ?</value>
+  </data>
+  <data name="How it works" xml:space="preserve">
+    <value>Comment ça fonctionne</value>
+  </data>
+  <data name="How to request a refund" xml:space="preserve">
+    <value>Comment demander un remboursement</value>
+  </data>
+  <data name="If something on our side stops you from accessing what you paid for, contact us and we'll make it right — either by fixing the issue or issuing a refund, even outside the window above." xml:space="preserve">
+    <value>Si un problème de notre côté vous empêche d'accéder à ce que vous avez payé, contactez-nous et nous corrigerons la situation — soit en réglant le problème, soit en émettant un remboursement, même en dehors du délai ci-dessus.</value>
+  </data>
+  <data name="If you cross CA$30,000 without registering, you can owe the tax out of pocket, retroactively — so we flag orange at CA$20k and red at CA$25k to give you runway." xml:space="preserve">
+    <value>Si vous dépassez 30 000 $ CA sans vous inscrire, vous pouvez devoir la taxe de votre poche, rétroactivement — c'est pourquoi nous passons à l'orange à 20 000 $ CA et au rouge à 25 000 $ CA pour vous donner une marge.</value>
+  </data>
+  <data name="If you didn't create this account, you can safely ignore this email." xml:space="preserve">
+    <value>Si vous n'avez pas créé ce compte, vous pouvez ignorer ce courriel en toute sécurité.</value>
+  </data>
+  <data name="If you were charged twice or bought the wrong pack by mistake, email us and we'll sort it out." xml:space="preserve">
+    <value>Si vous avez été facturé deux fois ou avez acheté le mauvais forfait par erreur, écrivez-nous et nous réglerons la situation.</value>
+  </data>
+  <data name="If your email needs confirming, we've sent a fresh link." xml:space="preserve">
+    <value>Si votre courriel doit être confirmé, nous avons envoyé un nouveau lien.</value>
+  </data>
+  <data name="Is it available in French?" xml:space="preserve">
+    <value>Est-ce disponible en français ?</value>
+  </data>
+  <data name="Join the engineers and geoscientists preparing the smart way." xml:space="preserve">
+    <value>Rejoignez les ingénieurs et les géoscientifiques qui se préparent intelligemment.</value>
+  </data>
+  <data name="Law" xml:space="preserve">
+    <value>Droit</value>
+  </data>
+  <data name="Law for Practice" xml:space="preserve">
+    <value>Droit pour la pratique</value>
+  </data>
+  <data name="Maximize project profit" xml:space="preserve">
+    <value>Maximiser le profit du projet</value>
+  </data>
+  <data name="Measure" xml:space="preserve">
+    <value>Mesurer</value>
+  </data>
+  <data name="More than 7 days after the purchase date." xml:space="preserve">
+    <value>Plus de 7 jours après la date d'achat.</value>
+  </data>
+  <data name="NPPE Prep is an independent study resource for the National Professional Practice Examination. We are not affiliated with, endorsed by, or connected to any regulator or association, and we do not administer the actual exam." xml:space="preserve">
+    <value>NPPE Prep est une ressource d'étude indépendante pour l'examen national de pratique professionnelle. Nous ne sommes affiliés, approuvés ni liés à aucun organisme de réglementation ou association, et nous n'administrons pas l'examen réel.</value>
+  </data>
+  <data name="NPPE Prep turns the entire syllabus into a clear, structured path — study notes, real practice questions, and worked explanations on every item. Walk in ready, not guessing." xml:space="preserve">
+    <value>NPPE Prep transforme tout le programme en un parcours clair et structuré — notes d'étude, vraies questions pratiques et explications détaillées pour chaque élément. Présentez-vous prêt, pas dans le doute.</value>
+  </data>
+  <data name="NPPE exam prep, made clear" xml:space="preserve">
+    <value>La préparation à l'examen NPPE, rendue claire</value>
+  </data>
+  <data name="National Professional Practice Examination" xml:space="preserve">
+    <value>Examen national de pratique professionnelle</value>
+  </data>
+  <data name="Net" xml:space="preserve">
+    <value>Net</value>
+  </data>
+  <data name="No attempts left" xml:space="preserve">
+    <value>Aucune tentative restante</value>
+  </data>
+  <data name="No exams unlocked yet" xml:space="preserve">
+    <value>Aucun examen débloqué pour l'instant</value>
+  </data>
+  <data name="No payments yet." xml:space="preserve">
+    <value>Aucun paiement pour l'instant.</value>
+  </data>
+  <data name="No sense of what you've mastered" xml:space="preserve">
+    <value>Aucune idée de ce que vous maîtrisez</value>
+  </data>
+  <data name="No. NPPE Prep is an independent study resource, built for engineers-in-training and not affiliated with any regulator or association." xml:space="preserve">
+    <value>Non. NPPE Prep est une ressource d'étude indépendante, conçue pour les ingénieurs en formation et non affiliée à aucun organisme de réglementation ou association.</value>
+  </data>
+  <data name="No. The Study Hub is written and structured directly from the exam syllabus, so it covers what you're tested on without duplicating four textbooks." xml:space="preserve">
+    <value>Non. Le Study Hub est rédigé et structuré directement à partir du programme d'examen, il couvre donc ce sur quoi vous êtes évalué sans reproduire quatre manuels.</value>
+  </data>
+  <data name="Note" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="On this page" xml:space="preserve">
+    <value>Sur cette page</value>
+  </data>
+  <data name="Once you've started (used an attempt on) any exam unlocked by the pack." xml:space="preserve">
+    <value>Une fois que vous avez commencé (utilisé une tentative sur) un examen débloqué par le forfait.</value>
+  </data>
+  <data name="One expensive attempt on the line" xml:space="preserve">
+    <value>Une tentative coûteuse en jeu</value>
+  </data>
+  <data name="One last step" xml:space="preserve">
+    <value>Une dernière étape</value>
+  </data>
+  <data name="One-time exam pack · no subscription" xml:space="preserve">
+    <value>Forfait d'examens unique · sans abonnement</value>
+  </data>
+  <data name="Our content is provided for study purposes to help you prepare. We work to keep it accurate and current, but we can't guarantee a particular exam result. Passing the NPPE depends on many factors beyond this platform." xml:space="preserve">
+    <value>Notre contenu est fourni à des fins d'étude pour vous aider à vous préparer. Nous nous efforçons de le garder exact et à jour, mais nous ne pouvons garantir un résultat d'examen particulier. La réussite du NPPE dépend de nombreux facteurs indépendants de cette plateforme.</value>
+  </data>
+  <data name="Pack buyers" xml:space="preserve">
+    <value>Acheteurs de forfaits</value>
+  </data>
+  <data name="Payments are processed securely by Stripe. Prices are shown in Canadian dollars. We never see or store your full card details." xml:space="preserve">
+    <value>Les paiements sont traités de façon sécurisée par Stripe. Les prix sont affichés en dollars canadiens. Nous ne voyons ni ne stockons jamais vos informations de carte complètes.</value>
+  </data>
+  <data name="Pick an exam pack to unlock full practice exams and the complete Study Hub." xml:space="preserve">
+    <value>Choisissez un forfait d'examens pour débloquer les examens pratiques complets et tout le Study Hub.</value>
+  </data>
+  <data name="Please confirm your email before signing in." xml:space="preserve">
+    <value>Veuillez confirmer votre courriel avant de vous connecter.</value>
+  </data>
+  <data name="Practice" xml:space="preserve">
+    <value>Pratiquer</value>
+  </data>
+  <data name="Practice exams" xml:space="preserve">
+    <value>Examens pratiques</value>
+  </data>
+  <data name="Prepare" xml:space="preserve">
+    <value>Préparer</value>
+  </data>
+  <data name="Prepared, not overwhelmed" xml:space="preserve">
+    <value>Préparé, pas dépassé</value>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Précédent</value>
+  </data>
+  <data name="Prof. Practice" xml:space="preserve">
+    <value>Prat. prof.</value>
+  </data>
+  <data name="Professional Practice" xml:space="preserve">
+    <value>Pratique professionnelle</value>
+  </data>
+  <data name="Professionalism" xml:space="preserve">
+    <value>Professionnalisme</value>
+  </data>
+  <data name="Progress tracked section by section" xml:space="preserve">
+    <value>Progrès suivis section par section</value>
+  </data>
+  <data name="Protect the employer" xml:space="preserve">
+    <value>Protéger l'employeur</value>
+  </data>
+  <data name="Questions about these terms? Email us at &lt;a href=&quot;mailto:info@nppeacademy.com&quot;&gt;info@nppeacademy.com&lt;/a&gt;." xml:space="preserve">
+    <value>Des questions sur ces conditions ? Écrivez-nous à &lt;a href="mailto:info@nppeacademy.com"&gt;info@nppeacademy.com&lt;/a&gt;.</value>
+  </data>
+  <data name="Questions modelled on actual NPPE material, with two attempts on every exam. Every answer comes with a clear explanation — so a wrong answer becomes a lesson, not a mystery." xml:space="preserve">
+    <value>Des questions inspirées du vrai matériel NPPE, avec deux tentatives par examen. Chaque réponse s'accompagne d'une explication claire — ainsi une mauvaise réponse devient une leçon, pas un mystère.</value>
+  </data>
+  <data name="Read the whole syllabus in six clear sections — no textbooks, no guessing what matters." xml:space="preserve">
+    <value>Lisez tout le programme en six sections claires — sans manuels, sans deviner ce qui compte.</value>
+  </data>
+  <data name="Ready to walk in prepared?" xml:space="preserve">
+    <value>Prêt à vous présenter préparé ?</value>
+  </data>
+  <data name="Ready?" xml:space="preserve">
+    <value>Prêt ?</value>
+  </data>
+  <data name="Real questions, worked explanations" xml:space="preserve">
+    <value>De vraies questions, des explications détaillées</value>
+  </data>
+  <data name="Refund" xml:space="preserve">
+    <value>Remboursement</value>
+  </data>
+  <data name="Refund &lt;em&gt;policy&lt;/em&gt;" xml:space="preserve">
+    <value>Politique de &lt;em&gt;remboursement&lt;/em&gt;</value>
+  </data>
+  <data name="Refund Policy" xml:space="preserve">
+    <value>Politique de remboursement</value>
+  </data>
+  <data name="Resend confirmation link" xml:space="preserve">
+    <value>Renvoyer le lien de confirmation</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Section" xml:space="preserve">
+    <value>Section</value>
+  </data>
+  <data name="See exactly where you stand" xml:space="preserve">
+    <value>Voyez exactement où vous en êtes</value>
+  </data>
+  <data name="See it in action" xml:space="preserve">
+    <value>Voyez-le en action</value>
+  </data>
+  <data name="Six sections, precisely weighted" xml:space="preserve">
+    <value>Six sections, précisément pondérées</value>
+  </data>
+  <data name="Start exam" xml:space="preserve">
+    <value>Commencer l'examen</value>
+  </data>
+  <data name="Start reading" xml:space="preserve">
+    <value>Commencer la lecture</value>
+  </data>
+  <data name="Study" xml:space="preserve">
+    <value>Étudier</value>
+  </data>
+  <data name="Study &lt;em&gt;hub&lt;/em&gt;" xml:space="preserve">
+    <value>Study &lt;em&gt;Hub&lt;/em&gt;</value>
+  </data>
+  <data name="Study Hub" xml:space="preserve">
+    <value>Study Hub</value>
+  </data>
+  <data name="Study in English or French, on any device" xml:space="preserve">
+    <value>Étudiez en anglais ou en français, sur n'importe quel appareil</value>
+  </data>
+  <data name="Study material disclaimer" xml:space="preserve">
+    <value>Avis concernant le matériel d'étude</value>
+  </data>
+  <data name="Take exams built from real NPPE material, with a worked explanation on every question." xml:space="preserve">
+    <value>Passez des examens conçus à partir du vrai matériel NPPE, avec une explication détaillée pour chaque question.</value>
+  </data>
+  <data name="Technical problems" xml:space="preserve">
+    <value>Problèmes techniques</value>
+  </data>
+  <data name="Terms of &lt;em&gt;service&lt;/em&gt;" xml:space="preserve">
+    <value>Conditions &lt;em&gt;d'utilisation&lt;/em&gt;</value>
+  </data>
+  <data name="Terms of Service" xml:space="preserve">
+    <value>Conditions d'utilisation</value>
+  </data>
+  <data name="Thanks for signing up for NPPE Prep. Confirm your email to activate your account." xml:space="preserve">
+    <value>Merci de vous être inscrit à NPPE Prep. Confirmez votre courriel pour activer votre compte.</value>
+  </data>
+  <data name="The NPPE confirms your knowledge of professionalism, ethics, and law — the judgment behind the P.Eng. and P.Geo. designations. It's required for licensure across Canada (except Quebec)." xml:space="preserve">
+    <value>Le NPPE confirme vos connaissances en professionnalisme, éthique et droit — le jugement derrière les titres P.Eng. et P.Geo. Il est requis pour l'obtention du permis d'exercice partout au Canada (sauf au Québec).</value>
+  </data>
+  <data name="The NPPE is a 2½-hour, closed-book exam of 110 multiple-choice questions. It confirms your knowledge of professionalism, ethics, and law — the judgment behind the P.Eng. and P.Geo. designations." xml:space="preserve">
+    <value>Le NPPE est un examen à livre fermé de 2 h 30 comptant 110 questions à choix multiples. Il confirme vos connaissances en professionnalisme, éthique et droit — le jugement derrière les titres P.Eng. et P.Geo.</value>
+  </data>
+  <data name="The National Professional Practice Examination is a 2½-hour, closed-book exam of 110 multiple-choice questions on professionalism, ethics, and law. It's required for P.Eng. and P.Geo. licensure across Canada (except Quebec)." xml:space="preserve">
+    <value>L'examen national de pratique professionnelle est un examen à livre fermé de 2 h 30 comptant 110 questions à choix multiples sur le professionnalisme, l'éthique et le droit. Il est requis pour l'obtention du permis P.Eng. et P.Geo. partout au Canada (sauf au Québec).</value>
+  </data>
+  <data name="The Study Hub is part of premium access." xml:space="preserve">
+    <value>Le Study Hub fait partie de l'accès premium.</value>
+  </data>
+  <data name="The agreement between you and NPPE Prep." xml:space="preserve">
+    <value>L'entente entre vous et NPPE Prep.</value>
+  </data>
+  <data name="The exam" xml:space="preserve">
+    <value>L'examen</value>
+  </data>
+  <data name="The exam between you and your &lt;em&gt;P.Eng.&lt;/em&gt;" xml:space="preserve">
+    <value>L'examen qui vous sépare de votre &lt;em&gt;P.Eng.&lt;/em&gt;</value>
+  </data>
+  <data name="The exams unlocked with your pack — each mirrors the real NPPE format, with worked explanations on every item." xml:space="preserve">
+    <value>Les examens débloqués avec votre forfait — chacun reproduit le vrai format NPPE, avec des explications détaillées pour chaque élément.</value>
+  </data>
+  <data name="The exams you've unlocked and how many attempts remain on each." xml:space="preserve">
+    <value>Les examens que vous avez débloqués et le nombre de tentatives restantes sur chacun.</value>
+  </data>
+  <data name="The link may have expired. We can send you a new one." xml:space="preserve">
+    <value>Le lien a peut-être expiré. Nous pouvons vous en envoyer un nouveau.</value>
+  </data>
+  <data name="The reviewed questions could not be read. Please try again." xml:space="preserve">
+    <value>Les questions révisées n'ont pas pu être lues. Veuillez réessayer.</value>
+  </data>
+  <data name="The syllabus" xml:space="preserve">
+    <value>Le programme</value>
+  </data>
+  <data name="The syllabus, written to be read" xml:space="preserve">
+    <value>Le programme, rédigé pour être lu</value>
+  </data>
+  <data name="The whole syllabus in one structured place" xml:space="preserve">
+    <value>Tout le programme en un seul endroit structuré</value>
+  </data>
+  <data name="There are no questions to import." xml:space="preserve">
+    <value>Il n'y a aucune question à importer.</value>
+  </data>
+  <data name="This confirmation link is invalid or has already been used. Request a fresh one and try again." xml:space="preserve">
+    <value>Ce lien de confirmation est invalide ou a déjà été utilisé. Demandez-en un nouveau et réessayez.</value>
+  </data>
+  <data name="This email domain is reserved. Please use a personal email address." xml:space="preserve">
+    <value>Ce domaine de courriel est réservé. Veuillez utiliser une adresse courriel personnelle.</value>
+  </data>
+  <data name="Three steps to exam-ready" xml:space="preserve">
+    <value>Trois étapes pour être prêt à l'examen</value>
+  </data>
+  <data name="Track every attempt, see what's solid, and focus your next study hour where it counts." xml:space="preserve">
+    <value>Suivez chaque tentative, voyez ce qui est solide et concentrez votre prochaine heure d'étude là où ça compte.</value>
+  </data>
+  <data name="Try a practice exam" xml:space="preserve">
+    <value>Essayer un examen pratique</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="Unlock access" xml:space="preserve">
+    <value>Débloquer l'accès</value>
+  </data>
+  <data name="Unlock to read" xml:space="preserve">
+    <value>Débloquer pour lire</value>
+  </data>
+  <data name="Unlocked {0}" xml:space="preserve">
+    <value>Débloqué {0}</value>
+  </data>
+  <data name="View exam packs" xml:space="preserve">
+    <value>Voir les forfaits d'examens</value>
+  </data>
+  <data name="Watch how it works" xml:space="preserve">
+    <value>Regardez comment ça fonctionne</value>
+  </data>
+  <data name="Watch the 2-minute tour" xml:space="preserve">
+    <value>Regardez la visite de 2 minutes</value>
+  </data>
+  <data name="We may update the platform, its content, and these terms from time to time. We aim to keep the service available but can't guarantee uninterrupted access." xml:space="preserve">
+    <value>Nous pouvons mettre à jour la plateforme, son contenu et ces conditions de temps à autre. Nous visons à garder le service disponible, mais ne pouvons garantir un accès ininterrompu.</value>
+  </data>
+  <data name="We sent a confirmation link to &lt;strong&gt;{0}&lt;/strong&gt;. Click it to activate your account." xml:space="preserve">
+    <value>Nous avons envoyé un lien de confirmation à &lt;strong&gt;{0}&lt;/strong&gt;. Cliquez dessus pour activer votre compte.</value>
+  </data>
+  <data name="We sent you a confirmation link. Click it to activate your account." xml:space="preserve">
+    <value>Nous vous avons envoyé un lien de confirmation. Cliquez dessus pour activer votre compte.</value>
+  </data>
+  <data name="We've sent a confirmation link to activate your account. You'll be able to sign in once it's verified." xml:space="preserve">
+    <value>Nous avons envoyé un lien de confirmation pour activer votre compte. Vous pourrez vous connecter une fois qu'il sera vérifié.</value>
+  </data>
+  <data name="What NPPE Prep is" xml:space="preserve">
+    <value>Ce qu'est NPPE Prep</value>
+  </data>
+  <data name="What is a professional's paramount duty?" xml:space="preserve">
+    <value>Quel est le devoir primordial d'un professionnel ?</value>
+  </data>
+  <data name="What is the NPPE?" xml:space="preserve">
+    <value>Qu'est-ce que le NPPE ?</value>
+  </data>
+  <data name="What you're up against" xml:space="preserve">
+    <value>Ce à quoi vous faites face</value>
+  </data>
+  <data name="What's inside" xml:space="preserve">
+    <value>Ce qu'il contient</value>
+  </data>
+  <data name="When we can't refund" xml:space="preserve">
+    <value>Quand nous ne pouvons pas rembourser</value>
+  </data>
+  <data name="When you can get your money back." xml:space="preserve">
+    <value>Quand vous pouvez récupérer votre argent.</value>
+  </data>
+  <data name="When you're eligible" xml:space="preserve">
+    <value>Quand vous êtes admissible</value>
+  </data>
+  <data name="Who we are, what the exam demands, and exactly how the platform gets you ready." xml:space="preserve">
+    <value>Qui nous sommes, ce que l'examen exige et exactement comment la plateforme vous prépare.</value>
+  </data>
+  <data name="Why NPPE Prep" xml:space="preserve">
+    <value>Pourquoi NPPE Prep</value>
+  </data>
+  <data name="With NPPE Prep" xml:space="preserve">
+    <value>Avec NPPE Prep</value>
+  </data>
+  <data name="Worked explanations on every question" xml:space="preserve">
+    <value>Des explications détaillées pour chaque question</value>
+  </data>
+  <data name="Wrong answers with no explanation" xml:space="preserve">
+    <value>Des mauvaises réponses sans explication</value>
+  </data>
+  <data name="Yes — the platform is fully bilingual. Switch between English and French anytime." xml:space="preserve">
+    <value>Oui — la plateforme est entièrement bilingue. Passez de l'anglais au français à tout moment.</value>
+  </data>
+  <data name="You buy a one-time exam pack — no subscription and nothing to cancel. Each pack unlocks a set of full practice exams, with two attempts on each, plus the complete Study Hub." xml:space="preserve">
+    <value>Vous achetez un forfait d'examens unique — sans abonnement et sans rien à annuler. Chaque forfait débloque un ensemble d'examens pratiques complets, avec deux tentatives sur chacun, ainsi que tout le Study Hub.</value>
+  </data>
+  <data name="You can request a full refund within 7 days of purchase, as long as you haven't started any of the exams unlocked by that pack. If every unlocked exam still shows both attempts available, you're eligible." xml:space="preserve">
+    <value>Vous pouvez demander un remboursement complet dans les 7 jours suivant l'achat, tant que vous n'avez commencé aucun des examens débloqués par ce forfait. Si chaque examen débloqué affiche encore ses deux tentatives disponibles, vous êtes admissible.</value>
+  </data>
+  <data name="You haven't unlocked any exams yet" xml:space="preserve">
+    <value>Vous n'avez encore débloqué aucun examen</value>
+  </data>
+  <data name="You need an account to use the platform, and you must confirm your email before signing in. Keep your login details secure — you're responsible for activity under your account. Provide accurate information when you register." xml:space="preserve">
+    <value>Vous avez besoin d'un compte pour utiliser la plateforme, et vous devez confirmer votre courriel avant de vous connecter. Gardez vos informations de connexion en sécurité — vous êtes responsable de l'activité sous votre compte. Fournissez des renseignements exacts lors de votre inscription.</value>
+  </data>
+  <data name="You're" xml:space="preserve">
+    <value>Vous êtes</value>
+  </data>
+  <data name="You're a “small supplier” — no need to register for or charge GST/HST — until your taxable revenue passes CA$30,000, measured either in a single calendar quarter or over the last four consecutive quarters (rolling). This gauge tracks that rolling total so nothing sneaks up on you." xml:space="preserve">
+    <value>Vous êtes un « petit fournisseur » — aucune obligation de vous inscrire à la TPS/TVH ni de la facturer — jusqu'à ce que votre revenu imposable dépasse 30 000 $ CA, mesuré soit sur un seul trimestre civil, soit sur les quatre derniers trimestres consécutifs (glissants). Cette jauge suit ce total glissant pour que rien ne vous surprenne.</value>
+  </data>
+  <data name="You've used all your attempts for this exam." xml:space="preserve">
+    <value>Vous avez utilisé toutes vos tentatives pour cet examen.</value>
+  </data>
+  <data name="Your &lt;em&gt;exams&lt;/em&gt;" xml:space="preserve">
+    <value>Vos &lt;em&gt;examens&lt;/em&gt;</value>
+  </data>
+  <data name="Your access" xml:space="preserve">
+    <value>Votre accès</value>
+  </data>
+  <data name="Your account" xml:space="preserve">
+    <value>Votre compte</value>
+  </data>
+  <data name="Your account is now active." xml:space="preserve">
+    <value>Votre compte est maintenant actif.</value>
+  </data>
+  <data name="Your email is confirmed. Sign in to pick an exam pack and get started." xml:space="preserve">
+    <value>Votre courriel est confirmé. Connectez-vous pour choisir un forfait d'examens et commencer.</value>
+  </data>
+  <data name="Your exam pack is unlocked — your practice exams and the full Study Hub are ready when you are." xml:space="preserve">
+    <value>Votre forfait d'examens est débloqué — vos examens pratiques et tout le Study Hub sont prêts quand vous l'êtes.</value>
+  </data>
+  <data name="Your library" xml:space="preserve">
+    <value>Votre bibliothèque</value>
+  </data>
+  <data name="across sold packs" xml:space="preserve">
+    <value>sur les forfaits vendus</value>
+  </data>
+  <data name="active" xml:space="preserve">
+    <value>actif</value>
+  </data>
+  <data name="all time" xml:space="preserve">
+    <value>depuis le début</value>
+  </data>
+  <data name="closed-book exam" xml:space="preserve">
+    <value>examen à livre fermé</value>
+  </data>
+  <data name="exam packs" xml:space="preserve">
+    <value>forfaits d'examens</value>
+  </data>
+  <data name="licence on the line" xml:space="preserve">
+    <value>permis en jeu</value>
+  </data>
+  <data name="multiple-choice questions" xml:space="preserve">
+    <value>questions à choix multiples</value>
+  </data>
+  <data name="not valid." xml:space="preserve">
+    <value>non valide.</value>
+  </data>
+  <data name="of the exam" xml:space="preserve">
+    <value>de l'examen</value>
+  </data>
+  <data name="one-time" xml:space="preserve">
+    <value>paiement unique</value>
+  </data>
+  <data name="options" xml:space="preserve">
+    <value>options</value>
+  </data>
+  <data name="questions" xml:space="preserve">
+    <value>questions</value>
+  </data>
+  <data name="subscription" xml:space="preserve">
+    <value>abonnement</value>
+  </data>
+  <data name="verified." xml:space="preserve">
+    <value>vérifié.</value>
+  </data>
+  <data name="weight" xml:space="preserve">
+    <value>pondération</value>
+  </data>
+  <data name="weighted syllabus sections" xml:space="preserve">
+    <value>sections pondérées du programme</value>
+  </data>
+  <data name="your email." xml:space="preserve">
+    <value>votre courriel.</value>
+  </data>
+  <data name="{0} attempts left" xml:space="preserve">
+    <value>{0} tentatives restantes</value>
+  </data>
+  <data name="{0} attempts on every exam" xml:space="preserve">
+    <value>{0} tentatives sur chaque examen</value>
+  </data>
+  <data name="{0} exams unlocked" xml:space="preserve">
+    <value>{0} examens débloqués</value>
+  </data>
+  <data name="{0} full practice exams · {1} attempts each" xml:space="preserve">
+    <value>{0} examens pratiques complets · {1} tentatives chacun</value>
+  </data>
+  <data name="{0} full-length NPPE practice exams" xml:space="preserve">
+    <value>{0} examens pratiques NPPE complets</value>
+  </data>
+  <data name="{0} of {1} attempts left" xml:space="preserve">
+    <value>{0} tentatives restantes sur {1}</value>
+  </data>
+  <data name="{0} of {1} attempts used" xml:space="preserve">
+    <value>{0} tentatives utilisées sur {1}</value>
+  </data>
+  <data name="{0} unlocked" xml:space="preserve">
+    <value>{0} débloqué</value>
+  </data>
 </root>

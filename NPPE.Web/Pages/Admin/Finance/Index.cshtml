@@ -225,6 +225,7 @@
         <div class="psub">@SharedLocalizer["Latest payments"]</div>
         @if (s.Recent.Any())
         {
+            <div class="scroll-x">
             <table class="txn">
                 <thead><tr><th>@SharedLocalizer["Date"]</th><th>@SharedLocalizer["Customer"]</th><th>@SharedLocalizer["Product"]</th><th class="r">@SharedLocalizer["Gross"]</th><th class="r">@SharedLocalizer["Fee"]</th><th class="r">@SharedLocalizer["Net"]</th><th>@SharedLocalizer["Type"]</th></tr></thead>
                 <tbody>
@@ -254,6 +255,7 @@
                     }
                 </tbody>
             </table>
+            </div>
         }
         else
         {
