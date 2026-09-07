@@ -202,9 +202,10 @@ app.Use(async (context, next) =>
         "connect-src 'self'; " +
         "frame-ancestors 'none'; " +
         "base-uri 'self'; " +
-        // Stripe Checkout is a redirect to its hosted page, so the POST that starts
-        // checkout must be allowed to navigate there (otherwise CSP blocks payment).
-        "form-action 'self' https://checkout.stripe.com; " +
+        // Some sign-in/pay flows POST and then redirect off-site, and form-action
+        // governs the whole redirect chain: Stripe Checkout (hosted payment page) and
+        // Google OAuth (the sign-in challenge) must both be allowed, or CSP blocks them.
+        "form-action 'self' https://checkout.stripe.com https://accounts.google.com; " +
         "object-src 'none'";
     await next();
 });
