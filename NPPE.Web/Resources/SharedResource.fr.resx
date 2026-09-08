@@ -1337,4 +1337,13 @@
   <data name="Start studying" xml:space="preserve">
     <value>Commencer à étudier</value>
   </data>
+  <data name="3 full exams · 110+ questions each" xml:space="preserve">
+    <value>3 examens complets · 110+ questions chacun</value>
+  </data>
+  <data name="340+ questions with explanations" xml:space="preserve">
+    <value>340+ questions avec explications</value>
+  </data>
+  <data name="Exams" xml:space="preserve">
+    <value>Examens</value>
+  </data>
 </root>

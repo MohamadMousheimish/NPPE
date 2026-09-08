@@ -109,6 +109,22 @@ public class ExamDocumentParserTests
     }
 
     [Fact]
+    public void Strips_a_leading_explanation_title_even_when_glued_to_the_text()
+    {
+        using var docx = BuildDocx(
+            "A stem needing explanation?",
+            "A. Alpha", "B. Bravo", "C. Charlie", "D. Delta",
+            "Correct Answer: A",
+            "Explanation:Alpha is correct because of the paramount duty.");
+
+        var result = _parser.Parse(docx);
+
+        var q = Assert.Single(result.Questions);
+        Assert.StartsWith("Alpha is correct", q.ExplanationForCorrect);
+        Assert.DoesNotContain("Explanation:", q.ExplanationForCorrect);
+    }
+
+    [Fact]
     public void Flags_a_placeholder_when_no_explanation_is_present()
     {
         using var docx = BuildDocx(

@@ -32,12 +32,10 @@ public class ExamDocumentParser : IExamDocumentParser
     private static readonly Regex LetteredOptionRe =
         new(@"^\s*([A-D])[\.\)]\s+(.*)$", RegexOptions.Singleline | RegexOptions.Compiled);
 
-    // Standalone header lines inside the explanation block that add no value.
-    private static readonly HashSet<string> ExplanationHeaders = new(StringComparer.OrdinalIgnoreCase)
-    {
-        "Explanation", "Explanation:", "Why the other choices are wrong", "Why the other choices are wrong:",
-        "Why the other answers are wrong", "Why the other answers are wrong:"
-    };
+    // A redundant "Explanation" title at the very start of the explanation block —
+    // whether on its own line or glued to the text ("Explanation:Environmental …").
+    private static readonly Regex LeadingExplanationRe =
+        new(@"^\s*Explanation\s*[:.\-–—]?\s*", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
     public ParsedExamResult Parse(Stream documentStream)
     {
@@ -104,11 +102,8 @@ public class ExamDocumentParser : IExamDocumentParser
                 : paras.Count;
             var explLines = new List<string>();
             for (int j = b.Anchor + 1; j < explEnd && j < paras.Count; j++)
-            {
-                if (ExplanationHeaders.Contains(paras[j].Trim())) continue;
                 explLines.Add(paras[j]);
-            }
-            var explanation = string.Join("\n", explLines).Trim();
+            var explanation = LeadingExplanationRe.Replace(string.Join("\n", explLines).Trim(), "").Trim();
             if (string.IsNullOrWhiteSpace(explanation))
             {
                 explanation = DefaultExplanation;
