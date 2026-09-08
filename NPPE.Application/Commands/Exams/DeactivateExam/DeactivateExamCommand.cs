@@ -20,6 +20,7 @@ public class DeactivateExamCommandHandler : IRequestHandler<DeactivateExamComman
             throw new InvalidOperationException("Exam not found.");
 
         exam.IsActive = false; // soft delete
+        exam.DeactivatedAt = DateTime.UtcNow;
         await _examRepository.UpdateAsync(exam);
     }
 }

@@ -120,6 +120,10 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<NPPE.Application.Documents.IExamDocumentParser, NPPE.Infrastructure.Documents.ExamDocumentParser>();
 builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastructure.Email.SmtpEmailSender>();
 builder.Services.AddScoped<NPPE.Application.Services.IExamPackGranter, NPPE.Application.Services.ExamPackGranter>();
+builder.Services.AddScoped<NPPE.Application.Services.IInactiveExamCleaner, NPPE.Infrastructure.Maintenance.InactiveExamCleaner>();
+
+// Daily maintenance: purge exams inactive beyond the retention window (with no attempts).
+builder.Services.AddHostedService<NPPE.Web.Maintenance.InactiveExamCleanupService>();
 
 // Blocks public self-registration under the company's reserved email domain(s).
 builder.Services.AddSingleton<NPPE.Web.Services.RegistrationDomainPolicy>();

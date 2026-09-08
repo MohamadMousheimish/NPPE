@@ -22,6 +22,12 @@ public class UpdateExamCommandHandler : IRequestHandler<UpdateExamCommand>
 
         exam.Title = request.Title;
         exam.Description = request.Description;
+
+        // Track the deactivation moment so the cleanup job can age it out; clear it on reactivation.
+        if (request.IsActive)
+            exam.DeactivatedAt = null;
+        else if (exam.IsActive)
+            exam.DeactivatedAt = DateTime.UtcNow;
         exam.IsActive = request.IsActive;
 
         await _examRepository.UpdateAsync(exam);
