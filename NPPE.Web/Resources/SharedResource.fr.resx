@@ -1334,4 +1334,7 @@
   <data name="{0} unlocked" xml:space="preserve">
     <value>{0} débloqué</value>
   </data>
+  <data name="Start studying" xml:space="preserve">
+    <value>Commencer à étudier</value>
+  </data>
 </root>

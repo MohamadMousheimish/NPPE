@@ -109,6 +109,7 @@
    ========================================================================== */
 .welcome { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
     margin-bottom: 2.4rem; }
+.welcome__cta { display: flex; gap: 0.8rem; flex-wrap: wrap; }
 .welcome h1 { font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.02em; }
 .welcome h1 em { font-style: normal; color: var(--signal); }
 .welcome .sub { color: var(--slate); margin-top: 0.5rem; }
@@ -375,7 +376,7 @@
 .plan .eyebrow { margin-bottom: 0.8rem; }
 .plan .price { font-family: var(--font-display); font-weight: 600; font-size: 2.8rem; letter-spacing: -0.02em; line-height: 1; }
 .plan .price small { font-size: 1rem; color: var(--slate-2); font-weight: 500; }
-.plan .price .cur { font-size: 1.2rem; color: var(--slate-2); vertical-align: top; }
+.plan .price .cur { font-size: 1.2rem; color: var(--slate-2); vertical-align: top; margin-right: 0.25rem; }
 .plan .plan-sub { color: var(--slate-2); font-size: 0.9rem; margin: 0.4rem 0 1.3rem; }
 .feat-list { list-style: none; padding: 0; margin: 0 0 1.6rem; display: grid; gap: 0.7rem; flex: 1; }
 .feat-list li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.92rem; }

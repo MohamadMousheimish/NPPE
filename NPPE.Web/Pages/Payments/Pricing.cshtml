@@ -28,7 +28,7 @@
                 <span class="badge">@SharedLocalizer["Best value"]</span>
             }
             <span class="eyebrow @(isFeatured ? "eyebrow--signal" : "")">@SharedLocalizer[pack.Name]</span>
-            <div class="price"><span class="cur">CA$</span>@dollars</div>
+            <div class="price"><span class="cur">CAD</span>@dollars</div>
             <p class="plan-sub">@SharedLocalizer["{0} full practice exams · {1} attempts each", pack.ExamCount, PricingPlans.AttemptsPerExam]</p>
             <ul class="feat-list">
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["{0} full-length NPPE practice exams", pack.ExamCount]</li>

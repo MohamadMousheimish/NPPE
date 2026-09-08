@@ -7,21 +7,37 @@ using NPPE.Application.Documents;
 namespace NPPE.Infrastructure.Documents;
 
 /// <summary>
-/// Parses the NPPE ".docx" exam template into questions. The format per question is:
-///   [stem paragraphs] [4 option paragraphs] ["That's right, the correct answer is X ..." + reasoning]
-///   ["Wrong! ... but the correct answer is X ..." + reasoning].
-/// Parsing is best-effort — uncertain results are surfaced as notes for review rather than rejected.
+/// Parses the NPPE ".docx" exam template into questions. Each question is:
+///   [stem paragraph] [4 options] ["Correct Answer: X …"] [explanation paragraphs …].
+/// Options may be one-per-paragraph ("A. text") or all four glued into a single
+/// paragraph ("A. t1B. t2C. t3D. t4"); both are handled. The correct-answer line may
+/// read "Correct Answer: B" (current format) or "That's right, the correct answer is B"
+/// (legacy). Parsing is best-effort — uncertain results are flagged as notes for review.
 /// </summary>
 public class ExamDocumentParser : IExamDocumentParser
 {
     private const string DefaultExplanation = "No explanation provided.";
 
-    private static readonly Regex CorrectAnswerRe =
-        new(@"correct answer is\s+([A-D])\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-    private static readonly Regex OptionPrefixRe =
-        new(@"^\s*([A-D])[\.\)]?\s*", RegexOptions.Compiled);
-    private static readonly Regex StripPrefixRe =
-        new(@"^\s*[A-D][\.\)]?\s*(.*)$", RegexOptions.Singleline | RegexOptions.Compiled);
+    // Correct-answer anchors: "Correct Answer: B …" (current) or "That's right, the correct answer is B" (legacy).
+    private static readonly Regex CorrectAnswerLineRe =
+        new(@"^\s*Correct\s+Answer\s*[:\-–—]?\s*([A-D])\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+    private static readonly Regex LegacyAnswerLineRe =
+        new(@"^\s*That.*?correct answer is\s+([A-D])\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+
+    // Four options glued into one paragraph: "A. …B. …C. …D. …".
+    private static readonly Regex GluedOptionsRe =
+        new(@"^\s*A[\.\)]\s*(.*?)B[\.\)]\s*(.*?)C[\.\)]\s*(.*?)D[\.\)]\s*(.*)$",
+            RegexOptions.Singleline | RegexOptions.Compiled);
+    // A single lettered option paragraph: "A. text" / "B) text".
+    private static readonly Regex LetteredOptionRe =
+        new(@"^\s*([A-D])[\.\)]\s+(.*)$", RegexOptions.Singleline | RegexOptions.Compiled);
+
+    // Standalone header lines inside the explanation block that add no value.
+    private static readonly HashSet<string> ExplanationHeaders = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "Explanation", "Explanation:", "Why the other choices are wrong", "Why the other choices are wrong:",
+        "Why the other answers are wrong", "Why the other answers are wrong:"
+    };
 
     public ParsedExamResult Parse(Stream documentStream)
     {
@@ -38,101 +54,79 @@ public class ExamDocumentParser : IExamDocumentParser
             return result;
         }
 
-        var correctIdx = new List<int>();
+        // Locate every correct-answer anchor and the letter it names.
+        var anchors = new List<(int Index, char Letter)>();
         for (int i = 0; i < paras.Count; i++)
-            if (IsCorrectAnchor(paras[i]))
-                correctIdx.Add(i);
+        {
+            var letter = AnchorLetter(paras[i]);
+            if (letter != null) anchors.Add((i, letter.Value));
+        }
 
-        if (correctIdx.Count == 0)
+        if (anchors.Count == 0)
         {
             result.Recognized = false;
             result.Error = "This doesn't look like a valid NPPE exam document. Expected each question to be " +
-                           "followed by a line like “That’s right, the correct answer is B …”. " +
-                           "None were found.";
+                           "followed by a line like “Correct Answer: B”. None were found.";
             return result;
         }
 
         result.Recognized = true;
-        int stemStart = 0;
 
-        for (int k = 0; k < correctIdx.Count; k++)
+        // First pass: resolve each question's options + where its stem sits, so we can
+        // bound each explanation block at the start of the next question's stem.
+        var blocks = new List<(int Anchor, char Letter, List<string> Options, int StemIndex, bool ByOrder)>();
+        foreach (var (index, letter) in anchors)
         {
-            int c = correctIdx[k];
-            int nextC = (k + 1 < correctIdx.Count) ? correctIdx[k + 1] : paras.Count;
+            var (options, optionsStart, byOrder) = ExtractOptions(paras, index);
+            int stemIndex = optionsStart >= 0 ? optionsStart - 1 : -1;
+            blocks.Add((index, letter, options, stemIndex, byOrder));
+        }
+
+        for (int k = 0; k < blocks.Count; k++)
+        {
+            var b = blocks[k];
             var q = new ParsedQuestion();
 
-            // --- options: the 4 paragraphs immediately before the "That's right" line ---
-            int optStart = c - 4;
-            var optionLines = new List<string>();
-            for (int j = Math.Max(optStart, stemStart); j < c; j++)
-                optionLines.Add(paras[j]);
-            ParseOptions(optionLines, q);
+            // stem: the paragraph immediately before the options
+            q.Text = b.StemIndex >= 0 ? Capitalize(paras[b.StemIndex]) : string.Empty;
 
-            // --- stem: everything from the running start up to the options ---
-            var stemLines = new List<string>();
-            for (int j = stemStart; j < optStart && j >= 0; j++)
-                stemLines.Add(paras[j]);
-            q.Text = string.Join(" ", stemLines).Trim();
+            // options
+            for (int j = 0; j < b.Options.Count; j++)
+                q.Options.Add(new ParsedOption { Label = (char)('A' + j), Text = Capitalize(b.Options[j]) });
 
-            // --- correct answer letter (trusted; the quoted restatement is not, it can be mispasted) ---
-            var m = CorrectAnswerRe.Match(paras[c]);
-            char correctLetter = char.ToUpperInvariant(m.Groups[1].Value[0]);
-            int ci = correctLetter - 'A';
+            int ci = b.Letter - 'A';
             if (ci >= 0 && ci < q.Options.Count)
                 q.Options[ci].IsCorrect = true;
 
-            // --- "Wrong!" anchor within this question's span ---
-            int w = -1;
-            for (int j = c + 1; j < nextC; j++)
-                if (IsWrongAnchor(paras[j])) { w = j; break; }
-
-            // --- correct-answer explanation: paragraphs between the two anchors ---
-            int explEnd = (w >= 0) ? w : nextC;
-            var correctExpl = new List<string>();
-            for (int j = c + 1; j < explEnd; j++)
-                correctExpl.Add(paras[j]);
-            q.ExplanationForCorrect = string.Join("\n", correctExpl).Trim();
-
-            // --- incorrect-answer explanation + find where the NEXT stem begins ---
-            if (w >= 0)
+            // explanation: everything after the answer line up to the next question's stem
+            int explEnd = (k + 1 < blocks.Count && blocks[k + 1].StemIndex >= 0)
+                ? blocks[k + 1].StemIndex
+                : paras.Count;
+            var explLines = new List<string>();
+            for (int j = b.Anchor + 1; j < explEnd && j < paras.Count; j++)
             {
-                var correctNorm = Normalize(q.ExplanationForCorrect);
-                var wrongLines = new List<string>();
-                int j = w + 1;
-                int limit = nextC - 4; // don't consume the next question's options
-                while (j < limit && IsPartOf(paras[j], correctNorm))
-                {
-                    wrongLines.Add(paras[j]);
-                    j++;
-                }
-                q.ExplanationForIncorrect = wrongLines.Count > 0
-                    ? string.Join("\n", wrongLines).Trim()
-                    : q.ExplanationForCorrect;
-                stemStart = j;
+                if (ExplanationHeaders.Contains(paras[j].Trim())) continue;
+                explLines.Add(paras[j]);
             }
-            else
+            var explanation = string.Join("\n", explLines).Trim();
+            if (string.IsNullOrWhiteSpace(explanation))
             {
-                q.ExplanationForIncorrect = q.ExplanationForCorrect;
-                stemStart = Math.Max(c + 1, nextC - 4);
-                q.Notes.Add("No “Wrong!” response was found for this question.");
+                explanation = DefaultExplanation;
+                q.Notes.Add("No explanation was found — a placeholder was inserted.");
             }
+            // Single combined explanation is shown whether the student is right or wrong.
+            q.ExplanationForCorrect = explanation;
+            q.ExplanationForIncorrect = explanation;
 
-            // --- auto-fill empty explanations (per your choice), flag it ---
-            if (string.IsNullOrWhiteSpace(q.ExplanationForCorrect))
-            {
-                q.ExplanationForCorrect = DefaultExplanation;
-                q.Notes.Add("No “correct” explanation was found — a placeholder was inserted.");
-            }
-            if (string.IsNullOrWhiteSpace(q.ExplanationForIncorrect))
-                q.ExplanationForIncorrect = DefaultExplanation;
-
-            // --- notes / flags for review ---
-            if (optionLines.Count != 4)
-                q.Notes.Add($"Expected 4 options but found {optionLines.Count}.");
+            // review flags
+            if (b.Options.Count != 4)
+                q.Notes.Add($"Expected 4 options but found {b.Options.Count}.");
             if (ci < 0 || ci >= q.Options.Count)
-                q.Notes.Add($"The correct answer “{correctLetter}” does not match any option.");
+                q.Notes.Add($"The correct answer “{b.Letter}” does not match any option.");
             if (string.IsNullOrWhiteSpace(q.Text))
                 q.Notes.Add("The question text is empty.");
+            if (b.ByOrder)
+                q.Notes.Add("Options had no A–D labels — they were assigned by order.");
 
             result.Questions.Add(q);
         }
@@ -140,30 +134,62 @@ public class ExamDocumentParser : IExamDocumentParser
         return result;
     }
 
-    private static void ParseOptions(List<string> lines, ParsedQuestion q)
+    /// <summary>Returns the answer letter if the line is a correct-answer anchor, else null.</summary>
+    private static char? AnchorLetter(string line)
     {
-        // Prefixed only if all 4 lines start with A, B, C, D in order.
-        bool prefixed = lines.Count == 4;
-        for (int i = 0; i < lines.Count && prefixed; i++)
-        {
-            var mm = OptionPrefixRe.Match(lines[i]);
-            if (!(mm.Success && char.ToUpperInvariant(mm.Groups[1].Value[0]) == (char)('A' + i)))
-                prefixed = false;
-        }
+        var m = CorrectAnswerLineRe.Match(line);
+        if (m.Success) return char.ToUpperInvariant(m.Groups[1].Value[0]);
+        m = LegacyAnswerLineRe.Match(line);
+        if (m.Success) return char.ToUpperInvariant(m.Groups[1].Value[0]);
+        return null;
+    }
 
-        for (int i = 0; i < lines.Count; i++)
+    /// <summary>
+    /// Finds the four options for the question whose answer line is at <paramref name="anchor"/>.
+    /// Returns the option texts (prefix-stripped), the paragraph index where the options begin,
+    /// and whether labels had to be assigned by order.
+    /// </summary>
+    private static (List<string> Options, int OptionsStart, bool ByOrder) ExtractOptions(List<string> paras, int anchor)
+    {
+        // Case 1 — all four glued into the single paragraph right before the anchor.
+        if (anchor - 1 >= 0)
         {
-            var text = lines[i];
-            if (prefixed)
+            var glued = GluedOptionsRe.Match(paras[anchor - 1]);
+            if (glued.Success)
             {
-                var mm = StripPrefixRe.Match(lines[i]);
-                if (mm.Success) text = mm.Groups[1].Value;
+                var opts = new List<string>
+                {
+                    glued.Groups[1].Value.Trim(), glued.Groups[2].Value.Trim(),
+                    glued.Groups[3].Value.Trim(), glued.Groups[4].Value.Trim()
+                };
+                return (opts, anchor - 1, false);
             }
-            q.Options.Add(new ParsedOption { Label = (char)('A' + i), Text = text.Trim() });
         }
 
-        if (!prefixed && lines.Count == 4)
-            q.Notes.Add("Options had no A–D labels — they were assigned by order.");
+        // Case 2 — four separate paragraphs before the anchor.
+        if (anchor - 4 >= 0)
+        {
+            var block = paras.GetRange(anchor - 4, 4);
+
+            // 2a: lettered "A. …" … "D. …" in order → strip the prefixes.
+            bool lettered = true;
+            var stripped = new List<string>();
+            for (int j = 0; j < 4; j++)
+            {
+                var mm = LetteredOptionRe.Match(block[j]);
+                if (mm.Success && char.ToUpperInvariant(mm.Groups[1].Value[0]) == (char)('A' + j))
+                    stripped.Add(mm.Groups[2].Value.Trim());
+                else { lettered = false; break; }
+            }
+            if (lettered) return (stripped, anchor - 4, false);
+
+            // 2b: four unlettered paragraphs → take them verbatim, labels by order.
+            if (block.All(l => !string.IsNullOrWhiteSpace(l)))
+                return (block.Select(l => l.Trim()).ToList(), anchor - 4, true);
+        }
+
+        // Couldn't confidently find four options.
+        return (new List<string>(), -1, false);
     }
 
     private static List<string> ReadParagraphs(Stream stream)
@@ -180,29 +206,11 @@ public class ExamDocumentParser : IExamDocumentParser
         return res;
     }
 
-    private static bool IsCorrectAnchor(string s)
+    /// <summary>Upper-cases the first letter (leaves the rest untouched).</summary>
+    private static string Capitalize(string s)
     {
-        var t = s.TrimStart();
-        return t.StartsWith("That", StringComparison.OrdinalIgnoreCase) && CorrectAnswerRe.IsMatch(s);
-    }
-
-    private static bool IsWrongAnchor(string s) =>
-        s.TrimStart().StartsWith("Wrong", StringComparison.OrdinalIgnoreCase);
-
-    /// <summary>A wrong-block paragraph is treated as duplicated reasoning if it appears within the correct reasoning.</summary>
-    private static bool IsPartOf(string paragraph, string correctReasonNorm)
-    {
-        var p = Normalize(paragraph);
-        if (p.Length == 0) return true;
-        if (correctReasonNorm.Length == 0) return false;
-        return correctReasonNorm.Contains(p) || p.Contains(correctReasonNorm);
-    }
-
-    private static string Normalize(string s)
-    {
-        var sb = new StringBuilder(s.Length);
-        foreach (var ch in s.ToLowerInvariant())
-            if (char.IsLetterOrDigit(ch)) sb.Append(ch);
-        return sb.ToString();
+        s = s.Trim();
+        if (s.Length == 0) return s;
+        return char.ToUpperInvariant(s[0]) + s.Substring(1);
     }
 }

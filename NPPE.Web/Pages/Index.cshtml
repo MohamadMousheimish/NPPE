@@ -30,7 +30,10 @@
     }
     else
     {
-        <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">@SharedLocalizer["Start new exam"] <span class="arrow">&rarr;</span></a>
+        <div class="welcome__cta">
+            <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">@SharedLocalizer["Start new exam"] <span class="arrow">&rarr;</span></a>
+            <a class="btn btn--dark btn--lg" asp-page="/Student/Study/Index">@SharedLocalizer["Start studying"] <span class="arrow">&rarr;</span></a>
+        </div>
     }
 </section>
 
