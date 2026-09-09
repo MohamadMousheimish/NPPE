@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NPPE.Application.Common;
 using NPPE.Application.DTOs.ExamAttempts;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
@@ -36,13 +37,15 @@ public class GetExamAttemptWithDetailsQueryHandler : IRequestHandler<GetExamAtte
 
             questions.Add(new QuestionResultDto
             {
-                QuestionText = question.Text,
+                QuestionText = LocalizedText.Pick(question.Text, question.TextFr),
                 SelectedLabel = selectedOption.Label,
-                SelectedText = selectedOption.Text,
+                SelectedText = LocalizedText.Pick(selectedOption.Text, selectedOption.TextFr),
                 CorrectLabel = correctOption.Label,
-                CorrectText = correctOption.Text,
+                CorrectText = LocalizedText.Pick(correctOption.Text, correctOption.TextFr),
                 IsCorrect = answered.IsCorrect,
-                Explanation = (answered.IsCorrect ? question.ExplanationForCorrect : question.ExplanationForIncorrect) ?? string.Empty
+                Explanation = answered.IsCorrect
+                    ? LocalizedText.Pick(question.ExplanationForCorrect ?? string.Empty, question.ExplanationForCorrectFr)
+                    : LocalizedText.Pick(question.ExplanationForIncorrect ?? string.Empty, question.ExplanationForIncorrectFr)
             });
         }
 

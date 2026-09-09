@@ -1,0 +1,51 @@
+@page
+@model NPPE.Web.Pages.Admin.Exams.ImportFrenchModel
+@{
+    ViewData["Title"] = SharedLocalizer["Import French translations"].Value;
+    ViewData["ActiveNav"] = "admin";
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Localization"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Import <em>French</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Upload a JSON of French translations. Questions are matched by exam title and English text; options by their A–D label. Re-uploading overwrites the French."]</p>
+    </div>
+    <a class="btn btn--ghost" asp-page="/Admin/Exams/Index">@SharedLocalizer["Back to exams"] <span class="arrow">&rarr;</span></a>
+</div>
+
+@if (Model.Error != null)
+{
+    <div class="alert alert--fail" data-reveal>@Model.Error</div>
+}
+
+@if (Model.Result != null)
+{
+    <div class="alert alert--ok" data-reveal>
+        @SharedLocalizer["Updated {0} question(s) and {1} option(s).", Model.Result.QuestionsUpdated, Model.Result.OptionsUpdated]
+    </div>
+    @if (Model.Result.Unmatched.Any())
+    {
+        <div class="tbl-wrap" data-reveal style="margin-bottom:1.4rem">
+            <table class="tbl">
+                <thead><tr><th>@SharedLocalizer["Unmatched ({0})", Model.Result.Unmatched.Count]</th></tr></thead>
+                <tbody>
+                    @foreach (var u in Model.Result.Unmatched)
+                    {
+                        <tr><td class="mono">@u</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}
+
+<div class="form-card" data-reveal style="max-width:560px">
+    <form method="post" enctype="multipart/form-data">
+        <label class="field">
+            <span class="field__label">@SharedLocalizer["Translation JSON"] <span class="idx">01</span></span>
+            <input type="file" name="file" accept=".json,application/json" class="field__input" />
+        </label>
+        <button class="btn btn--primary btn--block btn--lg" type="submit" style="margin-top:1rem">@SharedLocalizer["Upload & apply"] <span class="arrow">&rarr;</span></button>
+    </form>
+</div>

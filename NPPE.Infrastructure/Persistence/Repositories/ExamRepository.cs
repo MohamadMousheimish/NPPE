@@ -23,4 +23,13 @@ public class ExamRepository : GenericRepository<Exam>, IExamRepository
                 .ThenInclude(q => q.Options)
             .FirstOrDefaultAsync(e => e.Id == id);
     }
+
+    public async Task<Exam?> GetExamByTitleWithQuestionsAsync(string title)
+    {
+        return await _context.Exams
+            .Include(e => e.Questions.Where(q => q.IsActive))
+                .ThenInclude(q => q.Options)
+            .Where(e => e.IsActive)
+            .FirstOrDefaultAsync(e => e.Title == title);
+    }
 }

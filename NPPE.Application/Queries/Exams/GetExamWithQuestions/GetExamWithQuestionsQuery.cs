@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NPPE.Application.Common;
 using NPPE.Application.DTOs.Exams;
 using NPPE.Application.DTOs.Questions;
 using NPPE.Application.Repositories;
@@ -30,11 +31,13 @@ public class GetExamWithQuestionsQueryHandler : IRequestHandler<GetExamWithQuest
             (
                 q.Id,
                 q.ExamId,
-                q.Text, q.ExplanationForCorrect, q.ExplanationForIncorrect,
+                LocalizedText.Pick(q.Text, q.TextFr),
+                LocalizedText.Pick(q.ExplanationForCorrect, q.ExplanationForCorrectFr),
+                LocalizedText.Pick(q.ExplanationForIncorrect, q.ExplanationForIncorrectFr),
                 q.Options.OrderBy(o => o.Label).Select(o => new AnswerOptionDto
                 (
                     o.Id,
-                    o.Text,
+                    LocalizedText.Pick(o.Text, o.TextFr),
                     o.Label,
                     o.IsCorrect
                 )).ToList()
