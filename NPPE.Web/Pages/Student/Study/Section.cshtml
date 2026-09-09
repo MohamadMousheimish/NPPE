@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = Model.Section.Title + " · " + SharedLocalizer["Study Hub"].Value;
     ViewData["ActiveNav"] = "study";
-    var partial = $"_Section{Model.Section.Number}";
+    var culture = System.Globalization.CultureInfo.CurrentUICulture.TwoLetterISOLanguageName.ToLowerInvariant();
+    // French readers get the translated body partial; falls back to English otherwise.
+    var partial = culture == "fr" ? $"_Section{Model.Section.Number}_fr" : $"_Section{Model.Section.Number}";
 }
 @section Head {
     <link rel="stylesheet" href="~/css/study.css" asp-append-version="true" />
