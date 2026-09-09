@@ -1346,4 +1346,7 @@
   <data name="Exams" xml:space="preserve">
     <value>Examens</value>
   </data>
+  <data name="Translations" xml:space="preserve">
+    <value>Traductions</value>
+  </data>
 </root>
