@@ -1349,4 +1349,154 @@
   <data name="Translations" xml:space="preserve">
     <value>Traductions</value>
   </data>
+  <data name="Add a testimonial" xml:space="preserve">
+    <value>Ajouter un témoignage</value>
+  </data>
+  <data name="Add testimonial" xml:space="preserve">
+    <value>Ajouter le témoignage</value>
+  </data>
+  <data name="Admin · Localization" xml:space="preserve">
+    <value>Admin · Localisation</value>
+  </data>
+  <data name="Admin · Reviews" xml:space="preserve">
+    <value>Admin · Avis</value>
+  </data>
+  <data name="All reviews ({0})" xml:space="preserve">
+    <value>Tous les avis ({0})</value>
+  </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approuver</value>
+  </data>
+  <data name="Approve immediately" xml:space="preserve">
+    <value>Approuver immédiatement</value>
+  </data>
+  <data name="Approve reviews to show them on the home page, or add your own testimonials." xml:space="preserve">
+    <value>Approuvez des avis pour les afficher sur la page d'accueil, ou ajoutez vos propres témoignages.</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approuvé</value>
+  </data>
+  <data name="Approved reviews appear publicly" xml:space="preserve">
+    <value>Les avis approuvés sont affichés publiquement</value>
+  </data>
+  <data name="Delete this review?" xml:space="preserve">
+    <value>Supprimer cet avis?</value>
+  </data>
+  <data name="Go to exams" xml:space="preserve">
+    <value>Aller aux examens</value>
+  </data>
+  <data name="Import &lt;em&gt;French&lt;/em&gt;" xml:space="preserve">
+    <value>Importer le &lt;em&gt;français&lt;/em&gt;</value>
+  </data>
+  <data name="Import French translations" xml:space="preserve">
+    <value>Importer les traductions françaises</value>
+  </data>
+  <data name="Keep your review between 4 and 1000 characters." xml:space="preserve">
+    <value>Votre avis doit contenir entre 4 et 1000 caractères.</value>
+  </data>
+  <data name="Leave a &lt;em&gt;review&lt;/em&gt;" xml:space="preserve">
+    <value>Laisser un &lt;em&gt;avis&lt;/em&gt;</value>
+  </data>
+  <data name="Leave a review" xml:space="preserve">
+    <value>Laisser un avis</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nom</value>
+  </data>
+  <data name="No reviews yet." xml:space="preserve">
+    <value>Aucun avis pour l'instant.</value>
+  </data>
+  <data name="Please choose a rating from 1 to 5 stars." xml:space="preserve">
+    <value>Veuillez choisir une note de 1 à 5 étoiles.</value>
+  </data>
+  <data name="Please write a short review." xml:space="preserve">
+    <value>Veuillez rédiger un court avis.</value>
+  </data>
+  <data name="Rating" xml:space="preserve">
+    <value>Note</value>
+  </data>
+  <data name="Reviews" xml:space="preserve">
+    <value>Avis</value>
+  </data>
+  <data name="Seed the home page carousel" xml:space="preserve">
+    <value>Alimenter le carrousel de la page d'accueil</value>
+  </data>
+  <data name="Seeded" xml:space="preserve">
+    <value>Admin</value>
+  </data>
+  <data name="Share your experience" xml:space="preserve">
+    <value>Partagez votre expérience</value>
+  </data>
+  <data name="Student &lt;em&gt;reviews&lt;/em&gt;" xml:space="preserve">
+    <value>Avis des &lt;em&gt;étudiants&lt;/em&gt;</value>
+  </data>
+  <data name="Submit review" xml:space="preserve">
+    <value>Soumettre l'avis</value>
+  </data>
+  <data name="Take an exam first" xml:space="preserve">
+    <value>Passez d'abord un examen</value>
+  </data>
+  <data name="Tell other candidates how NPPE Prep helped. Approved reviews appear on our home page." xml:space="preserve">
+    <value>Dites aux autres candidats comment NPPE Prep vous a aidé. Les avis approuvés apparaissent sur notre page d'accueil.</value>
+  </data>
+  <data name="Title (optional)" xml:space="preserve">
+    <value>Titre (facultatif)</value>
+  </data>
+  <data name="Translation JSON" xml:space="preserve">
+    <value>JSON de traduction</value>
+  </data>
+  <data name="Trusted by engineers-in-training" xml:space="preserve">
+    <value>La confiance des ingénieurs en formation</value>
+  </data>
+  <data name="Unapprove" xml:space="preserve">
+    <value>Retirer l'approbation</value>
+  </data>
+  <data name="Unmatched ({0})" xml:space="preserve">
+    <value>Non appariés ({0})</value>
+  </data>
+  <data name="Update review" xml:space="preserve">
+    <value>Mettre à jour l'avis</value>
+  </data>
+  <data name="Updated {0} question(s) and {1} option(s)." xml:space="preserve">
+    <value>{0} question(s) et {1} option(s) mises à jour.</value>
+  </data>
+  <data name="Upload &amp; apply" xml:space="preserve">
+    <value>Téléverser et appliquer</value>
+  </data>
+  <data name="Upload a JSON of French translations. Questions are matched by exam title and English text; options by their A–D label. Re-uploading overwrites the French." xml:space="preserve">
+    <value>Téléversez un fichier JSON de traductions françaises. Les questions sont appariées par le titre de l'examen et le texte anglais; les options par leur libellé A–D. Un nouveau téléversement remplace le français.</value>
+  </data>
+  <data name="What candidates say" xml:space="preserve">
+    <value>Ce que disent les candidats</value>
+  </data>
+  <data name="What worked well for your prep?" xml:space="preserve">
+    <value>Qu'est-ce qui a bien fonctionné pour votre préparation?</value>
+  </data>
+  <data name="You can leave a review after completing at least one exam." xml:space="preserve">
+    <value>Vous pouvez laisser un avis après avoir terminé au moins un examen.</value>
+  </data>
+  <data name="You can share a review once you've completed at least one practice exam." xml:space="preserve">
+    <value>Vous pourrez laisser un avis une fois que vous aurez terminé au moins un examen pratique.</value>
+  </data>
+  <data name="Your experience" xml:space="preserve">
+    <value>Votre expérience</value>
+  </data>
+  <data name="Your rating" xml:space="preserve">
+    <value>Votre note</value>
+  </data>
+  <data name="Your review" xml:space="preserve">
+    <value>Votre avis</value>
+  </data>
+  <data name="Your review is awaiting approval. You can update it below." xml:space="preserve">
+    <value>Votre avis est en attente d'approbation. Vous pouvez le modifier ci-dessous.</value>
+  </data>
+  <data name="Your review is live — thank you! You can update it below." xml:space="preserve">
+    <value>Votre avis est publié — merci! Vous pouvez le modifier ci-dessous.</value>
+  </data>
+  <data name="Thanks! Your review was submitted and will appear once approved." xml:space="preserve">
+    <value>Merci! Votre avis a été soumis et apparaîtra une fois approuvé.</value>
+  </data>
+  <data name="Testimonial added." xml:space="preserve">
+    <value>Témoignage ajouté.</value>
+  </data>
 </root>

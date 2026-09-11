@@ -1,9 +1,12 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
+using NPPE.Application.DTOs.Feedback;
+using NPPE.Application.Queries.Feedback.GetApprovedFeedback;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
 using NPPE.Web.Resources;
@@ -19,20 +22,25 @@ public class IndexModel : PageModel
     private readonly UserManager<AppUser> _userManager;
     private readonly IExamAttemptRepository _examAttemptRepository;
     private readonly IExamRepository _examRepository;
+    private readonly IMediator _mediator;
 
     public IndexModel(
         ILogger<IndexModel> logger,
         IStringLocalizer<SharedResource> localizer,
         UserManager<AppUser> userManager,
         IExamAttemptRepository examAttemptRepository,
-        IExamRepository examRepository)
+        IExamRepository examRepository,
+        IMediator mediator)
     {
         _logger = logger;
         _localizer = localizer;
         _userManager = userManager;
         _examAttemptRepository = examAttemptRepository;
         _examRepository = examRepository;
+        _mediator = mediator;
     }
+
+    public List<FeedbackDto> Testimonials { get; set; } = new();
 
     public string UserName { get; set; } = string.Empty;
     public string FirstName { get; set; } = string.Empty;
@@ -44,9 +52,12 @@ public class IndexModel : PageModel
 
     public async Task<IActionResult> OnGetAsync()
     {
-        // Not signed in → render the public landing page (no dashboard data needed).
+        // Not signed in → render the public landing page with approved testimonials.
         if (User.Identity?.IsAuthenticated != true)
+        {
+            Testimonials = await _mediator.Send(new GetApprovedFeedbackQuery(24));
             return Page();
+        }
 
         var user = await _userManager.GetUserAsync(User);
         if (user != null)

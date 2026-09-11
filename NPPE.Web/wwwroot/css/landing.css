@@ -128,3 +128,26 @@
     .lp-facts { grid-template-columns: repeat(2, 1fr); }
     .lp-compare { grid-template-columns: 1fr; }
 }
+
+/* ===== Testimonials marquee ===== */
+.lp-reviews { padding: clamp(3rem, 6vw, 5rem) 0; }
+.lp-marquee { overflow: hidden; margin-top: 2rem;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.lp-marquee__track { display: flex; gap: 1.4rem; width: max-content; animation: lp-marquee 48s linear infinite; }
+.lp-marquee:hover .lp-marquee__track { animation-play-state: paused; }
+.lp-review { flex: 0 0 340px; max-width: 340px; background: var(--card);
+    border: 1.5px solid var(--line); border-radius: var(--radius); padding: 1.4rem;
+    display: flex; flex-direction: column; gap: 0.8rem; }
+.lp-review__stars { display: flex; gap: 0.15rem; color: var(--line); font-size: 1rem; }
+.lp-review__stars .on { color: var(--signal); }
+.lp-review blockquote { margin: 0; color: var(--ink); font-size: 0.98rem; line-height: 1.55; }
+.lp-review figcaption { color: var(--slate); font-size: 0.85rem; margin-top: auto; }
+.lp-review figcaption b { color: var(--ink); }
+@keyframes lp-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (max-width: 560px) { .lp-review { flex-basis: 280px; } }
+@media (prefers-reduced-motion: reduce) {
+    .lp-marquee { -webkit-mask-image: none; mask-image: none; }
+    .lp-marquee__track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; }
+    .lp-marquee__track > [aria-hidden="true"] { display: none; }
+}

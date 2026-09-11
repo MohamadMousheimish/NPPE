@@ -101,6 +101,16 @@
 .appfoot__lang a { color: var(--slate); padding: 0.2rem 0.3rem; }
 .appfoot__lang a.on { color: var(--signal); }
 .appfoot__lang .sep { opacity: 0.5; }
+
+/* Star rating input (student review form) */
+.rating { display: inline-flex; flex-direction: row-reverse; justify-content: flex-end; gap: 0.15rem;
+    font-size: 2rem; line-height: 1; margin-top: 0.4rem; }
+.rating input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.rating label { color: var(--line); cursor: pointer; transition: color 0.12s var(--ease); }
+.rating input:checked ~ label,
+.rating label:hover,
+.rating label:hover ~ label { color: var(--signal); }
+.rating input:focus-visible + label { outline: 2px solid var(--signal); outline-offset: 3px; }
 .appfoot .copy { font-family: var(--font-mono); font-size: 0.68rem; color: var(--slate-2); letter-spacing: 0.04em; width: 100%;
     border-top: 1px solid var(--line); padding-top: 1rem; margin-top: 0.5rem; }
 

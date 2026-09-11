@@ -1,4 +1,5 @@
 @* Public marketing landing (anonymous visitors at "/"). Graphite & Signal palette. *@
+@model List<NPPE.Application.DTOs.Feedback.FeedbackDto>
 
 <!-- ===== HERO ===== -->
 <section class="lp-hero">
@@ -175,6 +176,39 @@
         </div>
     </div>
 </section>
+
+@if (Model != null && Model.Any())
+{
+    <!-- ===== REVIEWS ===== -->
+    <section class="lp-reviews" id="reviews">
+        <div class="lp-head" data-reveal>
+            <span class="eyebrow eyebrow--signal">@SharedLocalizer["What candidates say"]</span>
+            <h2>@SharedLocalizer["Trusted by engineers-in-training"]</h2>
+        </div>
+        <div class="lp-marquee" data-reveal>
+            <div class="lp-marquee__track">
+                @for (var pass = 0; pass < 2; pass++)
+                {
+                    foreach (var t in Model)
+                    {
+                        <figure class="lp-review" aria-hidden="@(pass == 1 ? "true" : "false")">
+                            <div class="lp-review__stars" aria-label="@t.Rating / 5">
+                                @for (var s = 0; s < 5; s++)
+                                {
+                                    <span class="@(s < t.Rating ? "on" : "")">&#9733;</span>
+                                }
+                            </div>
+                            <blockquote>@t.Comment</blockquote>
+                            <figcaption>
+                                <b>@t.AuthorName</b>@if (!string.IsNullOrEmpty(t.AuthorTitle)) { <span> · @t.AuthorTitle</span> }
+                            </figcaption>
+                        </figure>
+                    }
+                }
+            </div>
+        </div>
+    </section>
+}
 
 <!-- ===== VIDEO ===== -->
 <section class="lp-watch-sec" id="watch">

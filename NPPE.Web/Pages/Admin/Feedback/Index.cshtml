@@ -1,0 +1,98 @@
+@page
+@model NPPE.Web.Pages.Admin.Feedback.IndexModel
+@{
+    ViewData["Title"] = SharedLocalizer["Reviews"].Value;
+    ViewData["ActiveNav"] = "reviews";
+    string Stars(int n) => new string('★', n) + new string('☆', 5 - n);
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Reviews"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Student <em>reviews</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Approve reviews to show them on the home page, or add your own testimonials."]</p>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] is string msg)
+{
+    <div class="alert alert--ok" data-reveal>@SharedLocalizer[msg]</div>
+}
+
+<div class="fin-cols">
+    <div class="panel" data-reveal>
+        <h3>@SharedLocalizer["All reviews ({0})", Model.Items.Count]</h3>
+        <div class="psub">@SharedLocalizer["Approved reviews appear publicly"]</div>
+        @if (!Model.Items.Any())
+        {
+            <p class="sub" style="font-size:0.9rem">@SharedLocalizer["No reviews yet."]</p>
+        }
+        else
+        {
+            <div style="display:flex; flex-direction:column; gap:0.9rem">
+                @foreach (var f in Model.Items)
+                {
+                    <div class="rev-row" style="border:1px solid var(--line); border-radius:var(--radius); padding:0.9rem 1rem">
+                        <div style="display:flex; justify-content:space-between; gap:0.8rem; align-items:flex-start">
+                            <div>
+                                <span style="color:var(--signal); letter-spacing:1px">@Stars(f.Rating)</span>
+                                <b style="margin-left:0.4rem">@f.AuthorName</b>
+                                @if (!string.IsNullOrEmpty(f.AuthorTitle)) { <span class="anno"> · @f.AuthorTitle</span> }
+                            </div>
+                            <div style="display:flex; gap:0.4rem; align-items:center; flex-shrink:0">
+                                <span class="status-badge @(f.IsApproved ? "active" : "cancel")">@(f.IsApproved ? SharedLocalizer["Approved"] : SharedLocalizer["Pending"])</span>
+                                <span class="tag @(f.FromStudent ? "" : "tag--signal")">@(f.FromStudent ? SharedLocalizer["Student"] : SharedLocalizer["Seeded"])</span>
+                            </div>
+                        </div>
+                        <p style="margin:0.55rem 0 0.7rem; color:var(--slate); font-size:0.92rem">@f.Comment</p>
+                        <div style="display:flex; gap:0.5rem">
+                            <form method="post" asp-page-handler="Approve">
+                                <input type="hidden" name="id" value="@f.Id" />
+                                <input type="hidden" name="approved" value="@((!f.IsApproved).ToString().ToLower())" />
+                                <button class="btn btn--ghost" type="submit" style="padding:0.35rem 0.7rem; font-size:0.7rem">
+                                    @(f.IsApproved ? SharedLocalizer["Unapprove"] : SharedLocalizer["Approve"])
+                                </button>
+                            </form>
+                            <form method="post" asp-page-handler="Delete" onsubmit="return confirm('@SharedLocalizer["Delete this review?"]');">
+                                <input type="hidden" name="id" value="@f.Id" />
+                                <button class="btn btn--danger" type="submit" style="padding:0.35rem 0.7rem; font-size:0.7rem">@SharedLocalizer["Delete"]</button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+
+    <div class="panel" data-reveal>
+        <h3>@SharedLocalizer["Add a testimonial"]</h3>
+        <div class="psub">@SharedLocalizer["Seed the home page carousel"]</div>
+        <form method="post" asp-page-handler="Add">
+            <div asp-validation-summary="All"></div>
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Name"]</span>
+                <span class="field__wrap"><input asp-for="New.AuthorName" class="field__input" placeholder="Ada L." /></span>
+            </label>
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Title (optional)"]</span>
+                <span class="field__wrap"><input asp-for="New.AuthorTitle" class="field__input" placeholder="EIT · Ontario" /></span>
+            </label>
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Rating"]</span>
+                <span class="field__wrap"><input asp-for="New.Rating" type="number" min="1" max="5" class="field__input" /></span>
+            </label>
+            <label class="field">
+                <span class="field__label">@SharedLocalizer["Review"]</span>
+                <span class="field__wrap"><textarea asp-for="New.Comment" class="field__input" rows="4" maxlength="1000"></textarea></span>
+            </label>
+            <label class="check" style="margin:0.4rem 0 1rem"><input asp-for="New.Approved" /><span class="box"></span> @SharedLocalizer["Approve immediately"]</label>
+            <button class="btn btn--primary btn--block" type="submit">@SharedLocalizer["Add testimonial"] <span class="arrow">&rarr;</span></button>
+        </form>
+    </div>
+</div>
+
+<a class="backlink" asp-page="/Admin/Exams/Index">&larr; @SharedLocalizer["Back to admin"]</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

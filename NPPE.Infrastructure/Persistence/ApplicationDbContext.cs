@@ -14,6 +14,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<ProcessedStripeEvent> ProcessedStripeEvents => Set<ProcessedStripeEvent>();
     public DbSet<Cost> Costs => Set<Cost>();
     public DbSet<ExamUnlock> ExamUnlocks => Set<ExamUnlock>();
+    public DbSet<Feedback> Feedbacks => Set<Feedback>();
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -104,6 +105,20 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
                   .WithMany()
                   .HasForeignKey(u => u.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        // Student reviews / testimonials
+        builder.Entity<Feedback>(entity =>
+        {
+            entity.Property(f => f.AuthorName).IsRequired().HasMaxLength(120);
+            entity.Property(f => f.AuthorTitle).HasMaxLength(120);
+            entity.Property(f => f.Comment).IsRequired().HasMaxLength(1000);
+            entity.HasIndex(f => f.IsApproved);
+            // Keep the review if the user is removed; just detach it from the account.
+            entity.HasOne(f => f.User)
+                  .WithMany()
+                  .HasForeignKey(f => f.UserId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
     }
 }

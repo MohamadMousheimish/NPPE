@@ -1,0 +1,75 @@
+@page
+@model NPPE.Web.Pages.Student.FeedbackModel
+@{
+    ViewData["Title"] = SharedLocalizer["Leave a review"].Value;
+    ViewData["ActiveNav"] = "";
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Your experience"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Leave a <em>review</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Tell other candidates how NPPE Prep helped. Approved reviews appear on our home page."]</p>
+    </div>
+    <a class="btn btn--ghost" asp-page="/Index">@SharedLocalizer["Back to dashboard"] <span class="arrow">&rarr;</span></a>
+</div>
+
+@if (TempData["SuccessMessage"] is string msg)
+{
+    <div class="alert alert--ok" data-reveal>@SharedLocalizer[msg]</div>
+}
+
+@if (!Model.Eligible)
+{
+    <div class="empty" data-reveal style="max-width:600px; text-align:left">
+        <div class="ic" style="margin:0 0 1.1rem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 17.3 6.2 20l1.1-6.3L2.5 9.2l6.4-.9L12 2.5l3.1 5.8 6.4.9-4.8 4.5 1.1 6.3z"/></svg></div>
+        <h3>@SharedLocalizer["Take an exam first"]</h3>
+        <p>@SharedLocalizer["You can share a review once you've completed at least one practice exam."]</p>
+        <a class="btn btn--primary" asp-page="/Student/Exams/Index">@SharedLocalizer["Go to exams"] <span class="arrow">&rarr;</span></a>
+    </div>
+}
+else
+{
+    <div class="form-card" data-reveal style="max-width:600px">
+        @if (Model.HasReview)
+        {
+            <div class="note" style="margin-bottom:1.2rem">
+                <span class="anno">
+                    @(Model.PendingApproval
+                        ? SharedLocalizer["Your review is awaiting approval. You can update it below."]
+                        : SharedLocalizer["Your review is live — thank you! You can update it below."])
+                </span>
+            </div>
+        }
+
+        <form method="post">
+            <div asp-validation-summary="All"></div>
+
+            <label class="field__label">@SharedLocalizer["Your rating"]</label>
+            <div class="rating" role="radiogroup" aria-label="@SharedLocalizer["Your rating"]">
+                <input type="radio" asp-for="Input.Rating" value="5" id="s5" /><label for="s5" title="5">&#9733;</label>
+                <input type="radio" asp-for="Input.Rating" value="4" id="s4" /><label for="s4" title="4">&#9733;</label>
+                <input type="radio" asp-for="Input.Rating" value="3" id="s3" /><label for="s3" title="3">&#9733;</label>
+                <input type="radio" asp-for="Input.Rating" value="2" id="s2" /><label for="s2" title="2">&#9733;</label>
+                <input type="radio" asp-for="Input.Rating" value="1" id="s1" /><label for="s1" title="1">&#9733;</label>
+            </div>
+
+            <label class="field" style="margin-top:1.2rem">
+                <span class="field__label">@SharedLocalizer["Your review"]</span>
+                <span class="field__wrap">
+                    <textarea asp-for="Input.Comment" class="field__input" rows="5"
+                              placeholder="@SharedLocalizer["What worked well for your prep?"]" maxlength="1000"></textarea>
+                </span>
+                <span asp-validation-for="Input.Comment" class="field-validation-error"></span>
+            </label>
+
+            <button class="btn btn--primary btn--block btn--lg" type="submit" style="margin-top:1rem">
+                @(Model.HasReview ? SharedLocalizer["Update review"] : SharedLocalizer["Submit review"]) <span class="arrow">&rarr;</span>
+            </button>
+        </form>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

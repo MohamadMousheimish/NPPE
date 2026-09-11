@@ -14,7 +14,7 @@
 
 @if (!authed)
 {
-    <partial name="_Landing" />
+    <partial name="_Landing" model="Model.Testimonials" />
     return;
 }
 
@@ -123,6 +123,10 @@
             <a class="action" asp-page="/Payments/Billing" data-reveal data-reveal-delay="140">
                 <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span>
                 <span class="tx"><b>@SharedLocalizer["Manage billing"]</b><span>@SharedLocalizer["Plan & payments"]</span></span><span class="arrow">&rarr;</span>
+            </a>
+            <a class="action" asp-page="/Student/Feedback" data-reveal data-reveal-delay="180">
+                <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 17.3 6.2 20l1.1-6.3L2.5 9.2l6.4-.9L12 2.5l3.1 5.8 6.4.9-4.8 4.5 1.1 6.3z"/></svg></span>
+                <span class="tx"><b>@SharedLocalizer["Leave a review"]</b><span>@SharedLocalizer["Share your experience"]</span></span><span class="arrow">&rarr;</span>
             </a>
         }
         <a class="action" asp-page="/Account/Profile" data-reveal data-reveal-delay="200">
