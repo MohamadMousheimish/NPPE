@@ -1,31 +1,36 @@
 using MediatR;
+using NPPE.Application.Common;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
 
 namespace NPPE.Application.Commands.Feedback.SubmitFeedback;
 
 /// <summary>Upserts the signed-in student's own review. Returns false if the student
-/// isn't eligible yet (must have completed at least one exam). Edits re-enter moderation.</summary>
+/// isn't eligible yet (must have finished ALL of their unlocked exams). One review per
+/// student (upsert). Edits re-enter moderation.</summary>
 public record SubmitFeedbackCommand(string UserId, int Rating, string Comment) : IRequest<bool>;
 
 public class SubmitFeedbackCommandHandler : IRequestHandler<SubmitFeedbackCommand, bool>
 {
     private readonly IFeedbackRepository _feedback;
     private readonly IExamAttemptRepository _attempts;
+    private readonly IExamUnlockRepository _unlocks;
     private readonly IUserRepository _users;
 
     public SubmitFeedbackCommandHandler(
-        IFeedbackRepository feedback, IExamAttemptRepository attempts, IUserRepository users)
+        IFeedbackRepository feedback, IExamAttemptRepository attempts,
+        IExamUnlockRepository unlocks, IUserRepository users)
     {
         _feedback = feedback;
         _attempts = attempts;
+        _unlocks = unlocks;
         _users = users;
     }
 
     public async Task<bool> Handle(SubmitFeedbackCommand request, CancellationToken ct)
     {
-        var attempts = await _attempts.GetAttemptsByUserIdAsync(request.UserId);
-        if (attempts.Count == 0) return false; // not eligible yet
+        if (!await ReviewEligibility.HasFinishedAllExamsAsync(request.UserId, _unlocks, _attempts))
+            return false; // not eligible until all unlocked exams are finished
 
         var rating = Math.Clamp(request.Rating, 1, 5);
         var comment = (request.Comment ?? string.Empty).Trim();

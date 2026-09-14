@@ -23,8 +23,8 @@
 {
     <div class="empty" data-reveal style="max-width:600px; text-align:left">
         <div class="ic" style="margin:0 0 1.1rem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 17.3 6.2 20l1.1-6.3L2.5 9.2l6.4-.9L12 2.5l3.1 5.8 6.4.9-4.8 4.5 1.1 6.3z"/></svg></div>
-        <h3>@SharedLocalizer["Take an exam first"]</h3>
-        <p>@SharedLocalizer["You can share a review once you've completed at least one practice exam."]</p>
+        <h3>@SharedLocalizer["Finish all your exams first"]</h3>
+        <p>@SharedLocalizer["You can share a review once you've finished all of your practice exams."]</p>
         <a class="btn btn--primary" asp-page="/Student/Exams/Index">@SharedLocalizer["Go to exams"] <span class="arrow">&rarr;</span></a>
     </div>
 }
@@ -68,6 +68,44 @@ else
             </button>
         </form>
     </div>
+
+    @if (Model.RewardEnabled)
+    {
+        var amt = Model.RewardAmount.ToString("0.00");
+        <div class="form-card reward-card" data-reveal style="max-width:600px;margin-top:1.4rem;border-color:var(--signal)">
+            <div style="display:flex;gap:1rem;align-items:flex-start">
+                <div class="ic" style="flex:0 0 auto;margin:0;color:var(--signal)">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="26" height="26"><path d="M20 12v9H4v-9M2 7h20v5H2zM12 22V7M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7zM12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+                </div>
+                <div style="flex:1 1 auto">
+                    @if (!Model.HasReview)
+                    {
+                        <h3 style="margin:.1rem 0 .4rem">@SharedLocalizer["Get {0}% back", Model.RewardPercent]</h3>
+                        <p class="sub" style="margin:0">@SharedLocalizer["Leave your review above and claim a {0}% refund (${1} CAD) on your exam packs.", Model.RewardPercent, amt]</p>
+                    }
+                    else if (Model.RewardStatus == null)
+                    {
+                        <h3 style="margin:.1rem 0 .4rem">@SharedLocalizer["Claim your {0}% back", Model.RewardPercent]</h3>
+                        <p class="sub" style="margin:0 0 .9rem">@SharedLocalizer["You finished all your exams and left a review — claim a ${0} CAD refund to your original payment.", amt]</p>
+                        <form method="post" asp-page-handler="Claim">
+                            <button class="btn btn--primary" type="submit">@SharedLocalizer["Claim my refund"] <span class="arrow">&rarr;</span></button>
+                        </form>
+                        <p class="anno" style="margin:.7rem 0 0">@SharedLocalizer["You keep the reward regardless of your rating."]</p>
+                    }
+                    else if (Model.RewardStatus == "Requested")
+                    {
+                        <h3 style="margin:.1rem 0 .4rem">@SharedLocalizer["Reward on the way"]</h3>
+                        <p class="sub" style="margin:0">@SharedLocalizer["Your {0}% refund is being reviewed and will be returned to your card shortly.", Model.RewardPercent]</p>
+                    }
+                    else if (Model.RewardStatus == "Refunded")
+                    {
+                        <h3 style="margin:.1rem 0 .4rem">@SharedLocalizer["Reward issued"]</h3>
+                        <p class="sub" style="margin:0">@SharedLocalizer["We refunded ${0} CAD to your original payment. Thank you!", amt]</p>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 }
 
 @section Scripts {

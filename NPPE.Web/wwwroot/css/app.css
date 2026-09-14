@@ -650,3 +650,20 @@
 .modal .steps li::before { content: attr(data-n); position: absolute; left: 0; top: 0; font-family: var(--font-mono); font-size: 0.66rem; color: var(--signal); border: 1px solid var(--signal); width: 18px; height: 18px; border-radius: 50%; display: grid; place-items: center; }
 .modal .callout { background: var(--signal-wash); border-left: 3px solid var(--signal); border-radius: 2px; padding: 0.7rem 0.9rem; font-size: 0.86rem; color: var(--slate); }
 .modal .fineprint { font-family: var(--font-mono); font-size: 0.64rem; color: var(--slate-2); margin-top: 1rem; }
+
+/* ===== Completion-reward nudge (dashboard) ===== */
+.reward-banner {
+    display: flex; align-items: center; gap: 1rem; margin-top: 1.4rem;
+    padding: 1rem 1.2rem; border: 1.5px solid var(--signal); border-radius: var(--radius);
+    background: color-mix(in srgb, var(--signal) 6%, var(--card));
+    text-decoration: none; color: inherit;
+    transition: box-shadow .15s ease, transform .15s ease;
+}
+.reward-banner:hover { box-shadow: 0 6px 18px rgba(0,0,0,.07); transform: translateY(-1px); }
+.reward-banner__ic { flex: 0 0 auto; color: var(--signal); display: flex; }
+.reward-banner__txt { flex: 1 1 auto; display: flex; flex-direction: column; gap: .1rem; }
+.reward-banner__txt b { color: var(--ink); }
+.reward-banner__txt span { color: var(--slate); font-size: .9rem; }
+.reward-banner__cta { flex: 0 0 auto; color: var(--signal); font-weight: 600; white-space: nowrap; }
+@media (max-width: 560px) { .reward-banner__cta { display: none; } }
+.reward-card .anno { color: var(--slate); font-size: .82rem; }

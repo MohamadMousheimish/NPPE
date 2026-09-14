@@ -15,6 +15,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
     public DbSet<Cost> Costs => Set<Cost>();
     public DbSet<ExamUnlock> ExamUnlocks => Set<ExamUnlock>();
     public DbSet<Feedback> Feedbacks => Set<Feedback>();
+    public DbSet<CompletionReward> CompletionRewards => Set<CompletionReward>();
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {
     }
@@ -119,6 +120,21 @@ public class ApplicationDbContext : IdentityDbContext<AppUser>
                   .WithMany()
                   .HasForeignKey(f => f.UserId)
                   .OnDelete(DeleteBehavior.SetNull);
+        });
+
+        // Completion rewards (10% back for finishing all exams + a review)
+        builder.Entity<CompletionReward>(entity =>
+        {
+            entity.HasIndex(r => r.UserId).IsUnique();   // one reward per student
+            entity.Property(r => r.RefundAmount).HasColumnType("decimal(18,2)");
+            entity.Property(r => r.Currency).IsRequired().HasMaxLength(8);
+            entity.Property(r => r.StripeRefundId).HasMaxLength(100);
+            entity.Property(r => r.Note).HasMaxLength(500);
+            entity.HasIndex(r => r.Status);
+            entity.HasOne(r => r.User)
+                  .WithMany()
+                  .HasForeignKey(r => r.UserId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
     }
 }

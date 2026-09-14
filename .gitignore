@@ -257,3 +257,6 @@ FINANCES.md
 
 # Local dev config/secrets (not pushed)
 appsettings.Development.json
+
+# Local marketing workspace (never pushed)
+Marketing/

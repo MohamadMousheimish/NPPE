@@ -13,10 +13,12 @@
             <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
             <a class="btn btn--ghost btn--lg lp-hero__ghost" asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a>
         </div>
+        @* Video hidden until the new professional explainer is ready — see launch plan.
         <a class="lp-watch" href="#watch">
             <span class="lp-watch__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
             @SharedLocalizer["Watch the 2-minute tour"]
         </a>
+        *@
     </div>
     <div class="lp-hero__strip" data-reveal>
         <span>@SharedLocalizer["Full NPPE syllabus"]</span><i></i>
@@ -185,32 +187,32 @@
             <span class="eyebrow eyebrow--signal">@SharedLocalizer["What candidates say"]</span>
             <h2>@SharedLocalizer["Trusted by engineers-in-training"]</h2>
         </div>
-        <div class="lp-marquee" data-reveal>
-            <div class="lp-marquee__track">
-                @for (var pass = 0; pass < 2; pass++)
+        <div class="lp-carousel-wrap" data-reveal data-carousel>
+            <button class="lp-carousel__nav lp-carousel__nav--prev" type="button" aria-label="@SharedLocalizer["Previous reviews"]" data-carousel-prev>&#8249;</button>
+            <div class="lp-carousel" role="region" aria-label="@SharedLocalizer["Student reviews"]" data-carousel-track>
+                @foreach (var t in Model)
                 {
-                    foreach (var t in Model)
-                    {
-                        <figure class="lp-review" aria-hidden="@(pass == 1 ? "true" : "false")">
-                            <div class="lp-review__stars" aria-label="@t.Rating / 5">
-                                @for (var s = 0; s < 5; s++)
-                                {
-                                    <span class="@(s < t.Rating ? "on" : "")">&#9733;</span>
-                                }
-                            </div>
-                            <blockquote>@t.Comment</blockquote>
-                            <figcaption>
-                                <b>@t.AuthorName</b>@if (!string.IsNullOrEmpty(t.AuthorTitle)) { <span> · @t.AuthorTitle</span> }
-                            </figcaption>
-                        </figure>
-                    }
+                    <figure class="lp-review">
+                        <div class="lp-review__stars" aria-label="@t.Rating / 5">
+                            @for (var s = 0; s < 5; s++)
+                            {
+                                <span class="@(s < t.Rating ? "on" : "")">&#9733;</span>
+                            }
+                        </div>
+                        <blockquote>@t.Comment</blockquote>
+                        <figcaption>
+                            <b>@t.AuthorName</b>@if (!string.IsNullOrEmpty(t.AuthorTitle)) { <span> · @t.AuthorTitle</span> }
+                        </figcaption>
+                    </figure>
                 }
             </div>
+            <button class="lp-carousel__nav lp-carousel__nav--next" type="button" aria-label="@SharedLocalizer["Next reviews"]" data-carousel-next>&#8250;</button>
         </div>
     </section>
 }
 
-<!-- ===== VIDEO ===== -->
+<!-- ===== VIDEO (hidden until the new professional explainer is ready — see launch plan) ===== -->
+@*
 <section class="lp-watch-sec" id="watch">
     <div class="lp-head" data-reveal>
         <span class="eyebrow eyebrow--signal">@SharedLocalizer["See it in action"]</span>
@@ -223,6 +225,7 @@
         </video>
     </div>
 </section>
+*@
 
 <!-- ===== FAQ ===== -->
 <section class="lp-faq" id="faq">

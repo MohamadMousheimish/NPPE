@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using NPPE.Application.DTOs.Feedback;
 using NPPE.Application.Queries.Feedback.GetApprovedFeedback;
+using NPPE.Application.Queries.Rewards.GetMyRewardStatus;
 using NPPE.Application.Repositories;
 using NPPE.Domain.Entities;
 using NPPE.Web.Resources;
@@ -50,12 +51,16 @@ public class IndexModel : PageModel
     public int TotalExamsAvailable { get; set; }
     public List<RecentExamAttempt> RecentAttempts { get; set; } = new();
 
+    // Reward nudge: student finished all exams and hasn't claimed their refund yet.
+    public bool ShowRewardPrompt { get; set; }
+    public int RewardPercent { get; set; }
+
     public async Task<IActionResult> OnGetAsync()
     {
         // Not signed in → render the public landing page with approved testimonials.
         if (User.Identity?.IsAuthenticated != true)
         {
-            Testimonials = await _mediator.Send(new GetApprovedFeedbackQuery(24));
+            Testimonials = await _mediator.Send(new GetApprovedFeedbackQuery(30));
             return Page();
         }
 
@@ -85,6 +90,14 @@ public class IndexModel : PageModel
                     AttemptId = a.Id
                 })
                 .ToList();
+
+            if (!IsAdmin)
+            {
+                var reward = await _mediator.Send(new GetMyRewardStatusQuery(user.Id));
+                // Nudge once they've finished all exams and haven't claimed yet.
+                ShowRewardPrompt = reward.Enabled && reward.Eligible && reward.Status == null;
+                RewardPercent = reward.Percent;
+            }
         }
 
         var allExams = await _examRepository.GetAllAsync();

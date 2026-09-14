@@ -34,16 +34,31 @@ public class FeedbackFlowTests : IClassFixture<NppeWebAppFactory>
             Assert.False(await m.Send(new SubmitFeedbackCommand(freshId, 4, "should be rejected")));
         }
 
-        // --- Eligible: the seeded student, once they have an attempt, can submit ---
+        // --- "Finished ALL exams" gate: unlocking an exam is NOT enough; it must be attempted ---
         string studentId;
+        Exam exam;
         using (var scope = _factory.Services.CreateScope())
         {
             var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             var users = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
             studentId = (await users.FindByEmailAsync(WebTest.StudentEmail))!.Id;
-            var exam = new Exam { Title = "Feedback Exam", Description = "x", IsActive = true };
+            exam = new Exam { Title = "Feedback Exam", Description = "x", IsActive = true };
             db.Exams.Add(exam);
-            db.ExamAttempts.Add(new ExamAttempt { UserId = studentId, Exam = exam, Score = 5, TotalQuestions = 10, TakenAt = DateTime.UtcNow });
+            db.ExamUnlocks.Add(new ExamUnlock { UserId = studentId, Exam = exam, AttemptsAllowed = 3 });
+            await db.SaveChangesAsync();
+        }
+        using (var scope = _factory.Services.CreateScope())
+        {
+            // Unlocked but not yet attempted → still ineligible.
+            var m = scope.ServiceProvider.GetRequiredService<IMediator>();
+            Assert.False(await m.Send(new SubmitFeedbackCommand(studentId, 5, "too early")));
+        }
+
+        // --- Eligible: once every unlocked exam has an attempt, the student can submit ---
+        using (var scope = _factory.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            db.ExamAttempts.Add(new ExamAttempt { UserId = studentId, ExamId = exam.Id, Score = 5, TotalQuestions = 10, TakenAt = DateTime.UtcNow });
             await db.SaveChangesAsync();
         }
 

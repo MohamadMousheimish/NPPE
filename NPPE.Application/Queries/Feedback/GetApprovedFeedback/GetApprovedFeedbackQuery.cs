@@ -4,8 +4,8 @@ using NPPE.Application.Repositories;
 
 namespace NPPE.Application.Queries.Feedback.GetApprovedFeedback;
 
-/// <summary>Approved testimonials for the public landing carousel.</summary>
-public record GetApprovedFeedbackQuery(int Take = 24) : IRequest<List<FeedbackDto>>;
+/// <summary>Approved testimonials for the public landing carousel — top-rated first, capped.</summary>
+public record GetApprovedFeedbackQuery(int Take = 30) : IRequest<List<FeedbackDto>>;
 
 public class GetApprovedFeedbackQueryHandler : IRequestHandler<GetApprovedFeedbackQuery, List<FeedbackDto>>
 {

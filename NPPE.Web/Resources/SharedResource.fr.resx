@@ -1433,8 +1433,8 @@
   <data name="Submit review" xml:space="preserve">
     <value>Soumettre l'avis</value>
   </data>
-  <data name="Take an exam first" xml:space="preserve">
-    <value>Passez d'abord un examen</value>
+  <data name="Finish all your exams first" xml:space="preserve">
+    <value>Terminez d'abord tous vos examens</value>
   </data>
   <data name="Tell other candidates how NPPE Prep helped. Approved reviews appear on our home page." xml:space="preserve">
     <value>Dites aux autres candidats comment NPPE Prep vous a aidé. Les avis approuvés apparaissent sur notre page d'accueil.</value>
@@ -1447,6 +1447,109 @@
   </data>
   <data name="Trusted by engineers-in-training" xml:space="preserve">
     <value>La confiance des ingénieurs en formation</value>
+  </data>
+  <data name="Student reviews" xml:space="preserve">
+    <value>Avis des étudiants</value>
+  </data>
+  <data name="Previous reviews" xml:space="preserve">
+    <value>Avis précédents</value>
+  </data>
+  <data name="Next reviews" xml:space="preserve">
+    <value>Avis suivants</value>
+  </data>
+  <data name="Get {0}% back" xml:space="preserve">
+    <value>Récupérez {0} %</value>
+  </data>
+  <data name="Leave your review above and claim a {0}% refund (${1} CAD) on your exam packs." xml:space="preserve">
+    <value>Laissez votre avis ci-dessus et réclamez un remboursement de {0} % ({1} $ CAD) sur vos forfaits d'examens.</value>
+  </data>
+  <data name="Claim your {0}% back" xml:space="preserve">
+    <value>Réclamez vos {0} %</value>
+  </data>
+  <data name="You finished all your exams and left a review — claim a ${0} CAD refund to your original payment." xml:space="preserve">
+    <value>Vous avez terminé tous vos examens et laissé un avis — réclamez un remboursement de {0} $ CAD sur votre paiement d'origine.</value>
+  </data>
+  <data name="Claim my refund" xml:space="preserve">
+    <value>Réclamer mon remboursement</value>
+  </data>
+  <data name="You keep the reward regardless of your rating." xml:space="preserve">
+    <value>Vous conservez la récompense quelle que soit votre note.</value>
+  </data>
+  <data name="Reward on the way" xml:space="preserve">
+    <value>Récompense en cours</value>
+  </data>
+  <data name="Your {0}% refund is being reviewed and will be returned to your card shortly." xml:space="preserve">
+    <value>Votre remboursement de {0} % est en cours d'examen et sera crédité sur votre carte sous peu.</value>
+  </data>
+  <data name="Reward issued" xml:space="preserve">
+    <value>Récompense versée</value>
+  </data>
+  <data name="We refunded ${0} CAD to your original payment. Thank you!" xml:space="preserve">
+    <value>Nous avons remboursé {0} $ CAD sur votre paiement d'origine. Merci!</value>
+  </data>
+  <data name="You've finished all your exams 🎉" xml:space="preserve">
+    <value>Vous avez terminé tous vos examens 🎉</value>
+  </data>
+  <data name="Leave a quick review and get {0}% back on your exam packs." xml:space="preserve">
+    <value>Laissez un court avis et récupérez {0} % sur vos forfaits d'examens.</value>
+  </data>
+  <data name="Reward claimed! We'll review it and refund your card within a few days." xml:space="preserve">
+    <value>Récompense réclamée! Nous l'examinerons et rembourserons votre carte sous quelques jours.</value>
+  </data>
+  <data name="We couldn't process the reward. Make sure you've finished all your exams and left a review." xml:space="preserve">
+    <value>Nous n'avons pas pu traiter la récompense. Assurez-vous d'avoir terminé tous vos examens et laissé un avis.</value>
+  </data>
+  <data name="Rewards" xml:space="preserve">
+    <value>Récompenses</value>
+  </data>
+  <data name="Admin · Rewards" xml:space="preserve">
+    <value>Admin · Récompenses</value>
+  </data>
+  <data name="Completion &lt;em&gt;rewards&lt;/em&gt;" xml:space="preserve"><value>&lt;em&gt;Récompenses&lt;/em&gt; de réussite</value></data>
+  <data name="Approve a claim to refund the student's card. The refund goes to their original payment." xml:space="preserve">
+    <value>Approuvez une demande pour rembourser la carte de l'étudiant. Le remboursement est effectué sur son paiement d'origine.</value>
+  </data>
+  <data name="Claims ({0})" xml:space="preserve">
+    <value>Demandes ({0})</value>
+  </data>
+  <data name="{0} awaiting approval" xml:space="preserve">
+    <value>{0} en attente d'approbation</value>
+  </data>
+  <data name="No reward claims yet." xml:space="preserve">
+    <value>Aucune demande de récompense pour l'instant.</value>
+  </data>
+  <data name="Claimed" xml:space="preserve">
+    <value>Réclamé le</value>
+  </data>
+  <data name="processed" xml:space="preserve">
+    <value>traité le</value>
+  </data>
+  <data name="Approve &amp; refund" xml:space="preserve">
+    <value>Approuver et rembourser</value>
+  </data>
+  <data name="Reason (optional)" xml:space="preserve">
+    <value>Raison (facultatif)</value>
+  </data>
+  <data name="Reject" xml:space="preserve">
+    <value>Refuser</value>
+  </data>
+  <data name="Rejected" xml:space="preserve">
+    <value>Refusé</value>
+  </data>
+  <data name="Requested" xml:space="preserve">
+    <value>En attente</value>
+  </data>
+  <data name="Refunded" xml:space="preserve">
+    <value>Remboursé</value>
+  </data>
+  <data name="Refund issued to the student's card." xml:space="preserve">
+    <value>Remboursement effectué sur la carte de l'étudiant.</value>
+  </data>
+  <data name="Could not issue the refund — check the claim is pending and the payment is refundable." xml:space="preserve">
+    <value>Impossible d'effectuer le remboursement — vérifiez que la demande est en attente et que le paiement est remboursable.</value>
+  </data>
+  <data name="Claim rejected." xml:space="preserve">
+    <value>Demande refusée.</value>
   </data>
   <data name="Unapprove" xml:space="preserve">
     <value>Retirer l'approbation</value>
@@ -1472,11 +1575,11 @@
   <data name="What worked well for your prep?" xml:space="preserve">
     <value>Qu'est-ce qui a bien fonctionné pour votre préparation?</value>
   </data>
-  <data name="You can leave a review after completing at least one exam." xml:space="preserve">
-    <value>Vous pouvez laisser un avis après avoir terminé au moins un examen.</value>
+  <data name="You can leave a review after finishing all of your exams." xml:space="preserve">
+    <value>Vous pouvez laisser un avis après avoir terminé tous vos examens.</value>
   </data>
-  <data name="You can share a review once you've completed at least one practice exam." xml:space="preserve">
-    <value>Vous pourrez laisser un avis une fois que vous aurez terminé au moins un examen pratique.</value>
+  <data name="You can share a review once you've finished all of your practice exams." xml:space="preserve">
+    <value>Vous pourrez laisser un avis une fois que vous aurez terminé tous vos examens pratiques.</value>
   </data>
   <data name="Your experience" xml:space="preserve">
     <value>Votre expérience</value>

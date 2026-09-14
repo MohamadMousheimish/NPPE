@@ -10,10 +10,12 @@ public class FeedbackRepository : GenericRepository<Feedback>, IFeedbackReposito
     public async Task<Feedback?> GetByUserAsync(string userId) =>
         await _context.Feedbacks.FirstOrDefaultAsync(f => f.UserId == userId);
 
+    // Highest-rated first (then most recent) so the landing shows our best reviews.
     public async Task<List<Feedback>> GetApprovedAsync(int take) =>
         await _context.Feedbacks
             .Where(f => f.IsApproved)
-            .OrderByDescending(f => f.CreatedAt)
+            .OrderByDescending(f => f.Rating)
+            .ThenByDescending(f => f.CreatedAt)
             .Take(take)
             .ToListAsync();
 

@@ -114,6 +114,7 @@ builder.Services.AddScoped<IExamAttemptRepository, ExamAttemptRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IExamUnlockRepository, ExamUnlockRepository>();
 builder.Services.AddScoped<IFeedbackRepository, FeedbackRepository>();
+builder.Services.AddScoped<ICompletionRewardRepository, CompletionRewardRepository>();
 builder.Services.AddScoped<IProcessedStripeEventRepository, ProcessedStripeEventRepository>();
 builder.Services.AddScoped<ICostRepository, CostRepository>();
 builder.Services.AddScoped<IFinanceRepository, FinanceRepository>();
@@ -122,6 +123,7 @@ builder.Services.AddScoped<NPPE.Application.Documents.IExamDocumentParser, NPPE.
 builder.Services.AddScoped<NPPE.Application.Email.IEmailSender, NPPE.Infrastructure.Email.SmtpEmailSender>();
 builder.Services.AddScoped<NPPE.Application.Services.IExamPackGranter, NPPE.Application.Services.ExamPackGranter>();
 builder.Services.AddScoped<NPPE.Application.Services.IInactiveExamCleaner, NPPE.Infrastructure.Maintenance.InactiveExamCleaner>();
+builder.Services.AddScoped<NPPE.Application.Services.IPaymentRefundService, NPPE.Infrastructure.Payments.StripePaymentRefundService>();
 
 // Daily maintenance: purge exams inactive beyond the retention window (with no attempts).
 builder.Services.AddHostedService<NPPE.Web.Maintenance.InactiveExamCleanupService>();

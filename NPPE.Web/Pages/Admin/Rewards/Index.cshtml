@@ -1,0 +1,89 @@
+@page
+@model NPPE.Web.Pages.Admin.Rewards.IndexModel
+@{
+    ViewData["Title"] = SharedLocalizer["Rewards"].Value;
+    ViewData["ActiveNav"] = "rewards";
+    string Stars(int? n) => n is int r ? new string('★', r) + new string('☆', 5 - r) : "—";
+    var pending = Model.Items.Count(i => i.Status == "Requested");
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Admin · Rewards"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Completion <em>rewards</em>"])</h1>
+        <p class="sub">@SharedLocalizer["Approve a claim to refund the student's card. The refund goes to their original payment."]</p>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] is string msg)
+{
+    <div class="alert alert--ok" data-reveal>@SharedLocalizer[msg]</div>
+}
+
+<div class="panel" data-reveal>
+    <h3>@SharedLocalizer["Claims ({0})", Model.Items.Count]</h3>
+    <div class="psub">@SharedLocalizer["{0} awaiting approval", pending]</div>
+
+    @if (!Model.Items.Any())
+    {
+        <p class="sub" style="font-size:0.9rem">@SharedLocalizer["No reward claims yet."]</p>
+    }
+    else
+    {
+        <div style="display:flex; flex-direction:column; gap:0.9rem; margin-top:0.6rem">
+            @foreach (var r in Model.Items)
+            {
+                <div style="border:1px solid var(--line); border-radius:var(--radius); padding:0.9rem 1rem">
+                    <div style="display:flex; justify-content:space-between; gap:0.8rem; align-items:flex-start; flex-wrap:wrap">
+                        <div>
+                            <b>@r.UserName</b>
+                            <span class="anno"> · @r.Email</span>
+                            <div style="margin-top:.3rem">
+                                <span style="color:var(--signal); letter-spacing:1px">@Stars(r.Rating)</span>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:0.4rem; align-items:center; flex-shrink:0">
+                            <span class="tag tag--signal">$@r.RefundAmount.ToString("0.00") @r.Currency.ToUpper()</span>
+                            <span class="status-badge @(r.Status == "Refunded" ? "active" : r.Status == "Rejected" ? "cancel" : "")">
+                                @SharedLocalizer[r.Status]
+                            </span>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(r.Comment))
+                    {
+                        <p style="margin:0.55rem 0 0.2rem; color:var(--slate); font-size:0.92rem">&ldquo;@r.Comment&rdquo;</p>
+                    }
+                    <div class="anno" style="margin:.35rem 0 .6rem">
+                        @SharedLocalizer["Claimed"] @r.RequestedAt.ToString("yyyy-MM-dd")
+                        @if (r.ProcessedAt is { } p) { <text>· @SharedLocalizer["processed"] @p.ToString("yyyy-MM-dd")</text> }
+                    </div>
+
+                    @if (r.Status == "Requested")
+                    {
+                        <div style="display:flex; gap:0.5rem; align-items:center; flex-wrap:wrap">
+                            <form method="post" asp-page-handler="Approve" onsubmit="return confirm('Issue the refund to this student now?');">
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <button class="btn btn--primary" type="submit" style="padding:0.4rem 0.9rem; font-size:0.75rem">
+                                    @SharedLocalizer["Approve & refund"]
+                                </button>
+                            </form>
+                            <form method="post" asp-page-handler="Reject" style="display:flex; gap:0.4rem; align-items:center">
+                                <input type="hidden" name="id" value="@r.Id" />
+                                <input type="text" name="reason" placeholder="@SharedLocalizer["Reason (optional)"]"
+                                       class="field__input" style="padding:0.35rem 0.6rem; font-size:0.75rem; max-width:220px" />
+                                <button class="btn btn--ghost" type="submit" style="padding:0.4rem 0.8rem; font-size:0.75rem">
+                                    @SharedLocalizer["Reject"]
+                                </button>
+                            </form>
+                        </div>
+                    }
+                    else if (r.Status == "Rejected" && !string.IsNullOrEmpty(r.Comment))
+                    {
+                        <div class="anno">@SharedLocalizer["Rejected"]</div>
+                    }
+                </div>
+            }
+        </div>
+    }
+</div>

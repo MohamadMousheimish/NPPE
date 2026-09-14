@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Localization;
 using NPPE.Application.Commands.Feedback.SubmitFeedback;
+using NPPE.Application.Commands.Rewards.RequestCompletionReward;
 using NPPE.Application.Queries.Feedback.GetMyFeedback;
+using NPPE.Application.Queries.Rewards.GetMyRewardStatus;
 using NPPE.Web.Resources;
 
 namespace NPPE.Web.Pages.Student;
@@ -28,6 +30,13 @@ public class FeedbackModel : PageModel
     public bool HasReview { get; private set; }
     public bool PendingApproval { get; private set; }
 
+    // Completion reward (5% back)
+    public bool RewardEnabled { get; private set; }
+    public int RewardPercent { get; private set; }
+    public decimal RewardAmount { get; private set; }
+    public string RewardCurrency { get; private set; } = "CAD";
+    public string? RewardStatus { get; private set; }   // null = claimable; Requested/Refunded/Rejected
+
     private string UserId => User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
                              ?? throw new InvalidOperationException("User ID not found.");
 
@@ -42,6 +51,13 @@ public class FeedbackModel : PageModel
             Input.Rating = r.Rating;
             Input.Comment = r.Comment;
         }
+
+        var reward = await _mediator.Send(new GetMyRewardStatusQuery(UserId));
+        RewardEnabled = reward.Enabled;
+        RewardPercent = reward.Percent;
+        RewardAmount = reward.RefundAmount;
+        RewardCurrency = reward.Currency;
+        RewardStatus = reward.Status;
     }
 
     public async Task<IActionResult> OnPostAsync()
@@ -55,12 +71,22 @@ public class FeedbackModel : PageModel
         var ok = await _mediator.Send(new SubmitFeedbackCommand(UserId, Input.Rating, Input.Comment));
         if (!ok)
         {
-            ModelState.AddModelError(string.Empty, _localizer["You can leave a review after completing at least one exam."]);
+            ModelState.AddModelError(string.Empty, _localizer["You can leave a review after finishing all of your exams."]);
             await OnGetAsync();
             return Page();
         }
 
         TempData["SuccessMessage"] = "Thanks! Your review was submitted and will appear once approved.";
+        return RedirectToPage();
+    }
+
+    /// <summary>Student claims the completion reward after leaving a review.</summary>
+    public async Task<IActionResult> OnPostClaimAsync()
+    {
+        var ok = await _mediator.Send(new RequestCompletionRewardCommand(UserId));
+        TempData["SuccessMessage"] = ok
+            ? "Reward claimed! We'll review it and refund your card within a few days."
+            : "We couldn't process the reward. Make sure you've finished all your exams and left a review.";
         return RedirectToPage();
     }
 
