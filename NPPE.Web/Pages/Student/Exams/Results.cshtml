@@ -17,16 +17,16 @@
             <circle class="track" cx="74" cy="74" r="66"></circle>
             <circle class="fill" cx="74" cy="74" r="66" data-pct="@pct" data-circ="414.7"></circle>
         </svg>
-        <div class="ctr"><div class="pct">@pct%</div><div class="lb">@SharedLocalizer["Score"]</div></div>
+        <div class="ctr"><div class="pct"><span data-count="@pct">0</span>%</div><div class="lb">@SharedLocalizer["Score"]</div></div>
     </div>
     <div class="result-verdict @(pass ? "pass" : "fail")">
         <span class="eyebrow @(pass ? "eyebrow--signal" : "")">@(pass ? SharedLocalizer["Passed · above the 65% line"] : SharedLocalizer["Below the 65% line"])</span>
         <h1>@(pass ? SharedLocalizer["Nicely done."] : SharedLocalizer["Keep practising."]) <em>@a.Score / @a.TotalQuestions</em></h1>
         <p>@(pass ? SharedLocalizer["You cleared this module. Review anything you missed below to lock it in."] : SharedLocalizer["Close — review the explanations below and retake when you're ready."])</p>
         <div class="result-stats">
-            <div class="st"><div class="v" style="color:var(--pass)">@a.Score</div><div class="k">@SharedLocalizer["Correct"]</div></div>
-            <div class="st"><div class="v" style="color:var(--fail)">@incorrect</div><div class="k">@SharedLocalizer["Incorrect"]</div></div>
-            <div class="st"><div class="v">@a.TotalQuestions</div><div class="k">@SharedLocalizer["Total items"]</div></div>
+            <div class="st"><div class="v" style="color:var(--pass)" data-count="@a.Score">0</div><div class="k">@SharedLocalizer["Correct"]</div></div>
+            <div class="st"><div class="v" style="color:var(--fail)" data-count="@incorrect">0</div><div class="k">@SharedLocalizer["Incorrect"]</div></div>
+            <div class="st"><div class="v" data-count="@a.TotalQuestions">0</div><div class="k">@SharedLocalizer["Total items"]</div></div>
         </div>
     </div>
 </section>

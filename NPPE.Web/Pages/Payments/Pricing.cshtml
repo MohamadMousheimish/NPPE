@@ -14,13 +14,13 @@
     </div>
 </div>
 
-<div class="plans">
+<div class="plans" data-reveal data-stagger>
     @{ var featured = PricingPlans.Packs.OrderByDescending(p => p.ExamCount).FirstOrDefault(); }
     @foreach (var pack in PricingPlans.Packs)
     {
         var isFeatured = featured != null && pack.Id == featured.Id;
         var dollars = (pack.PriceCents / 100).ToString();
-        <form method="post" class="plan @(isFeatured ? "feat" : "")" data-reveal>
+        <form method="post" class="plan lift @(isFeatured ? "feat" : "")">
             <input type="hidden" name="packId" value="@pack.Id" />
             <input type="hidden" asp-for="ReturnUrl" />
             @if (isFeatured)

@@ -35,10 +35,10 @@
         <h2>@SharedLocalizer["What you're up against"]</h2>
         <p>@SharedLocalizer["The NPPE confirms your knowledge of professionalism, ethics, and law — the judgment behind the P.Eng. and P.Geo. designations. It's required for licensure across Canada (except Quebec)."]</p>
     </div>
-    <div class="lp-facts" data-reveal>
-        <div class="lp-fact"><b>110</b><span>@SharedLocalizer["multiple-choice questions"]</span></div>
+    <div class="lp-facts" data-stagger>
+        <div class="lp-fact"><b data-countup="110">110</b><span>@SharedLocalizer["multiple-choice questions"]</span></div>
         <div class="lp-fact"><b>2½ h</b><span>@SharedLocalizer["closed-book exam"]</span></div>
-        <div class="lp-fact"><b>6</b><span>@SharedLocalizer["weighted syllabus sections"]</span></div>
+        <div class="lp-fact"><b data-countup="6">6</b><span>@SharedLocalizer["weighted syllabus sections"]</span></div>
         <div class="lp-fact"><b>1</b><span>@SharedLocalizer["licence on the line"]</span></div>
     </div>
 </section>
@@ -84,7 +84,7 @@
         <div class="lp-row__art">
             <div class="mock mock--sections">
                 <div class="mock__bar"><span></span><span></span><span></span></div>
-                <div class="mock__list">
+                <div class="mock__list" data-stagger>
                     <div class="mock__sec"><b>I</b><span>@SharedLocalizer["Professionalism"]</span><i>10%</i></div>
                     <div class="mock__sec"><b>II</b><span>@SharedLocalizer["Ethics"]</span><i>20%</i></div>
                     <div class="mock__sec on"><b>III</b><span>@SharedLocalizer["Professional Practice"]</span><i>30%</i></div>
@@ -105,7 +105,7 @@
                 <div class="mock__bar"><span></span><span></span><span></span></div>
                 <p class="mock__qtext">@SharedLocalizer["What is a professional's paramount duty?"]</p>
                 <div class="mock__opt"><i></i> @SharedLocalizer["Protect the employer"]</div>
-                <div class="mock__opt ok"><i>&check;</i> @SharedLocalizer["Hold public safety paramount"]</div>
+                <div class="mock__opt ok"><i><svg class="tick" viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10.5 L8.5 15 L16 5.5"/></svg></i> @SharedLocalizer["Hold public safety paramount"]</div>
                 <div class="mock__opt"><i></i> @SharedLocalizer["Maximize project profit"]</div>
             </div>
         </div>
@@ -134,7 +134,7 @@
         <span class="eyebrow eyebrow--signal">@SharedLocalizer["The syllabus"]</span>
         <h2>@SharedLocalizer["Six sections, precisely weighted"]</h2>
     </div>
-    <div class="lp-sixgrid" data-reveal>
+    <div class="lp-sixgrid" data-reveal data-stagger>
         @foreach (var s in NPPE.Web.StudyContent.StudyLibrary.Sections)
         {
             <div class="lp-sec">

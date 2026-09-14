@@ -1,0 +1,167 @@
+/* ============================================================================
+   NPPE PREP — MOTION LAYER
+   Vanilla reimplementation of the motion principles (spring-ish easing, reveal,
+   stagger, scroll-linked) in the "Instrument" language. Palette & fonts untouched.
+   Everything degrades to a readable final state under prefers-reduced-motion.
+   Baseline reveal ([data-reveal] → .is-in) + easings live in design-system.css.
+   ========================================================================== */
+
+/* ---- Reveal direction/scale variants (JS toggles .is-in on the element) ---- */
+[data-reveal="left"]  { transform: translateX(-26px); }
+[data-reveal="right"] { transform: translateX(26px); }
+[data-reveal="scale"] { transform: scale(0.94); }
+[data-reveal="left"].is-in,
+[data-reveal="right"].is-in,
+[data-reveal="scale"].is-in { transform: none; }
+
+/* Clip "wipe" reveal — for headings/rules that should draw in rather than fade */
+[data-reveal="clip"] { opacity: 1; transform: none; clip-path: inset(0 0 100% 0); transition: clip-path 0.7s var(--ease-mech); }
+[data-reveal="clip"].is-in { clip-path: inset(0 0 0 0); }
+
+/* ---- Staggered children: JS assigns --i to each child of [data-stagger] ---- */
+[data-stagger] > * {
+    opacity: 0; transform: translateY(16px);
+    transition: opacity 0.6s var(--ease), transform 0.6s var(--ease);
+    transition-delay: calc(var(--i, 0) * 70ms);
+}
+[data-stagger].is-in > * { opacity: 1; transform: none; }
+
+/* ============================================================================
+   THEMATIC MOTION — the subject's own instruments animate as you arrive
+   ========================================================================== */
+
+/* ---- Meters & weight bars fill from the left (transform = GPU-cheap) ---- */
+.mock__meter i,
+.lp-sec__meter i,
+.mock--prog .mock__meter i {
+    transform-origin: left center;
+    transform: scaleX(0);
+    transition: transform 0.9s var(--ease-mech);
+    transition-delay: 0.15s;
+}
+.is-in .mock__meter i,
+.is-in .lp-sec__meter i,
+.is-in.lp-sec .lp-sec__meter i { transform: scaleX(1); }
+
+/* ---- Exam answer "checked": the tick draws on, then the row marks ---- */
+.mock__opt .tick { width: 15px; height: 15px; display: block; }
+.mock__opt .tick path {
+    fill: none; stroke: currentColor; stroke-width: 2.4;
+    stroke-linecap: round; stroke-linejoin: round;
+    stroke-dasharray: 24; stroke-dashoffset: 24;
+}
+.is-in .mock__opt.ok .tick path {
+    transition: stroke-dashoffset 0.5s var(--ease-mech) 0.55s;
+    stroke-dashoffset: 0;
+}
+.mock--q .mock__opt.ok { position: relative; }
+.is-in .mock--q .mock__opt.ok { animation: rowMark 0.45s var(--ease) 0.45s both; }
+@keyframes rowMark {
+    from { background: transparent; }
+    to   { background: var(--pass-wash); }
+}
+
+/* ---- Study Hub: the syllabus panel opens like a page (3D hinge on the spine) ---- */
+.lp-inside .lp-row__art { perspective: 1200px; }
+.mock--sections {
+    position: relative;
+    transform-origin: left center;
+    transform: rotateY(-20deg) translateZ(0);
+    opacity: 0;
+    transition: transform 0.95s var(--ease-mech), opacity 0.7s var(--ease);
+    box-shadow: -14px 20px 40px -26px rgba(23,25,31,0.55);
+}
+.lp-row.is-in .mock--sections { transform: rotateY(0); opacity: 1; }
+/* a signal "spine" down the hinge edge */
+.mock--sections::before {
+    content: ""; position: absolute; top: 8px; bottom: 8px; left: -1px; width: 2px;
+    background: var(--signal); opacity: 0; transform: scaleY(0); transform-origin: top;
+    transition: transform 0.7s var(--ease-mech) 0.25s, opacity 0.3s var(--ease) 0.25s;
+}
+.lp-row.is-in .mock--sections::before { opacity: 1; transform: scaleY(1); }
+
+/* ---- Count-up numbers (JS drives the value; this just holds tabular figures) ---- */
+[data-countup] { font-variant-numeric: tabular-nums; }
+
+/* ============================================================================
+   SITE-WIDE MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* Reading-progress hairline (pure CSS scroll-driven; hidden where unsupported) */
+.scroll-progress { display: none; }
+@supports (animation-timeline: scroll()) {
+    .scroll-progress {
+        display: block; position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 90;
+        background: var(--signal); transform-origin: left; transform: scaleX(0);
+        animation: spGrow linear both; animation-timeline: scroll(root);
+    }
+    @keyframes spGrow { to { transform: scaleX(1); } }
+}
+
+/* Hero graph-paper drifts subtly as you scroll away (decorative layer only) */
+@supports (animation-timeline: scroll()) {
+    .lp-hero__grid {
+        animation: heroDrift linear both; animation-timeline: scroll(root); animation-range: 0 70vh;
+    }
+    @keyframes heroDrift { to { transform: translateY(38px); opacity: 0.45; } }
+}
+
+/* Card lift utility — opt-in on interactive tiles */
+.lift { transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease); will-change: transform; }
+.lift:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(23,25,31,0.45); }
+
+/* Smooth <details> disclosure (FAQ) via grid-rows trick */
+details.lp-q > *:not(summary) {
+    display: block; overflow: hidden;
+}
+details.lp-q p { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s var(--ease-mech); }
+details.lp-q p > * { min-height: 0; }
+details.lp-q[open] p { grid-template-rows: 1fr; }
+
+/* Buttons: gentle press already in design-system; add a hover translate for primary CTAs */
+.btn--primary:hover, .btn--dark:hover { transform: translateY(-1px); }
+
+/* ============================================================================
+   INTERACTIVE MOMENTS — exam answering, payment success, pricing
+   ========================================================================== */
+@keyframes tickDraw { from { stroke-dashoffset: 30; } to { stroke-dashoffset: 0; } }
+@keyframes labPop   { 0% { transform: scale(0.72); } 60% { transform: scale(1.08); } 100% { transform: scale(1); } }
+
+/* Exam: the "answered" tick draws on, and the chosen option label pops */
+.q-status.done svg path { stroke-dasharray: 30; stroke-dashoffset: 30; animation: tickDraw 0.45s var(--ease-mech) forwards; }
+.opt input:checked ~ .lab { animation: labPop 0.3s var(--ease-mech); }
+
+/* Payment success: the confirmation mark scales in, then draws */
+.success-hero .big-ic { transform: scale(0.6); opacity: 0; transition: transform 0.5s var(--ease-mech), opacity 0.4s var(--ease); }
+.success-hero.is-in .big-ic { transform: scale(1); opacity: 1; }
+.success-hero .big-ic svg path { stroke-dasharray: 30; stroke-dashoffset: 30; }
+.success-hero.is-in .big-ic svg path { transition: stroke-dashoffset 0.6s var(--ease-mech) 0.35s; stroke-dashoffset: 0; }
+
+/* Pricing: feature checkmarks draw as each card arrives */
+.plans .feat-list svg path { stroke-dasharray: 26; stroke-dashoffset: 26; }
+.plans.is-in .feat-list svg path { animation: tickDraw 0.5s var(--ease-mech) forwards; }
+
+/* Results: each answer-review tick / cross draws as the item reveals */
+@keyframes rtickDraw { to { stroke-dashoffset: 0; } }
+.review-item .rtick svg path { stroke-dasharray: 40; stroke-dashoffset: 40; }
+.review-item.is-in .rtick svg path { animation: rtickDraw 0.5s var(--ease-mech) forwards; }
+
+/* ============================================================================
+   REDUCED MOTION — everything lands on its final, readable state instantly
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+    [data-stagger] > * { opacity: 1 !important; transform: none !important; }
+    [data-reveal="clip"] { clip-path: none !important; }
+    .mock__meter i, .lp-sec__meter i { transform: scaleX(1) !important; transition: none !important; }
+    .mock__opt .tick path { stroke-dashoffset: 0 !important; }
+    .mock--sections { transform: none !important; opacity: 1 !important; }
+    .mock--sections::before { transform: scaleY(1) !important; opacity: 1 !important; }
+    .q-status.done svg path,
+    .success-hero .big-ic svg path,
+    .plans .feat-list svg path { stroke-dashoffset: 0 !important; animation: none !important; }
+    .success-hero .big-ic { transform: none !important; opacity: 1 !important; }
+    .opt input:checked ~ .lab { animation: none !important; }
+    .review-item .rtick svg path { stroke-dashoffset: 0 !important; animation: none !important; }
+    .scroll-progress { display: none !important; }
+    .lift:hover, .btn--primary:hover, .btn--dark:hover { transform: none !important; }
+}

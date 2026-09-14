@@ -4,10 +4,39 @@
     "use strict";
 
     var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var targets = document.querySelectorAll("[data-reveal]");
+
+    // Assign a --i index to each child of a [data-stagger] group (drives the cascade).
+    document.querySelectorAll("[data-stagger]").forEach(function (group) {
+        Array.prototype.forEach.call(group.children, function (child, i) {
+            child.style.setProperty("--i", i);
+        });
+    });
+
+    var revealTargets = document.querySelectorAll("[data-reveal], [data-stagger]");
+    var countTargets = document.querySelectorAll("[data-countup]");
+
+    // Count a number up to its target with an easeOutCubic curve.
+    function runCount(el) {
+        var target = parseFloat(el.getAttribute("data-countup"));
+        if (isNaN(target)) return;
+        var suffix = el.getAttribute("data-countup-suffix") || "";
+        var dur = 1100, startTs = null;
+        function frame(ts) {
+            if (!startTs) startTs = ts;
+            var p = Math.min((ts - startTs) / dur, 1);
+            var eased = 1 - Math.pow(1 - p, 3);
+            el.textContent = Math.round(target * eased) + suffix;
+            if (p < 1) window.requestAnimationFrame(frame);
+        }
+        window.requestAnimationFrame(frame);
+    }
 
     if (reduce || !("IntersectionObserver" in window)) {
-        targets.forEach(function (el) { el.classList.add("is-in"); });
+        revealTargets.forEach(function (el) { el.classList.add("is-in"); });
+        countTargets.forEach(function (el) {
+            var t = el.getAttribute("data-countup");
+            if (t !== null) el.textContent = t + (el.getAttribute("data-countup-suffix") || "");
+        });
         return;
     }
 
@@ -20,8 +49,16 @@
             io.unobserve(el);
         });
     }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+    revealTargets.forEach(function (el) { io.observe(el); });
 
-    targets.forEach(function (el) { io.observe(el); });
+    var cio = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+            if (!entry.isIntersecting) return;
+            runCount(entry.target);
+            cio.unobserve(entry.target);
+        });
+    }, { threshold: 0.6 });
+    countTargets.forEach(function (el) { cio.observe(el); });
 })();
 
 /* NPPE Prep — testimonials carousel: pages one viewport-width at a time,

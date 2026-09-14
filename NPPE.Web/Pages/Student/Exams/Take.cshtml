@@ -29,7 +29,7 @@
     @for (int qi = 0; qi < total; qi++)
     {
         var q = exam.Questions[qi];
-        <div class="q-card">
+        <div class="q-card" data-reveal>
             <div class="q-card__head">
                 <span class="q-num">@((qi + 1).ToString("D2"))</span>
                 <span class="of">@SharedLocalizer["Question"] @(qi + 1) @SharedLocalizer["of"] @total</span>

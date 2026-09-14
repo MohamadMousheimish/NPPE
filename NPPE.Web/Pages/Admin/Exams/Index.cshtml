@@ -24,7 +24,7 @@
 
 @if (Model.Exams.Any())
 {
-    <div class="adm-list" data-reveal>
+    <div class="adm-list" data-reveal data-stagger>
         @{ var n = 0; }
         @foreach (var exam in Model.Exams)
         {

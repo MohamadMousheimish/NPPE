@@ -23,9 +23,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/design-system.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/motion.css" asp-append-version="true" />
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body>
+    <div class="scroll-progress" aria-hidden="true"></div>
     <header class="appbar">
         <div class="appbar__in">
             <a class="wm" asp-page="/Index"><span class="mk">N</span><b>NPPE&nbsp;Prep</b></a>
