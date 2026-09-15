@@ -13,12 +13,10 @@
             <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
             <a class="btn btn--ghost btn--lg lp-hero__ghost" asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a>
         </div>
-        @* Video hidden until the new professional explainer is ready — see launch plan.
         <a class="lp-watch" href="#watch">
             <span class="lp-watch__play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-            @SharedLocalizer["Watch the 2-minute tour"]
+            @SharedLocalizer["Watch the 1-minute tour"]
         </a>
-        *@
     </div>
     <div class="lp-hero__strip" data-reveal>
         <span>@SharedLocalizer["Full NPPE syllabus"]</span><i></i>
@@ -211,12 +209,11 @@
     </section>
 }
 
-<!-- ===== VIDEO (hidden until the new professional explainer is ready — see launch plan) ===== -->
-@*
+<!-- ===== VIDEO ===== -->
 <section class="lp-watch-sec" id="watch">
     <div class="lp-head" data-reveal>
         <span class="eyebrow eyebrow--signal">@SharedLocalizer["See it in action"]</span>
-        <h2>@SharedLocalizer["A two-minute tour"]</h2>
+        <h2>@SharedLocalizer["A one-minute tour"]</h2>
         <p>@SharedLocalizer["Who we are, what the exam demands, and exactly how the platform gets you ready."]</p>
     </div>
     <div class="lp-video" data-reveal>
@@ -225,7 +222,6 @@
         </video>
     </div>
 </section>
-*@
 
 <!-- ===== FAQ ===== -->
 <section class="lp-faq" id="faq">

@@ -671,8 +671,8 @@
   <data name="(legacy)" xml:space="preserve">
     <value>(hérité)</value>
   </data>
-  <data name="A two-minute tour" xml:space="preserve">
-    <value>Une visite de deux minutes</value>
+  <data name="A one-minute tour" xml:space="preserve">
+    <value>Une visite d'une minute</value>
   </data>
   <data name="Acceptable use" xml:space="preserve">
     <value>Utilisation acceptable</value>
@@ -1160,8 +1160,8 @@
   <data name="Watch how it works" xml:space="preserve">
     <value>Regardez comment ça fonctionne</value>
   </data>
-  <data name="Watch the 2-minute tour" xml:space="preserve">
-    <value>Regardez la visite de 2 minutes</value>
+  <data name="Watch the 1-minute tour" xml:space="preserve">
+    <value>Regardez la visite d'une minute</value>
   </data>
   <data name="We may update the platform, its content, and these terms from time to time. We aim to keep the service available but can't guarantee uninterrupted access." xml:space="preserve">
     <value>Nous pouvons mettre à jour la plateforme, son contenu et ces conditions de temps à autre. Nous visons à garder le service disponible, mais ne pouvons garantir un accès ininterrompu.</value>
