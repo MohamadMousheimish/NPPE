@@ -19,3 +19,20 @@
         <a class="btn btn--primary btn--lg" asp-page="/Student/Exams/Index">@SharedLocalizer["Start practising"] <span class="arrow">&rarr;</span></a>
     }
 </div>
+
+@section Scripts {
+    @if (Model.Confirmed && Model.PurchaseValue > 0)
+    {
+        <script>
+            // GA4 / Google Ads purchase conversion (no-ops if analytics isn't loaded, e.g. dev).
+            if (typeof gtag === "function") {
+                gtag("event", "purchase", {
+                    transaction_id: "@Model.TransactionId",
+                    value: @Model.PurchaseValue.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    currency: "CAD",
+                    items: [{ item_name: "NPPE exam pack" }]
+                });
+            }
+        </script>
+    }
+}

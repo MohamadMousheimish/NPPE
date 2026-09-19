@@ -509,8 +509,8 @@
   <data name="To run your account, show your progress and history, process payments, and improve the practice material. We do not sell your data." xml:space="preserve"><value>Pour gérer votre compte, afficher vos progrès et votre historique, traiter les paiements et améliorer le matériel de pratique. Nous ne vendons pas vos données.</value></data>
   <data name="Your controls" xml:space="preserve"><value>Vos contrôles</value></data>
   <data name="You can view and update your profile at any time, or request deletion of your account. Reach us through the contact link in the footer." xml:space="preserve"><value>Vous pouvez consulter et mettre à jour votre profil à tout moment, ou demander la suppression de votre compte. Contactez-nous via le lien dans le pied de page.</value></data>
-  <data name="Cookies" xml:space="preserve"><value>Témoins</value></data>
-  <data name="We use only the cookies needed to keep you signed in and remember your language preference." xml:space="preserve"><value>Nous n'utilisons que les témoins nécessaires pour vous garder connecté et mémoriser votre préférence de langue.</value></data>
+  <data name="Cookies &amp; analytics" xml:space="preserve"><value>Témoins et analytique</value></data>
+  <data name="We use cookies to keep you signed in and remember your language, plus Google Analytics to understand how the site is used so we can improve it. Analytics data is aggregated, and we never sell your data." xml:space="preserve"><value>Nous utilisons des témoins pour vous garder connecté et mémoriser votre langue, ainsi que Google Analytics pour comprendre l'utilisation du site et l'améliorer. Les données analytiques sont agrégées et nous ne vendons jamais vos données.</value></data>
   <data name="Something went wrong" xml:space="preserve"><value>Une erreur est survenue</value></data>
   <data name="— Fault · Signal lost" xml:space="preserve"><value>— Panne · Signal perdu</value></data>
   <data name="Off the grid." xml:space="preserve"><value>Hors réseau.</value></data>

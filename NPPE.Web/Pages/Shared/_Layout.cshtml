@@ -1,4 +1,9 @@
+@inject Microsoft.Extensions.Configuration.IConfiguration AppConfig
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment HostEnv
 @{
+    // Google Analytics 4 — only in real deployments (never dev/tests) so data stays clean.
+    var ga4 = AppConfig["Analytics:Ga4MeasurementId"];
+    var analyticsOn = !HostEnv.IsDevelopment() && !string.IsNullOrWhiteSpace(ga4);
     var authed = User.Identity?.IsAuthenticated == true;
     var isAdmin = User.IsInRole("Admin");
     var name = User.FindFirst(System.Security.Claims.ClaimTypes.Name)?.Value ?? "";
@@ -24,6 +29,17 @@
     <link rel="stylesheet" href="~/css/design-system.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/motion.css" asp-append-version="true" />
+    @if (analyticsOn)
+    {
+        <!-- Google Analytics 4 -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=@ga4"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', '@ga4');
+        </script>
+    }
     @await RenderSectionAsync("Head", required: false)
 </head>
 <body>

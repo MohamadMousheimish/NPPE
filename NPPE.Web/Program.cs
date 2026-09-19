@@ -202,11 +202,12 @@ app.Use(async (context, next) =>
     headers["Referrer-Policy"] = "strict-origin-when-cross-origin";
     headers["Content-Security-Policy"] =
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline'; " +
+        // Google Analytics 4 (gtag.js) + Google Ads conversion tracking.
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.googleadservices.com; " +
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
         "font-src 'self' https://fonts.gstatic.com; " +
-        "img-src 'self' data:; " +
-        "connect-src 'self'; " +
+        "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://googleads.g.doubleclick.net; " +
+        "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.g.doubleclick.net; " +
         "frame-ancestors 'none'; " +
         "base-uri 'self'; " +
         // Some sign-in/pay flows POST and then redirect off-site, and form-action
