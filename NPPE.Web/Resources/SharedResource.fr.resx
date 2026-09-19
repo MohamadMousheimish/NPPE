@@ -1551,6 +1551,31 @@
   <data name="Claim rejected." xml:space="preserve">
     <value>Demande refusée.</value>
   </data>
+  <data name="Try 3 free questions" xml:space="preserve">
+    <value>Essayez 3 questions gratuites</value>
+  </data>
+  <data name="Free sample · no signup" xml:space="preserve">
+    <value>Échantillon gratuit · sans inscription</value>
+  </data>
+  <data name="Try &lt;em&gt;three&lt;/em&gt; questions" xml:space="preserve"><value>Essayez &lt;em&gt;trois&lt;/em&gt; questions</value></data>
+  <data name="Answer three real NPPE-style questions and see how you'd do — no account, no payment." xml:space="preserve">
+    <value>Répondez à trois questions de type NPPE et voyez comment vous vous en sortiriez — sans compte, sans paiement.</value>
+  </data>
+  <data name="Correct." xml:space="preserve">
+    <value>Correct.</value>
+  </data>
+  <data name="Correct answer:" xml:space="preserve">
+    <value>Bonne réponse :</value>
+  </data>
+  <data name="That's a taste of it." xml:space="preserve">
+    <value>Voilà un aperçu.</value>
+  </data>
+  <data name="Create your free account to unlock full practice exams — worked explanations on every question — and the complete Study Hub." xml:space="preserve">
+    <value>Créez votre compte gratuit pour débloquer des examens blancs complets — une explication détaillée à chaque question — et le Study Hub complet.</value>
+  </data>
+  <data name="Taking you back to the home page…" xml:space="preserve">
+    <value>Retour à la page d'accueil…</value>
+  </data>
   <data name="Unapprove" xml:space="preserve">
     <value>Retirer l'approbation</value>
   </data>

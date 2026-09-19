@@ -1,0 +1,62 @@
+@page
+@model NPPE.Web.Pages.TryModel
+@{
+    ViewData["Title"] = SharedLocalizer["Try 3 free questions"].Value;
+    ViewData["ActiveNav"] = "";
+}
+
+<div class="phead" data-reveal>
+    <div>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["Free sample · no signup"]</span>
+        <h1>@Html.Raw(SharedLocalizer["Try <em>three</em> questions"])</h1>
+        <p class="sub">@SharedLocalizer["Answer three real NPPE-style questions and see how you'd do — no account, no payment."]</p>
+    </div>
+    <div class="sample-progress"><b id="sp-count">0</b>&thinsp;/&thinsp;3</div>
+</div>
+
+<div id="sample"
+     data-home="@Url.Page("/Index")"
+     data-ok="@SharedLocalizer["Correct."]"
+     data-no="@SharedLocalizer["Not quite."]"
+     data-answer-label="@SharedLocalizer["Correct answer:"]">
+
+    @for (var i = 0; i < Model.Questions.Count; i++)
+    {
+        var q = Model.Questions[i];
+        <div class="sq" data-reveal data-answered="0">
+            <div class="sq__h">
+                <span class="sq__n">@((i + 1).ToString("D2"))</span>
+                <span class="of">@SharedLocalizer["Question"] @(i + 1) @SharedLocalizer["of"] 3</span>
+            </div>
+            <p class="sq__stem">@q.Stem</p>
+            <div class="sq__opts">
+                @foreach (var opt in q.Options)
+                {
+                    <button class="sq__opt" type="button" data-label="@opt.Label" data-correct="@(opt.Label == q.Correct ? "true" : "false")">
+                        <span class="sq__lab">@opt.Label</span>
+                        <span class="sq__txt">@opt.Text</span>
+                    </button>
+                }
+            </div>
+            <div class="sq__expl" hidden>
+                <strong class="sq__verdict"></strong>
+                <span class="sq__ans"></span>
+                <span class="sq__why">@q.Explanation</span>
+            </div>
+        </div>
+    }
+
+    <div class="sample-done" id="sample-done" hidden>
+        <div class="sample-done__ic">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4.5 4.5L19 7"/></svg>
+        </div>
+        <h2>@SharedLocalizer["That's a taste of it."]</h2>
+        <p>@SharedLocalizer["Create your free account to unlock full practice exams — worked explanations on every question — and the complete Study Hub."]</p>
+        <a class="btn btn--primary btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"] <span class="arrow">&rarr;</span></a>
+        <p class="anno" id="sample-redirect">@SharedLocalizer["Taking you back to the home page…"]</p>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/try-sample.js" asp-append-version="true"></script>
+}
