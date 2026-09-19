@@ -36,11 +36,11 @@ public static class NppeExamCalendar
         new NppeSitting(new(2027, 11, 1),  new(2027, 11, 3),  new(2027, 9, 24)),
     };
 
-    /// <summary>
-    /// The next sitting a visitor can still register for (registration deadline not yet past).
-    /// That's the marketing-relevant one — the exam they can actually act on today.
-    /// </summary>
-    public static NppeSitting? NextRegisterable(DateOnly today) =>
-        Sittings.FirstOrDefault(s => s.RegistrationDeadline >= today)
-        ?? Sittings.FirstOrDefault(s => s.Start >= today); // fallback: next exam even if reg closed
+    /// <summary>The soonest upcoming exam (kept until its window ends) — the countdown target.</summary>
+    public static NppeSitting? NextExam(DateOnly today) =>
+        Sittings.FirstOrDefault(s => s.End >= today);
+
+    /// <summary>The soonest sitting a visitor can still register for (deadline not yet past).</summary>
+    public static NppeSitting? NextOpenRegistration(DateOnly today) =>
+        Sittings.FirstOrDefault(s => s.RegistrationDeadline >= today);
 }

@@ -1582,6 +1582,12 @@
   <data name="Next NPPE exam" xml:space="preserve">
     <value>Prochain examen NPPE</value>
   </data>
+  <data name="Registration for this sitting has closed. Next you can register for:" xml:space="preserve">
+    <value>Les inscriptions pour cette séance sont closes. Prochaine séance ouverte aux inscriptions :</value>
+  </data>
+  <data name="register by" xml:space="preserve">
+    <value>inscrivez-vous avant le</value>
+  </data>
   <data name="days" xml:space="preserve">
     <value>jours</value>
   </data>
