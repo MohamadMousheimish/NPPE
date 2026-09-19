@@ -49,4 +49,11 @@
     <p>@Html.Raw(SharedLocalizer["Questions about these terms? Email us at <a href=\"mailto:info@nppeacademy.com\">info@nppeacademy.com</a>."])</p>
 </div>
 
-<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+}
+else
+{
+    <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to home"]</a>
+}

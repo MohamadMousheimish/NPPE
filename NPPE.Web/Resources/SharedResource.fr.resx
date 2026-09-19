@@ -255,6 +255,7 @@
   <data name="No exams yet" xml:space="preserve"><value>Aucun examen pour l'instant</value></data>
   <data name="Create your first module to get students practising." xml:space="preserve"><value>Créez votre premier module pour permettre aux étudiants de s'exercer.</value></data>
   <data name="Back to dashboard" xml:space="preserve"><value>Retour au tableau de bord</value></data>
+  <data name="Back to home" xml:space="preserve"><value>Retour à l'accueil</value></data>
   <data name="Exam created successfully." xml:space="preserve"><value>Examen créé avec succès.</value></data>
   <data name="Exam updated successfully." xml:space="preserve"><value>Examen mis à jour avec succès.</value></data>
   <data name="Exam deleted successfully." xml:space="preserve"><value>Examen supprimé avec succès.</value></data>

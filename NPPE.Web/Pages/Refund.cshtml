@@ -38,4 +38,11 @@
     <p>@Html.Raw(SharedLocalizer["Email <a href=\"mailto:info@nppeacademy.com\">info@nppeacademy.com</a> from the address on your account, with your purchase date. Approved refunds are returned to your original payment method through Stripe, usually within 5–10 business days."])</p>
 </div>
 
-<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+}
+else
+{
+    <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to home"]</a>
+}

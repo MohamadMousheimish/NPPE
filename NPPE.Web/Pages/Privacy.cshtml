@@ -30,4 +30,11 @@
     <p>@SharedLocalizer["We use cookies to keep you signed in and remember your language, plus Google Analytics to understand how the site is used so we can improve it. Analytics data is aggregated, and we never sell your data."]</p>
 </div>
 
-<a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+}
+else
+{
+    <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to home"]</a>
+}
