@@ -50,4 +50,7 @@
 </div>
 
 <p class="anno" style="text-align:center; margin-top:1.6rem">@SharedLocalizer["Fresh exams are added regularly — your pack always unlocks our newest material. Secure checkout by Stripe."]</p>
-<div style="text-align:center"><a class="backlink" asp-page="/Student/Exams/Index">&larr; @SharedLocalizer["Back to exams"]</a></div>
+@if (pricingAuthed)
+{
+    <div style="text-align:center"><a class="backlink" asp-page="/Student/Exams/Index">&larr; @SharedLocalizer["Back to exams"]</a></div>
+}
