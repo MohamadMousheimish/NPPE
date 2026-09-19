@@ -1576,6 +1576,30 @@
   <data name="Taking you back to the home page…" xml:space="preserve">
     <value>Retour à la page d'accueil…</value>
   </data>
+  <data name="Create account to get the {0}" xml:space="preserve">
+    <value>Créez un compte pour obtenir le {0}</value>
+  </data>
+  <data name="Next NPPE exam" xml:space="preserve">
+    <value>Prochain examen NPPE</value>
+  </data>
+  <data name="days" xml:space="preserve">
+    <value>jours</value>
+  </data>
+  <data name="hrs" xml:space="preserve">
+    <value>h</value>
+  </data>
+  <data name="min" xml:space="preserve">
+    <value>min</value>
+  </data>
+  <data name="sec" xml:space="preserve">
+    <value>sec</value>
+  </data>
+  <data name="Registration closes" xml:space="preserve">
+    <value>Inscriptions jusqu'au</value>
+  </data>
+  <data name="How do I register for the NPPE?" xml:space="preserve">
+    <value>Comment s'inscrire au NPPE?</value>
+  </data>
   <data name="Unapprove" xml:space="preserve">
     <value>Retirer l'approbation</value>
   </data>

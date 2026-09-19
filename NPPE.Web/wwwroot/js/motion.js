@@ -113,3 +113,29 @@
         }
     });
 })();
+
+/* NPPE Prep — next-exam countdown. Ticks [data-countdown] to its data-target ISO date. */
+(function () {
+    "use strict";
+    var els = document.querySelectorAll("[data-countdown]");
+    if (!els.length) return;
+    function pad(n) { return (n < 10 ? "0" : "") + n; }
+    function set(el, sel, v) { var n = el.querySelector(sel); if (n) n.textContent = v; }
+    function tick() {
+        var now = Date.now();
+        els.forEach(function (el) {
+            var target = Date.parse(el.getAttribute("data-target"));
+            var diff = Math.max(0, target - now);
+            var s = Math.floor(diff / 1000);
+            var d = Math.floor(s / 86400); s -= d * 86400;
+            var h = Math.floor(s / 3600); s -= h * 3600;
+            var m = Math.floor(s / 60); s -= m * 60;
+            set(el, "[data-cd-d]", d);
+            set(el, "[data-cd-h]", pad(h));
+            set(el, "[data-cd-m]", pad(m));
+            set(el, "[data-cd-s]", pad(s));
+        });
+    }
+    tick();
+    window.setInterval(tick, 1000);
+})();

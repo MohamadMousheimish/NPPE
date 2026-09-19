@@ -97,11 +97,8 @@
             }
             else
             {
-                <nav class="nav">
-                    <a href="/#inside">@SharedLocalizer["Features"]</a>
-                    <a href="/#exam">@SharedLocalizer["The exam"]</a>
-                    <a href="/#faq">@SharedLocalizer["FAQ"]</a>
-                </nav>
+                @* Signed-out visitors get a minimal bar: home (logo), language, sign in / sign up.
+                   No in-app nav is shown or reachable. *@
                 <div class="appbar__right">
                     <div class="lang">
                         <a href="@CultureUrl("en")" class="@(culture == "en" ? "on" : "")">EN</a>

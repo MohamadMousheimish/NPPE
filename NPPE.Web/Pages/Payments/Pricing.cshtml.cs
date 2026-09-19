@@ -6,7 +6,8 @@ using NPPE.Application.Commands.Payments.CreateExamPackCheckoutSession;
 
 namespace NPPE.Web.Pages.Payments;
 
-[Authorize(Roles = "Student")]
+// Public so ad traffic can see prices; buying still requires an account (guarded below).
+[AllowAnonymous]
 public class PricingModel : PageModel
 {
     private readonly IMediator _mediator;
@@ -23,8 +24,10 @@ public class PricingModel : PageModel
 
     public async Task<IActionResult> OnPostAsync(string packId)
     {
-        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
-                     ?? throw new InvalidOperationException("User ID not found.");
+        // Signed-out visitors must create an account before checkout.
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        if (string.IsNullOrEmpty(userId))
+            return RedirectToPage("/Account/Register", new { returnUrl = "/Payments/Pricing" });
 
         var successUrl = Url.Page("/Payments/Success", null, null, Request.Scheme)!;
         var cancelUrl = Url.Page("/Payments/Cancel", null, null, Request.Scheme)!;

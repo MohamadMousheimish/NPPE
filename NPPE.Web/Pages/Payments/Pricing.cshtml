@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = SharedLocalizer["Pricing"].Value;
     ViewData["ActiveNav"] = "billing";
+    var pricingAuthed = User.Identity?.IsAuthenticated == true;
 }
 
 <div class="phead" data-reveal style="justify-content:center; text-align:center; flex-direction:column; align-items:center">
@@ -36,7 +37,14 @@
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Full Study Hub — all six weighted sections"]</li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.5l4 4 10-10"/></svg> @SharedLocalizer["Worked explanations on every question"]</li>
             </ul>
-            <button class="btn @(isFeatured ? "btn--primary" : "btn--ghost") btn--block" type="submit">@SharedLocalizer["Get the {0}", pack.Name] <span class="arrow">&rarr;</span></button>
+            @if (pricingAuthed)
+            {
+                <button class="btn @(isFeatured ? "btn--primary" : "btn--ghost") btn--block" type="submit">@SharedLocalizer["Get the {0}", pack.Name] <span class="arrow">&rarr;</span></button>
+            }
+            else
+            {
+                <a class="btn @(isFeatured ? "btn--primary" : "btn--ghost") btn--block" asp-page="/Account/Register" asp-route-returnUrl="/Payments/Pricing">@SharedLocalizer["Create account to get the {0}", pack.Name] <span class="arrow">&rarr;</span></a>
+            }
         </form>
     }
 </div>

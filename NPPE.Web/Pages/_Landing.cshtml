@@ -27,6 +27,32 @@
     </div>
 </section>
 
+<!-- ===== NEXT-EXAM COUNTDOWN ===== -->
+@{
+    var cdCulture = System.Globalization.CultureInfo.CurrentCulture;
+    var cdNext = NPPE.Web.StudyContent.NppeExamCalendar.NextRegisterable(DateOnly.FromDateTime(DateTime.UtcNow));
+}
+@if (cdNext != null)
+{
+    <section class="lp-countdown" data-reveal>
+        <div class="lp-cd">
+            <span class="eyebrow eyebrow--signal">@SharedLocalizer["Next NPPE exam"]</span>
+            <h2 class="lp-cd__date">@cdNext.DisplayRange(cdCulture)</h2>
+            <div class="lp-cd__timer" data-countdown data-target="@cdNext.StartIsoUtc" aria-hidden="true">
+                <div class="lp-cd__u"><b data-cd-d>—</b><span>@SharedLocalizer["days"]</span></div>
+                <div class="lp-cd__u"><b data-cd-h>—</b><span>@SharedLocalizer["hrs"]</span></div>
+                <div class="lp-cd__u"><b data-cd-m>—</b><span>@SharedLocalizer["min"]</span></div>
+                <div class="lp-cd__u"><b data-cd-s>—</b><span>@SharedLocalizer["sec"]</span></div>
+            </div>
+            <p class="lp-cd__reg">
+                @SharedLocalizer["Registration closes"] <b>@cdNext.DeadlineDisplay(cdCulture)</b>
+                <span class="lp-cd__sep">·</span>
+                <a href="https://www.nppexam.ca/en/exam-information/" target="_blank" rel="noopener">@SharedLocalizer["How do I register for the NPPE?"] &rarr;</a>
+            </p>
+        </div>
+    </section>
+}
+
 <!-- ===== EXAM FACTS ===== -->
 <section class="lp-band" id="exam">
     <div class="lp-head" data-reveal>
