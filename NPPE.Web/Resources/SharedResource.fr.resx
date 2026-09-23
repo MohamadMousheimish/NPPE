@@ -1440,6 +1440,9 @@
   <data name="Tell other candidates how NPPE Prep helped. Approved reviews appear on our home page." xml:space="preserve">
     <value>Dites aux autres candidats comment NPPE Prep vous a aidé. Les avis approuvés apparaissent sur notre page d'accueil.</value>
   </data>
+  <data name="Tell other candidates how NPPE Prep helped. Your review appears on our home page." xml:space="preserve">
+    <value>Dites aux autres candidats comment NPPE Prep vous a aidé. Votre avis apparaît sur notre page d'accueil.</value>
+  </data>
   <data name="Title (optional)" xml:space="preserve">
     <value>Titre (facultatif)</value>
   </data>
@@ -1654,6 +1657,9 @@
   </data>
   <data name="Thanks! Your review was submitted and will appear once approved." xml:space="preserve">
     <value>Merci! Votre avis a été soumis et apparaîtra une fois approuvé.</value>
+  </data>
+  <data name="Thanks! Your review was submitted successfully." xml:space="preserve">
+    <value>Merci! Votre avis a été soumis avec succès.</value>
   </data>
   <data name="Testimonial added." xml:space="preserve">
     <value>Témoignage ajouté.</value>

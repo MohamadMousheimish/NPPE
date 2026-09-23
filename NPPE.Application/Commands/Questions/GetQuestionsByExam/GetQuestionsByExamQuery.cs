@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using NPPE.Application.Common;
 using NPPE.Application.DTOs.Questions;
 using NPPE.Application.Repositories;
 
@@ -24,13 +25,13 @@ public class GetQuestionsByExamQueryHandler : IRequestHandler<GetQuestionsByExam
             q.Text,
             q.ExplanationForCorrect,
             q.ExplanationForIncorrect,
-            q.Options.Select(o => new AnswerOptionDto
+            q.Options.OrderBy(o => AnswerOptionOrder.MetaRank(o.Text)).ThenBy(o => o.Label).Select(o => new AnswerOptionDto
             (
                 o.Id,
                 o.Text,
                 o.Label,
                 o.IsCorrect
-            )).OrderBy(o => o.Label).ToList()
+            )).ToList()
         )).ToList();
     }
 }

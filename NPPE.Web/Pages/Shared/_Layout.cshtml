@@ -105,7 +105,7 @@
                         <span class="sep">/</span>
                         <a href="@CultureUrl("fr")" class="@(culture == "fr" ? "on" : "")">FR</a>
                     </div>
-                    <a class="btn btn--ghost" asp-page="/Account/Login" style="border-color:var(--line-dark); color:var(--paper);">@SharedLocalizer["Sign in"]</a>
+                    <a class="btn btn--ghost-invert" asp-page="/Account/Login">@SharedLocalizer["Sign in"]</a>
                     <a class="btn btn--primary" asp-page="/Account/Register">@SharedLocalizer["Sign up"]</a>
                 </div>
             }

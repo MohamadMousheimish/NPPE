@@ -76,7 +76,7 @@ public class FeedbackModel : PageModel
             return Page();
         }
 
-        TempData["SuccessMessage"] = "Thanks! Your review was submitted and will appear once approved.";
+        TempData["SuccessMessage"] = "Thanks! Your review was submitted successfully.";
         return RedirectToPage();
     }
 

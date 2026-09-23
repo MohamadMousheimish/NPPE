@@ -8,12 +8,13 @@ namespace NPPE.Web.StudyContent;
 /// </summary>
 public sealed record NppeSitting(DateOnly Start, DateOnly End, DateOnly RegistrationDeadline)
 {
-    /// <summary>e.g. "January 11–13, 2027" (localized month name).</summary>
+    /// <summary>e.g. "11–13 January 2027" (localized month name; day–day month year).</summary>
     public string DisplayRange(CultureInfo culture)
     {
         if (Start.Month == End.Month)
-            return $"{Start.ToString("MMMM d", culture)}–{End.ToString("d", culture)}, {End.Year}";
-        return $"{Start.ToString("MMMM d", culture)} – {End.ToString("MMMM d", culture)}, {End.Year}";
+            return $"{Start.Day}–{End.Day} {Start.ToString("MMMM", culture)} {End.Year}";
+        // Spans two months (same year in our calendar): "30 January – 2 February 2027".
+        return $"{Start.Day} {Start.ToString("MMMM", culture)} – {End.Day} {End.ToString("MMMM", culture)} {End.Year}";
     }
 
     public string DeadlineDisplay(CultureInfo culture) =>

@@ -23,8 +23,6 @@
 .lp-hero h1 em { color: var(--signal); font-style: normal; }
 .lp-lede { font-size: clamp(1.05rem, 2vw, 1.28rem); line-height: 1.6; color: var(--slate-2); margin: 0 auto 2rem; max-width: 54ch; }
 .lp-hero__cta { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; }
-.lp-hero__ghost { color: var(--paper); border-color: var(--line-dark); }
-.lp-hero__ghost:hover { border-color: var(--signal); }
 .lp-watch { display: inline-flex; align-items: center; gap: .6rem; margin-top: 1.8rem; font-family: var(--font-mono); font-size: .82rem; letter-spacing: .04em; color: var(--slate-2); text-decoration: none; }
 .lp-watch:hover { color: var(--paper); }
 .lp-watch__play { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--signal); color: var(--signal); transition: background .2s, color .2s; }

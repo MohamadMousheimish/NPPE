@@ -9,7 +9,7 @@
     <div>
         <span class="eyebrow eyebrow--signal">@SharedLocalizer["Your experience"]</span>
         <h1>@Html.Raw(SharedLocalizer["Leave a <em>review</em>"])</h1>
-        <p class="sub">@SharedLocalizer["Tell other candidates how NPPE Prep helped. Approved reviews appear on our home page."]</p>
+        <p class="sub">@SharedLocalizer["Tell other candidates how NPPE Prep helped. Your review appears on our home page."]</p>
     </div>
     <a class="btn btn--ghost" asp-page="/Index">@SharedLocalizer["Back to dashboard"] <span class="arrow">&rarr;</span></a>
 </div>
@@ -35,9 +35,7 @@ else
         {
             <div class="note" style="margin-bottom:1.2rem">
                 <span class="anno">
-                    @(Model.PendingApproval
-                        ? SharedLocalizer["Your review is awaiting approval. You can update it below."]
-                        : SharedLocalizer["Your review is live — thank you! You can update it below."])
+                    @SharedLocalizer["Your review is live — thank you! You can update it below."]
                 </span>
             </div>
         }

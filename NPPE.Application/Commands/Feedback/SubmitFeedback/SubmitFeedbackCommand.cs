@@ -7,7 +7,7 @@ namespace NPPE.Application.Commands.Feedback.SubmitFeedback;
 
 /// <summary>Upserts the signed-in student's own review. Returns false if the student
 /// isn't eligible yet (must have finished ALL of their unlocked exams). One review per
-/// student (upsert). Edits re-enter moderation.</summary>
+/// student (upsert). Reviews go live immediately; an admin can hide or delete them later.</summary>
 public record SubmitFeedbackCommand(string UserId, int Rating, string Comment) : IRequest<bool>;
 
 public class SubmitFeedbackCommandHandler : IRequestHandler<SubmitFeedbackCommand, bool>
@@ -40,7 +40,7 @@ public class SubmitFeedbackCommandHandler : IRequestHandler<SubmitFeedbackComman
         {
             existing.Rating = rating;
             existing.Comment = comment;
-            existing.IsApproved = false; // changed content goes back into moderation
+            existing.IsApproved = true; // reviews are visible immediately; admin can hide later
             existing.UpdatedAt = DateTime.UtcNow;
             await _feedback.UpdateAsync(existing);
         }
@@ -53,7 +53,7 @@ public class SubmitFeedbackCommandHandler : IRequestHandler<SubmitFeedbackComman
                 AuthorName = DisplayName(user),
                 Rating = rating,
                 Comment = comment,
-                IsApproved = false
+                IsApproved = true
             });
         }
         return true;

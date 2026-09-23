@@ -197,6 +197,14 @@ h1, h2, h3 { font-family: var(--font-display); font-weight: 600; letter-spacing:
 .btn--ghost { border-color: var(--line); color: var(--slate); }
 .btn--ghost:hover { border-color: var(--ink); color: var(--ink); background: rgba(23,25,31,0.03); }
 
+/* Solid white CTA for dark surfaces: white fill + ink text; hover inverts to an outline. */
+.btn--invert { background: #fff; border-color: #fff; color: var(--ink); }
+.btn--invert:hover { background: transparent; border-color: #fff; color: #fff; }
+
+/* Outlined button for dark surfaces: light text/border that STAYS light on hover. */
+.btn--ghost-invert { border-color: var(--line-dark); color: var(--paper); background: transparent; }
+.btn--ghost-invert:hover { border-color: var(--paper); color: var(--paper); background: rgba(255,255,255,0.10); }
+
 .btn--danger { border-color: var(--fail); color: var(--fail); }
 .btn--danger:hover { background: var(--fail); color: #fff; }
 
