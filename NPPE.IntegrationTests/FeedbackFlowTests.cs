@@ -67,21 +67,22 @@ public class FeedbackFlowTests : IClassFixture<NppeWebAppFactory>
             var m = scope.ServiceProvider.GetRequiredService<IMediator>();
             Assert.True(await m.Send(new SubmitFeedbackCommand(studentId, 5, "Genuinely helped me pass.")));
 
-            // Pending → not public yet
+            // Reviews go live immediately — public with no approval step, using a
+            // privacy-friendly author name.
             var approved = await m.Send(new GetApprovedFeedbackQuery(50));
-            Assert.DoesNotContain(approved, f => f.Comment == "Genuinely helped me pass.");
-
-            // Approve it
-            var all = await m.Send(new GetAllFeedbackQuery());
-            var mine = all.First(f => f.Comment == "Genuinely helped me pass.");
-            Assert.True(mine.FromStudent);
-            await m.Send(new SetFeedbackApprovalCommand(mine.Id, true));
-
-            // Now public, with a privacy-friendly author name
-            approved = await m.Send(new GetApprovedFeedbackQuery(50));
             var pub = Assert.Single(approved, f => f.Comment == "Genuinely helped me pass.");
             Assert.Equal(5, pub.Rating);
             Assert.Equal("NPPE S.", pub.AuthorName); // seeded student is "NPPE Student"
+
+            // It's attributed to the student in the admin list...
+            var all = await m.Send(new GetAllFeedbackQuery());
+            var mine = all.First(f => f.Comment == "Genuinely helped me pass.");
+            Assert.True(mine.FromStudent);
+
+            // ...and an admin can still hide it afterwards.
+            await m.Send(new SetFeedbackApprovalCommand(mine.Id, false));
+            approved = await m.Send(new GetApprovedFeedbackQuery(50));
+            Assert.DoesNotContain(approved, f => f.Comment == "Genuinely helped me pass.");
         }
 
         // --- Admin can seed a testimonial that shows publicly ---
