@@ -34,11 +34,11 @@ public class GetExamWithQuestionsQueryHandler : IRequestHandler<GetExamWithQuest
                 LocalizedText.Pick(q.Text, q.TextFr),
                 LocalizedText.Pick(q.ExplanationForCorrect, q.ExplanationForCorrectFr),
                 LocalizedText.Pick(q.ExplanationForIncorrect, q.ExplanationForIncorrectFr),
-                q.Options.OrderBy(o => AnswerOptionOrder.MetaRank(o.Text)).ThenBy(o => o.Label).Select(o => new AnswerOptionDto
+                q.Options.OrderBy(o => AnswerOptionOrder.MetaRank(o.Text)).ThenBy(o => o.Label).Select((o, i) => new AnswerOptionDto
                 (
                     o.Id,
                     LocalizedText.Pick(o.Text, o.TextFr),
-                    o.Label,
+                    (char)('A' + i),
                     o.IsCorrect
                 )).ToList()
             )).ToList()

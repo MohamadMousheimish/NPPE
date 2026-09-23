@@ -1,4 +1,5 @@
 using NPPE.Application.Common;
+using NPPE.Domain.Entities;
 using Xunit;
 
 namespace NPPE.Tests;
@@ -43,5 +44,22 @@ public class AnswerOptionOrderTests
 
         // Non-meta options keep their A/C/D order; the catch-all moves to the end.
         Assert.Equal(new[] { 'A', 'C', 'D', 'B' }, ordered);
+    }
+
+    [Fact]
+    public void DisplayLabel_renumbers_sequentially_with_the_catch_all_shown_last()
+    {
+        // Stored labels: the catch-all sits at 'B' in the source data.
+        var notify  = new AnswerOption { Id = Guid.NewGuid(), Text = "Notify the client in writing", Label = 'A' };
+        var allAbove = new AnswerOption { Id = Guid.NewGuid(), Text = "All of the above", Label = 'B', IsCorrect = true };
+        var stop    = new AnswerOption { Id = Guid.NewGuid(), Text = "Stop work until it is resolved", Label = 'C' };
+        var escalate = new AnswerOption { Id = Guid.NewGuid(), Text = "Escalate to a senior engineer", Label = 'D' };
+        var options = new[] { notify, allAbove, stop, escalate };
+
+        // Display order is A, C, D, then the catch-all — re-lettered A, B, C, D.
+        Assert.Equal('A', AnswerOptionOrder.DisplayLabel(options, notify));
+        Assert.Equal('B', AnswerOptionOrder.DisplayLabel(options, stop));
+        Assert.Equal('C', AnswerOptionOrder.DisplayLabel(options, escalate));
+        Assert.Equal('D', AnswerOptionOrder.DisplayLabel(options, allAbove)); // catch-all shown last, as "D"
     }
 }

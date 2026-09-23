@@ -38,9 +38,11 @@ public class GetExamAttemptWithDetailsQueryHandler : IRequestHandler<GetExamAtte
             questions.Add(new QuestionResultDto
             {
                 QuestionText = LocalizedText.Pick(question.Text, question.TextFr),
-                SelectedLabel = selectedOption.Label,
+                // Show the sequential display letter (catch-alls last) so it matches
+                // what the student saw while taking the exam, not the stored label.
+                SelectedLabel = AnswerOptionOrder.DisplayLabel(question.Options, selectedOption),
                 SelectedText = LocalizedText.Pick(selectedOption.Text, selectedOption.TextFr),
-                CorrectLabel = correctOption.Label,
+                CorrectLabel = AnswerOptionOrder.DisplayLabel(question.Options, correctOption),
                 CorrectText = LocalizedText.Pick(correctOption.Text, correctOption.TextFr),
                 IsCorrect = answered.IsCorrect,
                 Explanation = answered.IsCorrect

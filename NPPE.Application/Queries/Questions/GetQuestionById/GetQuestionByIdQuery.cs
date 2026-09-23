@@ -28,11 +28,11 @@ public class GetQuestionByIdQueryHandler : IRequestHandler<GetQuestionByIdQuery,
             question.Text,
             question.ExplanationForCorrect,
             question.ExplanationForIncorrect,
-            question.Options.OrderBy(o => AnswerOptionOrder.MetaRank(o.Text)).ThenBy(o => o.Label).Select(o => new AnswerOptionDto
+            question.Options.OrderBy(o => AnswerOptionOrder.MetaRank(o.Text)).ThenBy(o => o.Label).Select((o, i) => new AnswerOptionDto
             (
                 o.Id,
                 o.Text,
-                o.Label,
+                (char)('A' + i),
                 o.IsCorrect
             )).ToList()
         );
