@@ -260,3 +260,7 @@ appsettings.Development.json
 
 # Local marketing workspace (never pushed)
 Marketing/
+
+# Local design workspace — HTML mockups are already tracked; this keeps the
+# heavy scratch assets (ffmpeg build, videos, zips, generated JSON) out of git
+Design/
