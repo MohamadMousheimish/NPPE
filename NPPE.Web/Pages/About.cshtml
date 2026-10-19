@@ -1,0 +1,179 @@
+@page
+@model AboutModel
+@{
+    ViewData["Title"] = SharedLocalizer["About"].Value;
+    var authed = User.Identity?.IsAuthenticated == true;
+}
+
+<style>
+    /* About — scoped layout on the shared design tokens. */
+    .ab { max-width: 1040px; margin: 0 auto; }
+
+    /* Masthead: dark mission panel, grid texture, single signal accent. */
+    .ab-hero {
+        position: relative; overflow: hidden;
+        background: var(--ink); color: var(--paper);
+        border-radius: var(--radius); border-bottom: 3px solid var(--signal);
+        padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 4vw, 3.5rem);
+    }
+    .ab-hero__grid {
+        position: absolute; inset: 0; opacity: .5; pointer-events: none;
+        background-image: linear-gradient(var(--line-dark) 1px, transparent 1px),
+                          linear-gradient(90deg, var(--line-dark) 1px, transparent 1px);
+        background-size: 54px 54px;
+        -webkit-mask-image: radial-gradient(ellipse at 70% 10%, #000 20%, transparent 75%);
+        mask-image: radial-gradient(ellipse at 70% 10%, #000 20%, transparent 75%);
+    }
+    .ab-hero__in { position: relative; max-width: 62ch; }
+    .ab-hero h1 {
+        font-family: var(--font-display); font-weight: 700;
+        font-size: clamp(2rem, 5vw, 3.4rem); line-height: 1.04; letter-spacing: -0.02em;
+        margin: .7rem 0 1rem;
+    }
+    .ab-hero h1 em { font-style: normal; color: var(--signal); }
+    .ab-lede { color: var(--slate-2); font-size: clamp(1rem, 1.6vw, 1.2rem); line-height: 1.6; max-width: 56ch; }
+    .ab-hero .eyebrow { color: var(--signal); }
+
+    /* Section rhythm */
+    .ab-sec { margin-top: clamp(2.6rem, 6vw, 4.2rem); }
+    .ab-sec > .eyebrow { display: block; margin-bottom: .5rem; }
+    .ab-sec h2 {
+        font-family: var(--font-display); font-weight: 600;
+        font-size: clamp(1.4rem, 2.6vw, 2rem); letter-spacing: -0.01em; margin-bottom: 1rem;
+    }
+    .ab-prose { max-width: 70ch; }
+    .ab-prose p { color: var(--slate); line-height: 1.7; margin-bottom: 1rem; }
+    .ab-prose strong { color: var(--ink); font-weight: 600; }
+
+    /* What we do — pillar list */
+    .ab-pillars { display: grid; gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+    .ab-pillar { background: var(--card); padding: 1.3rem 1.4rem; display: flex; gap: 1rem; align-items: flex-start; }
+    .ab-pillar svg { flex: 0 0 auto; width: 22px; height: 22px; color: var(--signal); margin-top: .15rem; }
+    .ab-pillar b { display: block; font-family: var(--font-display); font-weight: 600; margin-bottom: .25rem; }
+    .ab-pillar span { color: var(--slate); font-size: .95rem; line-height: 1.55; }
+
+    /* Principles grid */
+    .ab-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .ab-card {
+        border: 1px solid var(--line); border-radius: var(--radius); background: var(--card);
+        padding: 1.3rem 1.3rem 1.4rem; position: relative;
+    }
+    .ab-card .n { font-family: var(--font-mono); font-size: .72rem; letter-spacing: .12em; color: var(--signal); }
+    .ab-card b { display: block; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; margin: .5rem 0 .4rem; }
+    .ab-card p { color: var(--slate); font-size: .92rem; line-height: 1.55; margin: 0; }
+    .ab-card a { color: var(--signal); text-decoration: none; border-bottom: 1px solid currentColor; }
+
+    /* Independence note */
+    .ab-note {
+        border: 1px solid var(--line); border-left: 3px solid var(--signal);
+        background: var(--signal-wash); border-radius: var(--radius);
+        padding: 1.2rem 1.4rem; color: var(--slate); line-height: 1.6; font-size: .95rem; max-width: 80ch;
+    }
+
+    /* CTA band */
+    .ab-cta {
+        margin-top: clamp(2.6rem, 6vw, 4.2rem);
+        background: var(--ink); color: var(--paper); border-radius: var(--radius);
+        padding: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 4vw, 3rem); text-align: center;
+    }
+    .ab-cta h2 { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: .6rem; }
+    .ab-cta p { color: var(--slate-2); margin: 0 auto 1.6rem; max-width: 46ch; }
+    .ab-cta__row { display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap; }
+
+    @@media (max-width: 760px) { .ab-grid { grid-template-columns: 1fr; } }
+</style>
+
+<div class="ab">
+    <section class="ab-hero" data-reveal>
+        <div class="ab-hero__grid" aria-hidden="true"></div>
+        <div class="ab-hero__in">
+            <span class="eyebrow eyebrow--signal">@SharedLocalizer["About NPPE Prep"]</span>
+            <h1>@Html.Raw(SharedLocalizer["Clear, exam-faithful preparation for <em>Canada's engineers and geoscientists</em>."])</h1>
+            <p class="ab-lede">@SharedLocalizer["NPPE Prep exists to make professional licensure less of a guessing game. We turn the National Professional Practice Examination's broad syllabus into one structured, bilingual path — so every candidate walks in prepared, not anxious."]</p>
+        </div>
+    </section>
+
+    <section class="ab-sec" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["Why we exist"]</span>
+        <h2>@SharedLocalizer["The licence shouldn't come down to scattered PDFs"]</h2>
+        <div class="ab-prose">
+            <p>@SharedLocalizer["The NPPE stands between thousands of capable engineers and geoscientists and the licence their careers depend on. Yet for years, preparing has meant stitching together outdated forums, photocopied notes, and courses that cost more than they should."]</p>
+            <p>@SharedLocalizer["We built NPPE Prep because candidates deserve better: a single, modern resource built around how the exam actually tests you — the real format, the real weighting, and a plain-language reason behind every answer. In both official languages, because licensure in Canada is national."]</p>
+        </div>
+    </section>
+
+    <section class="ab-sec" data-reveal>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["What we do"]</span>
+        <h2>@SharedLocalizer["One place, built for the exam"]</h2>
+        <div class="ab-pillars" data-stagger>
+            <div class="ab-pillar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg>
+                <div><b>@SharedLocalizer["Full-length practice exams"]</b><span>@SharedLocalizer["Timed, multiple-choice exams that mirror the real format — each question with a worked explanation of why the correct answer is correct."]</span></div>
+            </div>
+            <div class="ab-pillar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M4 5h16v14H4z"/><path d="M4 9h16M9 9v10"/></svg>
+                <div><b>@SharedLocalizer["A complete Study Hub"]</b><span>@SharedLocalizer["Structured notes across all six weighted sections of the syllabus — professionalism, ethics, law, regulation, and more — so nothing is left to chance."]</span></div>
+            </div>
+            <div class="ab-pillar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M3 5h18M12 5v14M7 9l-3 4h6zM17 9l-3 4h6z"/></svg>
+                <div><b>@SharedLocalizer["Bilingual throughout"]</b><span>@SharedLocalizer["Every question, explanation, and study note in both English and French — not a bolt-on translation, but part of how the product is built."]</span></div>
+            </div>
+            <div class="ab-pillar">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 2l3 6 6 .9-4.5 4.3 1 6.3L12 17l-5.5 2.5 1-6.3L3 8.9 9 8z"/></svg>
+                <div><b>@SharedLocalizer["Pay once, no subscription"]</b><span>@SharedLocalizer["Simple one-time exam packs. Your purchase keeps unlocking the newest material — no recurring charges, no surprises."]</span></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="ab-sec" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["Who it's for"]</span>
+        <h2>@SharedLocalizer["Future professionals, from anywhere"]</h2>
+        <div class="ab-prose">
+            <p>@SharedLocalizer["NPPE Prep is for engineers- and geoscientists-in-training, recent graduates, and internationally-educated professionals working toward P.Eng. or P.Geo. licensure across Canada, wherever the NPPE is required."]</p>
+            <p>@SharedLocalizer["Whether you're sitting the exam for the first time or coming back to it, the goal is the same: walk in knowing the material — and knowing what to expect."]</p>
+        </div>
+    </section>
+
+    <section class="ab-sec" data-reveal>
+        <span class="eyebrow eyebrow--signal">@SharedLocalizer["What we stand for"]</span>
+        <h2>@SharedLocalizer["Principles we build on"]</h2>
+        <div class="ab-grid" data-stagger>
+            <div class="ab-card"><span class="n">01</span><b>@SharedLocalizer["Exam-faithful"]</b><p>@SharedLocalizer["We follow the real format, timing, and weighting. No filler, no surprises on exam day."]</p></div>
+            <div class="ab-card"><span class="n">02</span><b>@SharedLocalizer["Clarity over volume"]</b><p>@SharedLocalizer["Every question carries a plain-language explanation. Understanding beats memorizing."]</p></div>
+            <div class="ab-card"><span class="n">03</span><b>@SharedLocalizer["Bilingual by design"]</b><p>@SharedLocalizer["Full English and French, because licensure in Canada belongs to everyone."]</p></div>
+            <div class="ab-card"><span class="n">04</span><b>@SharedLocalizer["Fair and transparent"]</b><p>@SharedLocalizer["One-time pricing, no subscriptions, and a clear refund policy you can read upfront."]</p></div>
+            <div class="ab-card"><span class="n">05</span><b>@SharedLocalizer["Privacy-first"]</b><p>@Html.Raw(SharedLocalizer["Your data runs your account and nothing else. We never sell it — see our {0}.", $"<a href=\"/Privacy\">{SharedLocalizer["privacy policy"].Value}</a>"])</p></div>
+            <div class="ab-card"><span class="n">06</span><b>@SharedLocalizer["Independent"]</b><p>@SharedLocalizer["We're a focused study resource, accountable to candidates — not to anyone else."]</p></div>
+        </div>
+    </section>
+
+    <section class="ab-sec" data-reveal>
+        <span class="eyebrow">@SharedLocalizer["Important"]</span>
+        <h2>@SharedLocalizer["An independent resource"]</h2>
+        <p class="ab-note">@SharedLocalizer["NPPE Prep is an independent preparation resource. We are not affiliated with, endorsed by, or acting on behalf of Engineers Canada, Geoscientists Canada, or any provincial or territorial regulator. \"NPPE\" refers to the examination those bodies administer; all trademarks belong to their respective owners."]</p>
+    </section>
+
+    <section class="ab-cta" data-reveal>
+        <h2>@SharedLocalizer["See it for yourself"]</h2>
+        <p>@SharedLocalizer["Try a few real questions free — no account needed — or explore what's included."]</p>
+        <div class="ab-cta__row">
+            <a class="btn btn--invert btn--lg" asp-page="/Try">@SharedLocalizer["Try 3 free questions"]</a>
+            <a class="btn btn--ghost-invert btn--lg" asp-page="/Payments/Pricing">@SharedLocalizer["See pricing"]</a>
+            @if (!authed)
+            {
+                <a class="btn btn--ghost-invert btn--lg" asp-page="/Account/Register">@SharedLocalizer["Create your account"]</a>
+            }
+        </div>
+    </section>
+
+    <div style="margin-top:2rem">
+        @if (authed)
+        {
+            <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to dashboard"]</a>
+        }
+        else
+        {
+            <a class="backlink" asp-page="/Index">&larr; @SharedLocalizer["Back to home"]</a>
+        }
+    </div>
+</div>
